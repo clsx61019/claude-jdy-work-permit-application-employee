@@ -1,0 +1,246 @@
+{
+ "1": [
+  "Tartózkodási engedély kiadása első alkalommal: Beutazás helye, ideje:",
+  true
+ ],
+ "15": [
+  "Telefonszám:",
+  "+36 30 960 4086"
+ ],
+ "17": [
+  "E-mail cím:",
+  "renata.simon@borsodchem.eu"
+ ],
+ "19": [
+  "A kérelmező az okmány postai úton történő megküldését kéri.",
+  true
+ ],
+ "21": [
+  "meghatalmazott kapcsolattartási címe",
+  true
+ ],
+ "23": [
+  "családi név (útlevél szerint):",
+  "TESZT"
+ ],
+ "28": [
+  "utónév (útlevél szerint):",
+  "MINTA"
+ ],
+ "33": [
+  "születési családi név:",
+  "TESZT"
+ ],
+ "39": [
+  "születési utónév:",
+  "MINTA"
+ ],
+ "45": [
+  "anyja születési családi neve:",
+  "PROBA"
+ ],
+ "50": [
+  "anyja születési utóneve:",
+  "ANYA"
+ ],
+ "56": [
+  "nő",
+  true
+ ],
+ "59": [
+  "házas",
+  true
+ ],
+ "61": [
+  "születési idő:",
+  " 1990 "
+ ],
+ "62": [
+  "év",
+  " 05 "
+ ],
+ "63": [
+  "hó",
+  " 07 "
+ ],
+ "64": [
+  "születési hely (település):",
+  " Shandong"
+ ],
+ "68": [
+  "ország:",
+  "Kína"
+ ],
+ "71": [
+  "állampolgársága:",
+  "kínai"
+ ],
+ "78": [
+  "szakképzettsége:",
+  "vegyészmérnök"
+ ],
+ "84": [
+  "felsőfokú",
+  true
+ ],
+ "85": [
+  "Magyarországra érkezést megelőző foglalkozás:",
+  "vegyészmérnök (folyamatmérnök)"
+ ],
+ "88": [
+  "útlevél száma:",
+  "EX0000000"
+ ],
+ "91": [
+  "kiállításának ideje, helye:",
+  " 2020 "
+ ],
+ "92": [
+  "év",
+  " 01 "
+ ],
+ "93": [
+  "hó",
+  " 15 "
+ ],
+ "94": [
+  "nap,",
+  "SHANDONG"
+ ],
+ "98": [
+  "magánútlevél",
+  true
+ ],
+ "102": [
+  "érvényességi ideje:",
+  " 2030 "
+ ],
+ "103": [
+  "év",
+  " 01 "
+ ],
+ "104": [
+  "hó",
+  " 14 "
+ ],
+ "105": [
+  "helyrajzi szám:",
+  "563, 564, 565, 566"
+ ],
+ "106": [
+  "irányítószám:",
+  "3704"
+ ],
+ "107": [
+  "település:",
+  "Berente"
+ ],
+ "111": [
+  "közterület neve:",
+  "Ipari"
+ ],
+ "115": [
+  "közterület jellege:",
+  "út"
+ ],
+ "116": [
+  "házszám:",
+  "9-11."
+ ],
+ "123": [
+  "bérlő",
+  true
+ ],
+ "129": [
+  "foglalkoztatási jogviszony alapján",
+  true
+ ],
+ "140": [
+  "Jogszerű tartózkodása lejártakor mely országba utazik vissza vagy tovább?",
+  "Kína"
+ ],
+ "144": [
+  "Milyen közlekedési eszközzel?",
+  "repülő"
+ ],
+ "148": [
+  "igen",
+  true
+ ],
+ "150": [
+  "igen",
+  true
+ ],
+ "152": [
+  "igen",
+  true
+ ],
+ "154": [
+  "igen, összege:",
+  true
+ ],
+ "155": [
+  "igen, összege:",
+  "300.000 Ft"
+ ],
+ "326": [
+  "Ország:",
+  "Kína"
+ ],
+ "331": [
+  "Település:",
+  "Shandong Province, Yantai City"
+ ],
+ "336": [
+  "Közterület neve:",
+  "Zhifu District, No. 1, Example Road, 264000"
+ ],
+ "342": [
+  "nem",
+  true
+ ],
+ "347": [
+  "nem",
+  true
+ ],
+ "349": [
+  "nem",
+  true
+ ],
+ "351": [
+  "nem",
+  true
+ ],
+ "356": [
+  "nem",
+  true
+ ],
+ "358": [
+  "nem",
+  true
+ ],
+ "360": [
+  "nem",
+  true
+ ],
+ "361": [
+  "Meddig kérelmezi tartózkodása engedélyezését?",
+  " 2028 "
+ ],
+ "362": [
+  "év",
+  " 12 "
+ ],
+ "363": [
+  "hó",
+  " 31 "
+ ],
+ "372": [
+  "Vállalaton belüli áthelyezés (9.10 sz. betétlap)",
+  true
+ ],
+ "386": [
+  "10. Kijelentem, hogy a kérelmemben és az ahhoz csatolt",
+  "9.10 SZÁMÚ"
+ ]
+}

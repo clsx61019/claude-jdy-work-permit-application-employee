@@ -2,7 +2,7 @@
 
 简道云「签证管理」应用中「居留许可申请流程（员工）」的综合改造项目，涵盖三部分：
 
-1. **打印**：把文件生成移出简道云。云函数读取记录，用官方原版模板直接生成 Word/PDF，再写回附件字段。
+1. **打印**：把文件生成移出简道云。云函数读取记录，直接填写官方原版表单，生成 Word/PDF，再写回附件字段。
 2. **表单**：打印搬出去之后，删掉为打印而存在的辅助字段和公式，主表只保留真实信息。
 3. **流程**：去掉自建的状态跟踪，补上退回、角色、提醒，主数据自动写回。
 
@@ -16,7 +16,27 @@
 | `docs/02-项目计划.md` | 阶段、顺序、依赖关系 |
 | `docs/03-决策记录.md` | 已做的决定和原因 |
 | `docs/rules/` | 每个模板的规则清单，逐行审核 |
-| `prototype/` | 打印服务原型（已用模板 9 验证） |
+| `templates/official/` | 官方原版表单（不修改） |
+| `service/` | 文件生成：数据模型、各表单的填写规则、公司固定答案 |
+| `tests/` | 虚构样例和"正确结果"，用于对比测试 |
+| `tools/` | 辅助工具，如列出官方表单里的可填写域 |
+| `prototype/` | 早期原型（简道云模板改 Jinja 的方案，已不采用） |
+
+## 使用
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+python -m service.generate form09 tests/samples/ict.json out/09_ict.docx --pdf
+```
+
+```bash
+python tests/run_tests.py
+```
+
+转 PDF 需要安装 LibreOffice。改动规则后先跑测试：如果是预期内的变化，确认后再用 `python tests/run_tests.py --update` 更新基准。
 
 ## 约定
 

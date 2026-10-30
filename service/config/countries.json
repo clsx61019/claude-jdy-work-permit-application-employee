@@ -1,0 +1,2010 @@
+[
+ {
+  "country_zh": "阿富汗",
+  "country_en": "Afghanistan",
+  "country_hu": "Afganisztán",
+  "nationality_zh": "阿富汗",
+  "nationality_en": "Afghanistani",
+  "nationality_hu": "Afgán"
+ },
+ {
+  "country_zh": "阿尔巴尼亚",
+  "country_en": "Albania",
+  "country_hu": "Albánia",
+  "nationality_zh": "阿尔巴尼亚",
+  "nationality_en": "Albanese",
+  "nationality_hu": "Albán"
+ },
+ {
+  "country_zh": "阿尔及利亚",
+  "country_en": "Algeria",
+  "country_hu": "Algéria",
+  "nationality_zh": "阿尔及利亚",
+  "nationality_en": "Algerian",
+  "nationality_hu": "Algériai"
+ },
+ {
+  "country_zh": "美属太平洋群岛",
+  "country_en": "American Pacific Islands",
+  "country_hu": "Am. Csendes-Óceáni-Szigetek",
+  "nationality_zh": "美国",
+  "nationality_en": "American",
+  "nationality_hu": "Amerikai"
+ },
+ {
+  "country_zh": "美属萨摩亚",
+  "country_en": "American Samoa",
+  "country_hu": "Amerikai Szamoa",
+  "nationality_zh": "美国",
+  "nationality_en": "American",
+  "nationality_hu": "Amerikai"
+ },
+ {
+  "country_zh": "美属维尔京群岛",
+  "country_en": "American Virgin Islands",
+  "country_hu": "Amerikai Virgin-Szigetek",
+  "nationality_zh": "美国",
+  "nationality_en": "American",
+  "nationality_hu": "Amerikai"
+ },
+ {
+  "country_zh": "安道尔",
+  "country_en": "Andorra",
+  "country_hu": "Andorra",
+  "nationality_zh": "安道尔",
+  "nationality_en": "Andorran",
+  "nationality_hu": "Andorrai"
+ },
+ {
+  "country_zh": "安哥拉",
+  "country_en": "Angola",
+  "country_hu": "Angola",
+  "nationality_zh": "安哥拉",
+  "nationality_en": "Angolan",
+  "nationality_hu": "Angolai"
+ },
+ {
+  "country_zh": "安圭拉",
+  "country_en": "Anguilla",
+  "country_hu": "Anguilla",
+  "nationality_zh": "安圭拉",
+  "nationality_en": "British Overseas Territories Citizen",
+  "nationality_hu": "Anguillai"
+ },
+ {
+  "country_zh": "南极洲",
+  "country_en": "Antarctic",
+  "country_hu": "Antarktisz",
+  "nationality_zh": "南极",
+  "nationality_en": "Antarctic",
+  "nationality_hu": "Antarktiszi"
+ },
+ {
+  "country_zh": "安提瓜和巴布达",
+  "country_en": "Antigua And Barbuda",
+  "country_hu": "Antigua És Barbuda",
+  "nationality_zh": "安提瓜和巴布达",
+  "nationality_en": "Antiguan Barbudan",
+  "nationality_hu": "Antigua Es Barbuda-I"
+ },
+ {
+  "country_zh": "阿拉伯联合酋长国",
+  "country_en": "Arab Emirates",
+  "country_hu": "Arab Emírségek",
+  "nationality_zh": "阿拉伯联合酋长国",
+  "nationality_en": "Emirati",
+  "nationality_hu": "Egyesult Arab Emiratusok-Beli"
+ },
+ {
+  "country_zh": "阿根廷",
+  "country_en": "Argentina",
+  "country_hu": "Argentína",
+  "nationality_zh": "阿根廷",
+  "nationality_en": "Argentinian",
+  "nationality_hu": "Argentin"
+ },
+ {
+  "country_zh": "阿鲁巴",
+  "country_en": "Aruba",
+  "country_hu": "Aruba",
+  "nationality_zh": "阿鲁巴（荷兰）",
+  "nationality_en": "Aruban (Dutch)",
+  "nationality_hu": "Arubai (Holland)"
+ },
+ {
+  "country_zh": "奥地利",
+  "country_en": "Austria",
+  "country_hu": "Ausztria",
+  "nationality_zh": "奥地利",
+  "nationality_en": "Austrian",
+  "nationality_hu": "Osztrák"
+ },
+ {
+  "country_zh": "澳大利亚",
+  "country_en": "Australia",
+  "country_hu": "Ausztrália",
+  "nationality_zh": "澳大利亚",
+  "nationality_en": "Australian",
+  "nationality_hu": "Ausztrál"
+ },
+ {
+  "country_zh": "阿塞拜疆",
+  "country_en": "Azerbaijan",
+  "country_hu": "Azerbajdzsán",
+  "nationality_zh": "阿塞拜疆",
+  "nationality_en": "Azerbaijani",
+  "nationality_hu": "Azeri"
+ },
+ {
+  "country_zh": "巴哈马群岛",
+  "country_en": "Bahama Islands",
+  "country_hu": "Bahama-Szigetek",
+  "nationality_zh": "巴哈马",
+  "nationality_en": "Bahamian",
+  "nationality_hu": "Bahamai"
+ },
+ {
+  "country_zh": "巴林",
+  "country_en": "Bahrain",
+  "country_hu": "Bahrein",
+  "nationality_zh": "巴林",
+  "nationality_en": "Bahraini",
+  "nationality_hu": "Bahreini"
+ },
+ {
+  "country_zh": "孟加拉国",
+  "country_en": "Bangladesh",
+  "country_hu": "Banglades",
+  "nationality_zh": "孟加拉国",
+  "nationality_en": "Bangladeshi",
+  "nationality_hu": "Bangladesi"
+ },
+ {
+  "country_zh": "巴巴多斯",
+  "country_en": "Barbados",
+  "country_hu": "Barbados",
+  "nationality_zh": "巴巴多斯",
+  "nationality_en": "Barbadian",
+  "nationality_hu": "Barbadoszi"
+ },
+ {
+  "country_zh": "比利时",
+  "country_en": "Belgium",
+  "country_hu": "Belgium",
+  "nationality_zh": "比利时",
+  "nationality_en": "Belgian",
+  "nationality_hu": "Belga"
+ },
+ {
+  "country_zh": "伯利兹",
+  "country_en": "Belize",
+  "country_hu": "Belize",
+  "nationality_zh": "伯利兹",
+  "nationality_en": "Belizean",
+  "nationality_hu": "Belizei"
+ },
+ {
+  "country_zh": "贝宁",
+  "country_en": "Benin",
+  "country_hu": "Benin",
+  "nationality_zh": "贝宁",
+  "nationality_en": "Beninese",
+  "nationality_hu": "Benini"
+ },
+ {
+  "country_zh": "百慕大",
+  "country_en": "Bermuda",
+  "country_hu": "Bermuda",
+  "nationality_zh": "百慕大",
+  "nationality_en": "Bermudian",
+  "nationality_hu": "Bermudai"
+ },
+ {
+  "country_zh": "不丹",
+  "country_en": "Bhutan",
+  "country_hu": "Bhután",
+  "nationality_zh": "不丹",
+  "nationality_en": "Bhutanese",
+  "nationality_hu": "Bhutani"
+ },
+ {
+  "country_zh": "几内亚比绍",
+  "country_en": "Bissau-Guinea",
+  "country_hu": "Bissau-Guinea",
+  "nationality_zh": "几内亚比绍",
+  "nationality_en": "Bissau-Guinean",
+  "nationality_hu": "Guinea-Bissau-I"
+ },
+ {
+  "country_zh": "玻利维亚",
+  "country_en": "Bolivia",
+  "country_hu": "Bolívia",
+  "nationality_zh": "玻利维亚",
+  "nationality_en": "Bolivian",
+  "nationality_hu": "Boliviai"
+ },
+ {
+  "country_zh": "波斯尼亚和黑塞哥维那",
+  "country_en": "Bosnia And Herzegovina",
+  "country_hu": "Bosznia-Hercegovina",
+  "nationality_zh": "波斯尼亚",
+  "nationality_en": "Bosnian",
+  "nationality_hu": "Bosnyák"
+ },
+ {
+  "country_zh": "博茨瓦纳",
+  "country_en": "Botswana",
+  "country_hu": "Botswana",
+  "nationality_zh": "博茨瓦纳",
+  "nationality_en": "Batswana",
+  "nationality_hu": "Botswanai"
+ },
+ {
+  "country_zh": "布韦岛",
+  "country_en": "Bouvet Island",
+  "country_hu": "Bouvet-Sziget",
+  "nationality_zh": "布韦岛",
+  "nationality_en": "Bouvet Islander",
+  "nationality_hu": "Bouvet-szigeti"
+ },
+ {
+  "country_zh": "巴西",
+  "country_en": "Brazil",
+  "country_hu": "Brazília",
+  "nationality_zh": "巴西",
+  "nationality_en": "Brazilian",
+  "nationality_hu": "Brazil"
+ },
+ {
+  "country_zh": "英属印度洋领地",
+  "country_en": "British Indian Ocean Territory",
+  "country_hu": "Brit Indiai-Óceáni Terület",
+  "nationality_zh": "英国海外领地",
+  "nationality_en": "British Overseas Territories Citizen",
+  "nationality_hu": "Brit Tengerentúli Területek-I"
+ },
+ {
+  "country_zh": "英属维尔京群岛",
+  "country_en": "British Virgin Islands",
+  "country_hu": "Brit Virgin-Szigetek",
+  "nationality_zh": "英国",
+  "nationality_en": "British",
+  "nationality_hu": "Brit"
+ },
+ {
+  "country_zh": "文莱",
+  "country_en": "Brunei",
+  "country_hu": "Brunei",
+  "nationality_zh": "文莱",
+  "nationality_en": "Bruneian",
+  "nationality_hu": "Brunei"
+ },
+ {
+  "country_zh": "保加利亚",
+  "country_en": "Bulgaria",
+  "country_hu": "Bulgária",
+  "nationality_zh": "保加利亚",
+  "nationality_en": "Bulgarian",
+  "nationality_hu": "Bolgár"
+ },
+ {
+  "country_zh": "布基纳法索",
+  "country_en": "Burkina Faso",
+  "country_hu": "Burkina Faso",
+  "nationality_zh": "布基纳法索",
+  "nationality_en": "Burkinabé",
+  "nationality_hu": "Burkina Faso-Beli"
+ },
+ {
+  "country_zh": "布隆迪",
+  "country_en": "Burundi",
+  "country_hu": "Burundi",
+  "nationality_zh": "布隆迪",
+  "nationality_en": "Burundian",
+  "nationality_hu": "Burundi"
+ },
+ {
+  "country_zh": "智利",
+  "country_en": "Chile",
+  "country_hu": "Chile",
+  "nationality_zh": "智利",
+  "nationality_en": "Chilean",
+  "nationality_hu": "Chilei"
+ },
+ {
+  "country_zh": "塞浦路斯",
+  "country_en": "Cyprus",
+  "country_hu": "Ciprus",
+  "nationality_zh": "塞浦路斯",
+  "nationality_en": "Cypriot",
+  "nationality_hu": "Ciprusi"
+ },
+ {
+  "country_zh": "科摩罗群岛",
+  "country_en": "Comoro Islands",
+  "country_hu": "Comore-Szigetek",
+  "nationality_zh": "科摩罗",
+  "nationality_en": "Comorian",
+  "nationality_hu": "Comorosi"
+ },
+ {
+  "country_zh": "库克群岛",
+  "country_en": "Cook Islands",
+  "country_hu": "Cook-Szigetek",
+  "nationality_zh": "库克群岛",
+  "nationality_en": "Cook Islander",
+  "nationality_hu": "Cook Szigeteki"
+ },
+ {
+  "country_zh": "哥斯达黎加",
+  "country_en": "Costa Rica",
+  "country_hu": "Costa Rica",
+  "nationality_zh": "哥斯达黎加",
+  "nationality_en": "Costa Rican",
+  "nationality_hu": "Costa Rica-I"
+ },
+ {
+  "country_zh": "捷克",
+  "country_en": "Czech Republic",
+  "country_hu": "Csehország",
+  "nationality_zh": "捷克",
+  "nationality_en": "Czech",
+  "nationality_hu": "Cseh"
+ },
+ {
+  "country_zh": "乍得",
+  "country_en": "Chad",
+  "country_hu": "Csád",
+  "nationality_zh": "乍得",
+  "nationality_en": "Chadian",
+  "nationality_hu": "Csádi"
+ },
+ {
+  "country_zh": "多米尼加共和国",
+  "country_en": "Dominican Republic",
+  "country_hu": "Dominikai Köztársaság",
+  "nationality_zh": "多米尼加共和国",
+  "nationality_en": "Dominican",
+  "nationality_hu": "Dominikai Köztársaság-Beli"
+ },
+ {
+  "country_zh": "多米尼加",
+  "country_en": "Dominica",
+  "country_hu": "Dominikai Közösség",
+  "nationality_zh": "多米尼加",
+  "nationality_en": "Dominican",
+  "nationality_hu": "Dominikai"
+ },
+ {
+  "country_zh": "吉布提",
+  "country_en": "Djibouti",
+  "country_hu": "Dzsibuti",
+  "nationality_zh": "吉布提",
+  "nationality_en": "Djiboutian",
+  "nationality_hu": "Dzsibuti"
+ },
+ {
+  "country_zh": "丹麦",
+  "country_en": "Denmark",
+  "country_hu": "Dánia",
+  "nationality_zh": "丹麦",
+  "nationality_en": "Danish",
+  "nationality_hu": "Dán"
+ },
+ {
+  "country_zh": "南非",
+  "country_en": "South African Republic",
+  "country_hu": "Dél-Afrikai Köztársaság",
+  "nationality_zh": "南非",
+  "nationality_en": "South African",
+  "nationality_hu": "Dél-Afrikai"
+ },
+ {
+  "country_zh": "南苏丹",
+  "country_en": "South Sudan",
+  "country_hu": "Dél-Szudán",
+  "nationality_zh": "南苏丹",
+  "nationality_en": "South Sudanese",
+  "nationality_hu": "Dél-Szudáni"
+ },
+ {
+  "country_zh": "南乔治亚和南桑威奇群岛",
+  "country_en": "South Georgia And The South Sandwich Islands",
+  "country_hu": "Déli-Georgia És Déli-Sandwich-Szigetek",
+  "nationality_zh": "英国",
+  "nationality_en": "British",
+  "nationality_hu": "Brit"
+ },
+ {
+  "country_zh": "厄瓜多尔",
+  "country_en": "Ecuador",
+  "country_hu": "Ecuador",
+  "nationality_zh": "厄瓜多尔",
+  "nationality_en": "Ecuadorian",
+  "nationality_hu": "Ecuadori"
+ },
+ {
+  "country_zh": "赤道几内亚",
+  "country_en": "Equatorial Guinea",
+  "country_hu": "Egyenlítői-Guinea",
+  "nationality_zh": "赤道几内亚",
+  "nationality_en": "Equatoguinean",
+  "nationality_hu": "Egyenlitoi Guinea-Beli"
+ },
+ {
+  "country_zh": "美国",
+  "country_en": "United States",
+  "country_hu": "Egyesült Államok",
+  "nationality_zh": "美国",
+  "nationality_en": "American",
+  "nationality_hu": "Amerikai"
+ },
+ {
+  "country_zh": "埃及",
+  "country_en": "Egypt",
+  "country_hu": "Egyiptom",
+  "nationality_zh": "埃及",
+  "nationality_en": "Egyptian",
+  "nationality_hu": "Egyiptomi"
+ },
+ {
+  "country_zh": "科特迪瓦",
+  "country_en": "Ivory Coast",
+  "country_hu": "Elefántcsontpart",
+  "nationality_zh": "科特迪瓦",
+  "nationality_en": "Ivorian",
+  "nationality_hu": "Elefántcsontparti"
+ },
+ {
+  "country_zh": "厄立特里亚",
+  "country_en": "Eritrea",
+  "country_hu": "Eritrea",
+  "nationality_zh": "厄立特里亚",
+  "nationality_en": "Eritrean",
+  "nationality_hu": "Eritreai"
+ },
+ {
+  "country_zh": "埃塞俄比亚",
+  "country_en": "Ethiopia",
+  "country_hu": "Etiópia",
+  "nationality_zh": "埃塞俄比亚",
+  "nationality_en": "Ethiopian",
+  "nationality_hu": "Etióp"
+ },
+ {
+  "country_zh": "福克兰群岛（马尔维纳斯群岛）",
+  "country_en": "Falkland Islands (Malvinas)",
+  "country_hu": "Falkland-Szigetek (Malvinas)",
+  "nationality_zh": "英国",
+  "nationality_en": "British",
+  "nationality_hu": "Brit"
+ },
+ {
+  "country_zh": "白俄罗斯",
+  "country_en": "Belarus",
+  "country_hu": "Fehéroroszország",
+  "nationality_zh": "白俄罗斯",
+  "nationality_en": "Belarusian",
+  "nationality_hu": "Fehérorosz"
+ },
+ {
+  "country_zh": "法罗群岛",
+  "country_en": "Faroe Islands",
+  "country_hu": "Feröer",
+  "nationality_zh": "丹麦",
+  "nationality_en": "Danish",
+  "nationality_hu": "Dán"
+ },
+ {
+  "country_zh": "斐济",
+  "country_en": "Fiji Islands",
+  "country_hu": "Fidzsi-Szigetek",
+  "nationality_zh": "斐济",
+  "nationality_en": "Fijian",
+  "nationality_hu": "Fidzsi"
+ },
+ {
+  "country_zh": "芬兰",
+  "country_en": "Finland",
+  "country_hu": "Finnország",
+  "nationality_zh": "芬兰",
+  "nationality_en": "Finnish",
+  "nationality_hu": "Finn"
+ },
+ {
+  "country_zh": "法属南部领地",
+  "country_en": "French Southern Territories",
+  "country_hu": "Francia Déli Területek",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "法属圭亚那",
+  "country_en": "French Guiana",
+  "country_hu": "Francia Guyana",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "法属波利尼西亚",
+  "country_en": "French Polynesia",
+  "country_hu": "Francia Polinézia",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "法国",
+  "country_en": "France",
+  "country_hu": "Franciaország",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "菲律宾",
+  "country_en": "Philippines",
+  "country_hu": "Fülöp-Szigetek",
+  "nationality_zh": "菲律宾",
+  "nationality_en": "Filipino",
+  "nationality_hu": "Fülöp Szigeteki"
+ },
+ {
+  "country_zh": "加蓬",
+  "country_en": "Gabon",
+  "country_hu": "Gabon",
+  "nationality_zh": "加蓬",
+  "nationality_en": "Gabonese",
+  "nationality_hu": "Gaboni"
+ },
+ {
+  "country_zh": "冈比亚",
+  "country_en": "Gambia",
+  "country_hu": "Gambia",
+  "nationality_zh": "冈比亚",
+  "nationality_en": "Gambian",
+  "nationality_hu": "Gambiai"
+ },
+ {
+  "country_zh": "加纳",
+  "country_en": "Ghana",
+  "country_hu": "Ghána",
+  "nationality_zh": "加纳",
+  "nationality_en": "Ghanaian",
+  "nationality_hu": "Ghánai"
+ },
+ {
+  "country_zh": "直布罗陀",
+  "country_en": "Gibraltar",
+  "country_hu": "Gibraltár",
+  "nationality_zh": "英国",
+  "nationality_en": "British",
+  "nationality_hu": "Brit"
+ },
+ {
+  "country_zh": "格林纳达",
+  "country_en": "Grenada",
+  "country_hu": "Grenada",
+  "nationality_zh": "格林纳达",
+  "nationality_en": "Grenadian",
+  "nationality_hu": "Grenadai"
+ },
+ {
+  "country_zh": "格陵兰",
+  "country_en": "Greenland",
+  "country_hu": "Grönland",
+  "nationality_zh": "荷兰",
+  "nationality_en": "Dutch",
+  "nationality_hu": "Holland"
+ },
+ {
+  "country_zh": "格鲁吉亚",
+  "country_en": "Georgia",
+  "country_hu": "Grúzia",
+  "nationality_zh": "格鲁吉亚",
+  "nationality_en": "Georgian",
+  "nationality_hu": "Grúz"
+ },
+ {
+  "country_zh": "瓜德罗普",
+  "country_en": "Guadeloupe",
+  "country_hu": "Guadeloupe",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "关岛",
+  "country_en": "Guam",
+  "country_hu": "Guam",
+  "nationality_zh": "美国",
+  "nationality_en": "American",
+  "nationality_hu": "Amerikai"
+ },
+ {
+  "country_zh": "危地马拉",
+  "country_en": "Guatemala",
+  "country_hu": "Guatemala",
+  "nationality_zh": "危地马拉",
+  "nationality_en": "Guatemalan",
+  "nationality_hu": "Guatemalai"
+ },
+ {
+  "country_zh": "几内亚",
+  "country_en": "Guinea",
+  "country_hu": "Guinea",
+  "nationality_zh": "几内亚",
+  "nationality_en": "Guinean",
+  "nationality_hu": "Guineai"
+ },
+ {
+  "country_zh": "圭亚那",
+  "country_en": "Guyana",
+  "country_hu": "Guyana",
+  "nationality_zh": "圭亚那",
+  "nationality_en": "Guyanese",
+  "nationality_hu": "Guyanai"
+ },
+ {
+  "country_zh": "希腊",
+  "country_en": "Greece",
+  "country_hu": "Görögország",
+  "nationality_zh": "希腊",
+  "nationality_en": "Greek",
+  "nationality_hu": "Görög"
+ },
+ {
+  "country_zh": "海地",
+  "country_en": "Haiti",
+  "country_hu": "Haiti",
+  "nationality_zh": "海地",
+  "nationality_en": "Haitian",
+  "nationality_hu": "Haiti"
+ },
+ {
+  "country_zh": "赫德岛和麦克唐纳群岛",
+  "country_en": "Heard And McDonald Islands",
+  "country_hu": "Heard És Mcdonald-Szigetek",
+  "nationality_zh": "赫德岛和麦克唐纳群岛",
+  "nationality_en": "Heard and McDonald Islander",
+  "nationality_hu": "Heard- és McDonald-szigeteki"
+ },
+ {
+  "country_zh": "荷属安的列斯",
+  "country_en": "Netherlands Antilles",
+  "country_hu": "Holland Antillák",
+  "nationality_zh": "荷兰",
+  "nationality_en": "Dutch",
+  "nationality_hu": "Holland"
+ },
+ {
+  "country_zh": "荷兰",
+  "country_en": "Netherlands",
+  "country_hu": "Hollandia",
+  "nationality_zh": "荷兰",
+  "nationality_en": "Dutch",
+  "nationality_hu": "Holland"
+ },
+ {
+  "country_zh": "洪都拉斯",
+  "country_en": "Honduras",
+  "country_hu": "Honduras",
+  "nationality_zh": "洪都拉斯",
+  "nationality_en": "Honduran",
+  "nationality_hu": "Hondurasi"
+ },
+ {
+  "country_zh": "香港",
+  "country_en": "Hong Kong",
+  "country_hu": "Hongkong",
+  "nationality_zh": "中国香港",
+  "nationality_en": "Hong Kongese (Chinese)",
+  "nationality_hu": "Hong Kongi (Kinai)"
+ },
+ {
+  "country_zh": "无国籍",
+  "country_en": "Stateless",
+  "country_hu": "Hontalan",
+  "nationality_zh": "无国籍",
+  "nationality_en": "Stateless",
+  "nationality_hu": "Állampolgárság Nélküli"
+ },
+ {
+  "country_zh": "克罗地亚",
+  "country_en": "Croatia",
+  "country_hu": "Horvátország",
+  "nationality_zh": "克罗地亚",
+  "nationality_en": "Croatian",
+  "nationality_hu": "Horvát"
+ },
+ {
+  "country_zh": "印度",
+  "country_en": "India",
+  "country_hu": "India",
+  "nationality_zh": "印度",
+  "nationality_en": "Indian",
+  "nationality_hu": "Indiai"
+ },
+ {
+  "country_zh": "印度尼西亚",
+  "country_en": "Indonesia",
+  "country_hu": "Indonézia",
+  "nationality_zh": "印度尼西亚",
+  "nationality_en": "Indonesian",
+  "nationality_hu": "Indonéz"
+ },
+ {
+  "country_zh": "伊拉克",
+  "country_en": "Iraq",
+  "country_hu": "Irak",
+  "nationality_zh": "伊拉克",
+  "nationality_en": "Iraqi",
+  "nationality_hu": "Iraki"
+ },
+ {
+  "country_zh": "伊朗",
+  "country_en": "Iran",
+  "country_hu": "Irán",
+  "nationality_zh": "伊朗",
+  "nationality_en": "Iranian",
+  "nationality_hu": "Iráni"
+ },
+ {
+  "country_zh": "未知",
+  "country_en": "Unknown",
+  "country_hu": "Ismeretlen",
+  "nationality_zh": "未知",
+  "nationality_en": "Unknown",
+  "nationality_hu": "Ismeretlen"
+ },
+ {
+  "country_zh": "冰岛",
+  "country_en": "Iceland",
+  "country_hu": "Izland",
+  "nationality_zh": "冰岛",
+  "nationality_en": "Icelander",
+  "nationality_hu": "Izlandi"
+ },
+ {
+  "country_zh": "以色列",
+  "country_en": "Israel",
+  "country_hu": "Izrael",
+  "nationality_zh": "以色列",
+  "nationality_en": "Israeli",
+  "nationality_hu": "Izraeli"
+ },
+ {
+  "country_zh": "牙买加",
+  "country_en": "Jamaica",
+  "country_hu": "Jamaica",
+  "nationality_zh": "牙买加",
+  "nationality_en": "Jamaican",
+  "nationality_hu": "Jamaikai"
+ },
+ {
+  "country_zh": "日本",
+  "country_en": "Japan",
+  "country_hu": "Japán",
+  "nationality_zh": "日本",
+  "nationality_en": "Japanese",
+  "nationality_hu": "Japán"
+ },
+ {
+  "country_zh": "也门",
+  "country_en": "Yemen",
+  "country_hu": "Jemen",
+  "nationality_zh": "也门",
+  "nationality_en": "Yemeni",
+  "nationality_hu": "Jemeni"
+ },
+ {
+  "country_zh": "约旦",
+  "country_en": "Jordan",
+  "country_hu": "Jordánia",
+  "nationality_zh": "约旦",
+  "nationality_en": "Jordanian",
+  "nationality_hu": "Jordán"
+ },
+ {
+  "country_zh": "开曼群岛",
+  "country_en": "Cayman Islands",
+  "country_hu": "Kajmán-Szigetek",
+  "nationality_zh": "开曼群岛",
+  "nationality_en": "Caymanian",
+  "nationality_hu": "Kajmán-szigeteki"
+ },
+ {
+  "country_zh": "柬埔寨",
+  "country_en": "Cambodia",
+  "country_hu": "Kambodzsa",
+  "nationality_zh": "柬埔寨",
+  "nationality_en": "Cambodian",
+  "nationality_hu": "Kambodzsai"
+ },
+ {
+  "country_zh": "喀麦隆",
+  "country_en": "Cameroon",
+  "country_hu": "Kamerun",
+  "nationality_zh": "喀麦隆",
+  "nationality_en": "Cameroonian",
+  "nationality_hu": "Kameruni"
+ },
+ {
+  "country_zh": "加拿大",
+  "country_en": "Canada",
+  "country_hu": "Kanada",
+  "nationality_zh": "加拿大",
+  "nationality_en": "Canadian",
+  "nationality_hu": "Kanadai"
+ },
+ {
+  "country_zh": "圣诞岛",
+  "country_en": "Christmas Island",
+  "country_hu": "Karácsony-Sziget",
+  "nationality_zh": "圣诞岛",
+  "nationality_en": "Christmas Islander",
+  "nationality_hu": "Karácsony-szigeti"
+ },
+ {
+  "country_zh": "卡塔尔",
+  "country_en": "Qatar",
+  "country_hu": "Katar",
+  "nationality_zh": "卡塔尔",
+  "nationality_en": "Qatari",
+  "nationality_hu": "Katari"
+ },
+ {
+  "country_zh": "哈萨克斯坦",
+  "country_en": "Kazakhstan",
+  "country_hu": "Kazahsztán",
+  "nationality_zh": "哈萨克斯坦",
+  "nationality_en": "Kazakh",
+  "nationality_hu": "Kazah"
+ },
+ {
+  "country_zh": "东帝汶",
+  "country_en": "East Timor",
+  "country_hu": "Kelet-Timor",
+  "nationality_zh": "东帝汶",
+  "nationality_en": "East Timorese",
+  "nationality_hu": "Kelet-Timori"
+ },
+ {
+  "country_zh": "肯尼亚",
+  "country_en": "Kenya",
+  "country_hu": "Kenya",
+  "nationality_zh": "肯尼亚",
+  "nationality_en": "Kenyan",
+  "nationality_hu": "Kenyai"
+ },
+ {
+  "country_zh": "吉尔吉斯斯坦",
+  "country_en": "Kyrgyzstan",
+  "country_hu": "Kirgizisztán",
+  "nationality_zh": "吉尔吉斯斯坦",
+  "nationality_en": "Kyrgyz",
+  "nationality_hu": "Kirgiz"
+ },
+ {
+  "country_zh": "基里巴斯",
+  "country_en": "Kiribati",
+  "country_hu": "Kiribati",
+  "nationality_zh": "基里巴斯",
+  "nationality_en": "I-Kiribati",
+  "nationality_hu": "Kiribati"
+ },
+ {
+  "country_zh": "哥伦比亚",
+  "country_en": "Colombia",
+  "country_hu": "Kolumbia",
+  "nationality_zh": "哥伦比亚",
+  "nationality_en": "Columbian",
+  "nationality_hu": "Kolumbiai"
+ },
+ {
+  "country_zh": "刚果",
+  "country_en": "Congo",
+  "country_hu": "Kongó",
+  "nationality_zh": "刚果",
+  "nationality_en": "Congolese",
+  "nationality_hu": "Kongói"
+ },
+ {
+  "country_zh": "刚果民主共和国",
+  "country_en": "Democratic Republic Of Congo",
+  "country_hu": "Kongói Demokratikus Közt.",
+  "nationality_zh": "刚果民主共和国",
+  "nationality_en": "Congolese",
+  "nationality_hu": "Kongói Demokratikus Köztársasági"
+ },
+ {
+  "country_zh": "韩国",
+  "country_en": "Republic Of Korea",
+  "country_hu": "Koreai Köztársaság",
+  "nationality_zh": "韩国",
+  "nationality_en": "Korean",
+  "nationality_hu": "Koreai"
+ },
+ {
+  "country_zh": "朝鲜",
+  "country_en": "Democratic People's Republic Of Korea",
+  "country_hu": "Koreai Népi Demokratikus Közt.",
+  "nationality_zh": "朝鲜",
+  "nationality_en": "North Korean",
+  "nationality_hu": "Észak-Koreai"
+ },
+ {
+  "country_zh": "科索沃",
+  "country_en": "Kosovo",
+  "country_hu": "Koszovó",
+  "nationality_zh": "科索沃",
+  "nationality_en": "Kosovan",
+  "nationality_hu": "Koszovói"
+ },
+ {
+  "country_zh": "古巴",
+  "country_en": "Cuba",
+  "country_hu": "Kuba",
+  "nationality_zh": "古巴",
+  "nationality_en": "Cuban",
+  "nationality_hu": "Kubai"
+ },
+ {
+  "country_zh": "科威特",
+  "country_en": "Kuwait",
+  "country_hu": "Kuwait",
+  "nationality_zh": "科威特",
+  "nationality_en": "Kuwaiti",
+  "nationality_hu": "Kuvaiti"
+ },
+ {
+  "country_zh": "中国",
+  "country_en": "China",
+  "country_hu": "Kína",
+  "nationality_zh": "中国",
+  "nationality_en": "Chinese",
+  "nationality_hu": "Kínai"
+ },
+ {
+  "country_zh": "科科斯（基林）群岛",
+  "country_en": "Cocos (Keeling) Islands",
+  "country_hu": "Kókusz (Keeling)-Szigetek",
+  "nationality_zh": "科科斯（基林）群岛",
+  "nationality_en": "Cocos Islander",
+  "nationality_hu": "Kókusz-szigeteki"
+ },
+ {
+  "country_zh": "中非共和国",
+  "country_en": "Central African Republic",
+  "country_hu": "Közép-Afrikai Köztársaság",
+  "nationality_zh": "中非共和国",
+  "nationality_en": "Central African",
+  "nationality_hu": "Közép Afrikai Köztársaság-Beli"
+ },
+ {
+  "country_zh": "老挝",
+  "country_en": "Laos",
+  "country_hu": "Laosz",
+  "nationality_zh": "老挝",
+  "nationality_en": "Laotian",
+  "nationality_hu": "Laoszi"
+ },
+ {
+  "country_zh": "波兰",
+  "country_en": "Poland",
+  "country_hu": "Lengyelország",
+  "nationality_zh": "波兰",
+  "nationality_en": "Polish",
+  "nationality_hu": "Lengyel"
+ },
+ {
+  "country_zh": "莱索托",
+  "country_en": "Lesotho",
+  "country_hu": "Lesotho",
+  "nationality_zh": "莱索托",
+  "nationality_en": "Mosotho",
+  "nationality_hu": "Lesothoi"
+ },
+ {
+  "country_zh": "拉脱维亚",
+  "country_en": "Latvia",
+  "country_hu": "Lettország",
+  "nationality_zh": "拉脱维亚",
+  "nationality_en": "Latvian",
+  "nationality_hu": "Lett"
+ },
+ {
+  "country_zh": "黎巴嫩",
+  "country_en": "Lebanon",
+  "country_hu": "Libanon",
+  "nationality_zh": "黎巴嫩",
+  "nationality_en": "Lebanese",
+  "nationality_hu": "Libanoni"
+ },
+ {
+  "country_zh": "利比里亚",
+  "country_en": "Liberia",
+  "country_hu": "Libéria",
+  "nationality_zh": "利比里亚",
+  "nationality_en": "Liberian",
+  "nationality_hu": "Libériai"
+ },
+ {
+  "country_zh": "列支敦士登",
+  "country_en": "Liechtenstein",
+  "country_hu": "Liechtenstein",
+  "nationality_zh": "列支敦士登",
+  "nationality_en": "Liechtensteiner",
+  "nationality_hu": "Lichtensteini"
+ },
+ {
+  "country_zh": "立陶宛",
+  "country_en": "Lithuania",
+  "country_hu": "Litvánia",
+  "nationality_zh": "立陶宛",
+  "nationality_en": "Lithuanian",
+  "nationality_hu": "Litván"
+ },
+ {
+  "country_zh": "卢森堡",
+  "country_en": "Luxembourg",
+  "country_hu": "Luxemburg",
+  "nationality_zh": "卢森堡",
+  "nationality_en": "Luxembourger",
+  "nationality_hu": "Luxemburgi"
+ },
+ {
+  "country_zh": "利比亚",
+  "country_en": "Libya",
+  "country_hu": "Líbia",
+  "nationality_zh": "利比亚",
+  "nationality_en": "Libian",
+  "nationality_hu": "Líbiai"
+ },
+ {
+  "country_zh": "马其顿",
+  "country_en": "Macedonia",
+  "country_hu": "Macedónia",
+  "nationality_zh": "马其顿",
+  "nationality_en": "Macedonian",
+  "nationality_hu": "Makedón"
+ },
+ {
+  "country_zh": "马达加斯加",
+  "country_en": "Madagascar",
+  "country_hu": "Madagaszkár",
+  "nationality_zh": "马达加斯加",
+  "nationality_en": "Malagasy",
+  "nationality_hu": "Malgas"
+ },
+ {
+  "country_zh": "匈牙利",
+  "country_en": "Hungary",
+  "country_hu": "Magyarország",
+  "nationality_zh": "匈牙利",
+  "nationality_en": "Hungarian",
+  "nationality_hu": "Magyar"
+ },
+ {
+  "country_zh": "澳门",
+  "country_en": "Macau",
+  "country_hu": "Makao",
+  "nationality_zh": "中国澳门",
+  "nationality_en": "Macanese (Chinese)",
+  "nationality_hu": "Makaoi (Kinai)"
+ },
+ {
+  "country_zh": "马来西亚",
+  "country_en": "Malaysia",
+  "country_hu": "Malajzia",
+  "nationality_zh": "马来西亚",
+  "nationality_en": "Malaysian",
+  "nationality_hu": "Maláj"
+ },
+ {
+  "country_zh": "马拉维",
+  "country_en": "Malawi",
+  "country_hu": "Malawi",
+  "nationality_zh": "马拉维",
+  "nationality_en": "Malawian",
+  "nationality_hu": "Malawi"
+ },
+ {
+  "country_zh": "马尔代夫",
+  "country_en": "Maldives",
+  "country_hu": "Maldív-Szigetek",
+  "nationality_zh": "马尔代夫",
+  "nationality_en": "Maldivian",
+  "nationality_hu": "Maldiv Szigeteki"
+ },
+ {
+  "country_zh": "马里",
+  "country_en": "Mali",
+  "country_hu": "Mali",
+  "nationality_zh": "马里",
+  "nationality_en": "Malian",
+  "nationality_hu": "Mali"
+ },
+ {
+  "country_zh": "摩洛哥",
+  "country_en": "Morocco",
+  "country_hu": "Marokkó",
+  "nationality_zh": "摩洛哥",
+  "nationality_en": "Moroccan",
+  "nationality_hu": "Marokkói"
+ },
+ {
+  "country_zh": "马绍尔群岛",
+  "country_en": "Marshall Islands",
+  "country_hu": "Marshall-Szigetek",
+  "nationality_zh": "马绍尔群岛",
+  "nationality_en": "Marshallese",
+  "nationality_hu": "Marshall Szigeteki"
+ },
+ {
+  "country_zh": "马提尼克",
+  "country_en": "Martinique",
+  "country_hu": "Martinique",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "毛里求斯",
+  "country_en": "Mauritius",
+  "country_hu": "Mauritius",
+  "nationality_zh": "毛里求斯",
+  "nationality_en": "Mauritian",
+  "nationality_hu": "Mauritiusi"
+ },
+ {
+  "country_zh": "毛里塔尼亚",
+  "country_en": "Mauritania",
+  "country_hu": "Mauritánia",
+  "nationality_zh": "毛里塔尼亚",
+  "nationality_en": "Mauritanian",
+  "nationality_hu": "Mauritan"
+ },
+ {
+  "country_zh": "马约特",
+  "country_en": "Mayotte",
+  "country_hu": "Mayotte",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "墨西哥",
+  "country_en": "Mexico",
+  "country_hu": "Mexikó",
+  "nationality_zh": "墨西哥",
+  "nationality_en": "Mexican",
+  "nationality_hu": "Mexikói"
+ },
+ {
+  "country_zh": "缅甸",
+  "country_en": "Myanmar",
+  "country_hu": "Mianmar",
+  "nationality_zh": "缅甸",
+  "nationality_en": "Myanmar (Burmese)",
+  "nationality_hu": "Mianmari (Burmai)"
+ },
+ {
+  "country_zh": "密克罗尼西亚",
+  "country_en": "Micronesia",
+  "country_hu": "Mikronézia",
+  "nationality_zh": "密克罗尼西亚",
+  "nationality_en": "Micronesian",
+  "nationality_hu": "Mikronéz"
+ },
+ {
+  "country_zh": "摩尔多瓦",
+  "country_en": "Moldova",
+  "country_hu": "Moldova",
+  "nationality_zh": "摩尔多瓦",
+  "nationality_en": "Moldavian",
+  "nationality_hu": "Moldáv"
+ },
+ {
+  "country_zh": "摩纳哥",
+  "country_en": "Monaco",
+  "country_hu": "Monaco",
+  "nationality_zh": "摩纳哥",
+  "nationality_en": "Monacan",
+  "nationality_hu": "Monacoi"
+ },
+ {
+  "country_zh": "蒙古",
+  "country_en": "Mongolia",
+  "country_hu": "Mongólia",
+  "nationality_zh": "蒙古",
+  "nationality_en": "Mongolian",
+  "nationality_hu": "Mongol"
+ },
+ {
+  "country_zh": "黑山",
+  "country_en": "Montenegro",
+  "country_hu": "Montenegro",
+  "nationality_zh": "黑山",
+  "nationality_en": "Montenegrin",
+  "nationality_hu": "Montenegroi"
+ },
+ {
+  "country_zh": "蒙特塞拉特",
+  "country_en": "Montserrat",
+  "country_hu": "Montserrat",
+  "nationality_zh": "蒙特塞拉特",
+  "nationality_en": "Montserratian",
+  "nationality_hu": "Montserrati"
+ },
+ {
+  "country_zh": "莫桑比克",
+  "country_en": "Mozambique",
+  "country_hu": "Mozambik",
+  "nationality_zh": "莫桑比克",
+  "nationality_en": "Mozambican",
+  "nationality_hu": "Mozambiki"
+ },
+ {
+  "country_zh": "马耳他",
+  "country_en": "Malta",
+  "country_hu": "Málta",
+  "nationality_zh": "马耳他",
+  "nationality_en": "Maltese",
+  "nationality_hu": "Maltai"
+ },
+ {
+  "country_zh": "大不列颠",
+  "country_en": "Great Britain",
+  "country_hu": "Nagy-Britannia",
+  "nationality_zh": "英国",
+  "nationality_en": "British",
+  "nationality_hu": "Brit"
+ },
+ {
+  "country_zh": "纳米比亚",
+  "country_en": "Namibia",
+  "country_hu": "Namíbia",
+  "nationality_zh": "纳米比亚",
+  "nationality_en": "Namibian",
+  "nationality_hu": "Namibiai"
+ },
+ {
+  "country_zh": "瑙鲁",
+  "country_en": "Nauru",
+  "country_hu": "Nauru",
+  "nationality_zh": "瑙鲁",
+  "nationality_en": "Nauruan",
+  "nationality_hu": "Naurui"
+ },
+ {
+  "country_zh": "尼泊尔",
+  "country_en": "Nepal",
+  "country_hu": "Nepál",
+  "nationality_zh": "尼泊尔",
+  "nationality_en": "Nepali",
+  "nationality_hu": "Nepáli"
+ },
+ {
+  "country_zh": "尼加拉瓜",
+  "country_en": "Nicaragua",
+  "country_hu": "Nicaragua",
+  "nationality_zh": "尼加拉瓜",
+  "nationality_en": "Nicaraguan",
+  "nationality_hu": "Nicaraguai"
+ },
+ {
+  "country_zh": "尼日尔",
+  "country_en": "Niger",
+  "country_hu": "Niger",
+  "nationality_zh": "尼日尔",
+  "nationality_en": "Nigerian",
+  "nationality_hu": "Nigeri"
+ },
+ {
+  "country_zh": "尼日利亚",
+  "country_en": "Nigeria",
+  "country_hu": "Nigéria",
+  "nationality_zh": "尼日利亚",
+  "nationality_en": "Nigerian",
+  "nationality_hu": "Nigériai"
+ },
+ {
+  "country_zh": "纽埃",
+  "country_en": "Niue",
+  "country_hu": "Niue",
+  "nationality_zh": "纽埃",
+  "nationality_en": "Niuean",
+  "nationality_hu": "Niuei"
+ },
+ {
+  "country_zh": "诺福克岛",
+  "country_en": "Norfolk Island",
+  "country_hu": "Norfolk-Sziget",
+  "nationality_zh": "诺福克岛",
+  "nationality_en": "Norfolk Islander",
+  "nationality_hu": "Norfolk-szigeti"
+ },
+ {
+  "country_zh": "挪威",
+  "country_en": "Norway",
+  "country_hu": "Norvégia",
+  "nationality_zh": "挪威",
+  "nationality_en": "Norwegian",
+  "nationality_hu": "Norvég"
+ },
+ {
+  "country_zh": "西撒哈拉",
+  "country_en": "West Sahara",
+  "country_hu": "Nyugat-Szahara",
+  "nationality_zh": "西撒哈拉",
+  "nationality_en": "Western Saharan",
+  "nationality_hu": "Nyugat Szahara-I"
+ },
+ {
+  "country_zh": "德国",
+  "country_en": "Germany",
+  "country_hu": "Németország",
+  "nationality_zh": "德国",
+  "nationality_en": "German",
+  "nationality_hu": "Német"
+ },
+ {
+  "country_zh": "意大利",
+  "country_en": "Italy",
+  "country_hu": "Olaszország",
+  "nationality_zh": "意大利",
+  "nationality_en": "Italian",
+  "nationality_hu": "Olasz"
+ },
+ {
+  "country_zh": "阿曼",
+  "country_en": "Oman",
+  "country_hu": "Omán",
+  "nationality_zh": "阿曼",
+  "nationality_en": "Omani",
+  "nationality_hu": "Omani"
+ },
+ {
+  "country_zh": "俄罗斯",
+  "country_en": "Russia",
+  "country_hu": "Oroszország",
+  "nationality_zh": "俄罗斯",
+  "nationality_en": "Russian",
+  "nationality_hu": "Orosz"
+ },
+ {
+  "country_zh": "巴基斯坦",
+  "country_en": "Pakistan",
+  "country_hu": "Pakisztán",
+  "nationality_zh": "巴基斯坦",
+  "nationality_en": "Pakistani",
+  "nationality_hu": "Pakisztáni"
+ },
+ {
+  "country_zh": "帕劳",
+  "country_en": "Palau",
+  "country_hu": "Palau",
+  "nationality_zh": "帕劳",
+  "nationality_en": "Palauan",
+  "nationality_hu": "Palau-Beli"
+ },
+ {
+  "country_zh": "巴勒斯坦",
+  "country_en": "Palestine",
+  "country_hu": "Palesztina",
+  "nationality_zh": "巴勒斯坦",
+  "nationality_en": "Palestinian",
+  "nationality_hu": "Palesztin"
+ },
+ {
+  "country_zh": "巴拿马",
+  "country_en": "Panama",
+  "country_hu": "Panama",
+  "nationality_zh": "巴拿马",
+  "nationality_en": "Panamanian",
+  "nationality_hu": "Panamai"
+ },
+ {
+  "country_zh": "巴拉圭",
+  "country_en": "Paraguay",
+  "country_hu": "Paraguay",
+  "nationality_zh": "巴拉圭",
+  "nationality_en": "Paraguayan",
+  "nationality_hu": "Paraguayi"
+ },
+ {
+  "country_zh": "秘鲁",
+  "country_en": "Peru",
+  "country_hu": "Peru",
+  "nationality_zh": "秘鲁",
+  "nationality_en": "Peruvian",
+  "nationality_hu": "Perui"
+ },
+ {
+  "country_zh": "皮特凯恩群岛",
+  "country_en": "Pitcairn Islands",
+  "country_hu": "Pitcairn-Szigetek",
+  "nationality_zh": "皮特凯恩群岛",
+  "nationality_en": "Pitcairn Islander",
+  "nationality_hu": "Pitcairn-szigeteki"
+ },
+ {
+  "country_zh": "葡萄牙",
+  "country_en": "Portugal",
+  "country_hu": "Portugália",
+  "nationality_zh": "葡萄牙",
+  "nationality_en": "Portuguese",
+  "nationality_hu": "Portugál"
+ },
+ {
+  "country_zh": "波多黎各",
+  "country_en": "Puerto Rico",
+  "country_hu": "Puerto Rico",
+  "nationality_zh": "波多黎各",
+  "nationality_en": "Puerto Rican",
+  "nationality_hu": "Puerto Ricó-i"
+ },
+ {
+  "country_zh": "巴布亚新几内亚",
+  "country_en": "Papua New Guinea",
+  "country_hu": "Pápua Új-Guinea",
+  "nationality_zh": "巴布亚新几内亚",
+  "nationality_en": "Papuan",
+  "nationality_hu": "Pápua Új Guinea-I"
+ },
+ {
+  "country_zh": "罗马尼亚",
+  "country_en": "Romania",
+  "country_hu": "Románia",
+  "nationality_zh": "罗马尼亚",
+  "nationality_en": "Romanian",
+  "nationality_hu": "Román"
+ },
+ {
+  "country_zh": "卢旺达",
+  "country_en": "Rwanda",
+  "country_hu": "Ruanda",
+  "nationality_zh": "卢旺达",
+  "nationality_en": "Rwandan",
+  "nationality_hu": "Ruandai"
+ },
+ {
+  "country_zh": "留尼汪",
+  "country_en": "Réunion",
+  "country_hu": "Réunion",
+  "nationality_zh": "法国",
+  "nationality_en": "French",
+  "nationality_hu": "Francia"
+ },
+ {
+  "country_zh": "圣基茨和尼维斯",
+  "country_en": "Saint Kitts And Nevis",
+  "country_hu": "Saint Kitts És Nevis",
+  "nationality_zh": "圣基茨和尼维斯",
+  "nationality_en": "Kittitian / Nevisian",
+  "nationality_hu": "Saint Kitts And Nevis-Beli"
+ },
+ {
+  "country_zh": "圣卢西亚",
+  "country_en": "Saint Lucia",
+  "country_hu": "Saint Lucia",
+  "nationality_zh": "圣卢西亚",
+  "nationality_en": "Saint Lucian",
+  "nationality_hu": "Saint Lucia-Beli"
+ },
+ {
+  "country_zh": "圣文森特",
+  "country_en": "Saint Vincent",
+  "country_hu": "Saint Vincent",
+  "nationality_zh": "圣文森特和格林纳丁斯",
+  "nationality_en": "Vincentian",
+  "nationality_hu": "Saint Vincent And The Grenadienes"
+ },
+ {
+  "country_zh": "圣马丁群岛",
+  "country_en": "Saint Martin Islands",
+  "country_hu": "Saint-Martin Szigetek",
+  "nationality_zh": "圣马丁",
+  "nationality_en": "Saint Martin Islander",
+  "nationality_hu": "Saint-Martin-i"
+ },
+ {
+  "country_zh": "圣皮埃尔和密克隆",
+  "country_en": "Saint Pierre And Miquelon",
+  "country_hu": "Saint-Pierre És Miquelon",
+  "nationality_zh": "圣皮埃尔和密克隆",
+  "nationality_en": "Saint Pierre and Miquelon Islander",
+  "nationality_hu": "Saint-Pierre és Miquelon-i"
+ },
+ {
+  "country_zh": "所罗门群岛",
+  "country_en": "Solomon Islands",
+  "country_hu": "Salamon-Szigetek",
+  "nationality_zh": "所罗门群岛",
+  "nationality_en": "Solomon Islander",
+  "nationality_hu": "Salamon Szigetek-I"
+ },
+ {
+  "country_zh": "萨尔瓦多",
+  "country_en": "Salvador",
+  "country_hu": "Salvador",
+  "nationality_zh": "萨尔瓦多",
+  "nationality_en": "Salvadoran",
+  "nationality_hu": "Salvadori"
+ },
+ {
+  "country_zh": "圣马力诺",
+  "country_en": "San Marino",
+  "country_hu": "San Marino",
+  "nationality_zh": "圣马力诺",
+  "nationality_en": "Sammarinese",
+  "nationality_hu": "San Marino-I"
+ },
+ {
+  "country_zh": "圣多美和普林西比",
+  "country_en": "Sao Tomé And Príncipe",
+  "country_hu": "Sao Tomé És Príncipe",
+  "nationality_zh": "圣多美和普林西比",
+  "nationality_en": "Santomean",
+  "nationality_hu": "Sao Tome And Principe-Beli"
+ },
+ {
+  "country_zh": "塞舌尔",
+  "country_en": "Seychelles",
+  "country_hu": "Seychelle-Szigetek",
+  "nationality_zh": "塞舌尔",
+  "nationality_en": "Seychelloise",
+  "nationality_hu": "Seychelle Szigeteki"
+ },
+ {
+  "country_zh": "塞拉利昂",
+  "country_en": "Sierra Leone",
+  "country_hu": "Sierra Leone",
+  "nationality_zh": "塞拉利昂",
+  "nationality_en": "Sierra Leonean",
+  "nationality_hu": "Sierra Leone-I"
+ },
+ {
+  "country_zh": "西班牙",
+  "country_en": "Spain",
+  "country_hu": "Spanyolország",
+  "nationality_zh": "西班牙",
+  "nationality_en": "Spanish",
+  "nationality_hu": "Spanyol"
+ },
+ {
+  "country_zh": "斯里兰卡",
+  "country_en": "Sri Lanka",
+  "country_hu": "Srí Lanka",
+  "nationality_zh": "斯里兰卡",
+  "nationality_en": "Sri Lankan",
+  "nationality_hu": "Sri Lanka-I"
+ },
+ {
+  "country_zh": "苏里南",
+  "country_en": "Suriname",
+  "country_hu": "Suriname",
+  "nationality_zh": "苏里南",
+  "nationality_en": "Surinamese",
+  "nationality_hu": "Surinamei"
+ },
+ {
+  "country_zh": "斯瓦尔巴",
+  "country_en": "Svalbard",
+  "country_hu": "Svalbard",
+  "nationality_zh": "斯瓦尔巴",
+  "nationality_en": "Svalbardian",
+  "nationality_hu": "Svalbardi"
+ },
+ {
+  "country_zh": "瑞士",
+  "country_en": "Switzerland",
+  "country_hu": "Svájc",
+  "nationality_zh": "瑞士",
+  "nationality_en": "Swiss",
+  "nationality_hu": "Svájci"
+ },
+ {
+  "country_zh": "瑞典",
+  "country_en": "Sweden",
+  "country_hu": "Svédország",
+  "nationality_zh": "瑞典",
+  "nationality_en": "Swedish",
+  "nationality_hu": "Svéd"
+ },
+ {
+  "country_zh": "萨摩亚",
+  "country_en": "Samoa",
+  "country_hu": "Szamoa",
+  "nationality_zh": "萨摩亚",
+  "nationality_en": "Samoan",
+  "nationality_hu": "Szamoai"
+ },
+ {
+  "country_zh": "沙特阿拉伯",
+  "country_en": "Saudi Arabia",
+  "country_hu": "Szaúd-Arábia",
+  "nationality_zh": "沙特阿拉伯",
+  "nationality_en": "Saudi",
+  "nationality_hu": "Szaudi"
+ },
+ {
+  "country_zh": "塞内加尔",
+  "country_en": "Senegal",
+  "country_hu": "Szenegál",
+  "nationality_zh": "塞内加尔",
+  "nationality_en": "Senegali",
+  "nationality_hu": "Szenegáli"
+ },
+ {
+  "country_zh": "圣赫勒拿",
+  "country_en": "Saint Helena",
+  "country_hu": "Szent Ilona",
+  "nationality_zh": "圣赫勒拿",
+  "nationality_en": "Saint Helenian",
+  "nationality_hu": "Szent Ilonai"
+ },
+ {
+  "country_zh": "塞尔维亚",
+  "country_en": "Serbia",
+  "country_hu": "Szerbia",
+  "nationality_zh": "塞尔维亚",
+  "nationality_en": "Serbian",
+  "nationality_hu": "Szerb"
+ },
+ {
+  "country_zh": "新加坡",
+  "country_en": "Singapore",
+  "country_hu": "Szingapúr",
+  "nationality_zh": "新加坡",
+  "nationality_en": "Singaporean",
+  "nationality_hu": "Szingapuri"
+ },
+ {
+  "country_zh": "斯洛伐克",
+  "country_en": "Slovakia",
+  "country_hu": "Szlovákia",
+  "nationality_zh": "斯洛伐克",
+  "nationality_en": "Slovakian",
+  "nationality_hu": "Szlovák"
+ },
+ {
+  "country_zh": "斯洛文尼亚",
+  "country_en": "Slovenia",
+  "country_hu": "Szlovénia",
+  "nationality_zh": "斯洛文尼亚",
+  "nationality_en": "Slovenian",
+  "nationality_hu": "Szlovén"
+ },
+ {
+  "country_zh": "索马里",
+  "country_en": "Somalia",
+  "country_hu": "Szomália",
+  "nationality_zh": "索马里",
+  "nationality_en": "Somalian",
+  "nationality_hu": "Szomáliai"
+ },
+ {
+  "country_zh": "苏丹",
+  "country_en": "Sudan",
+  "country_hu": "Szudán",
+  "nationality_zh": "苏丹",
+  "nationality_en": "Sudanese",
+  "nationality_hu": "Szudáni"
+ },
+ {
+  "country_zh": "斯威士兰",
+  "country_en": "Swaziland",
+  "country_hu": "Szváziföld",
+  "nationality_zh": "斯威士兰",
+  "nationality_en": "Swazi",
+  "nationality_hu": "Szváziföldi"
+ },
+ {
+  "country_zh": "叙利亚",
+  "country_en": "Syria",
+  "country_hu": "Szíria",
+  "nationality_zh": "叙利亚",
+  "nationality_en": "Syrian",
+  "nationality_hu": "Szír"
+ },
+ {
+  "country_zh": "台湾",
+  "country_en": "Taiwan",
+  "country_hu": "Tajvan",
+  "nationality_zh": "中国台湾",
+  "nationality_en": "Taiwanese (Chinese)",
+  "nationality_hu": "Tajvani (Kinai)"
+ },
+ {
+  "country_zh": "坦桑尼亚",
+  "country_en": "Tanzania",
+  "country_hu": "Tanzánia",
+  "nationality_zh": "坦桑尼亚",
+  "nationality_en": "Tanzanian",
+  "nationality_hu": "Tanzániai"
+ },
+ {
+  "country_zh": "泰国",
+  "country_en": "Thailand",
+  "country_hu": "Thaiföld",
+  "nationality_zh": "泰国",
+  "nationality_en": "Thai",
+  "nationality_hu": "Thai"
+ },
+ {
+  "country_zh": "西藏",
+  "country_en": "Tibet",
+  "country_hu": "Tibeti",
+  "nationality_zh": "西藏",
+  "nationality_en": "Tibetan",
+  "nationality_hu": "Tibeti"
+ },
+ {
+  "country_zh": "多哥",
+  "country_en": "Togo",
+  "country_hu": "Togo",
+  "nationality_zh": "多哥",
+  "nationality_en": "Togolese",
+  "nationality_hu": "Togói"
+ },
+ {
+  "country_zh": "托克劳群岛",
+  "country_en": "Tokelau Islands",
+  "country_hu": "Tokelau-Szigetek",
+  "nationality_zh": "托克劳",
+  "nationality_en": "Tokelauan",
+  "nationality_hu": "Tokelaui"
+ },
+ {
+  "country_zh": "汤加",
+  "country_en": "Tonga",
+  "country_hu": "Tonga",
+  "nationality_zh": "汤加",
+  "nationality_en": "Tongan",
+  "nationality_hu": "Tongai"
+ },
+ {
+  "country_zh": "特立尼达和多巴哥",
+  "country_en": "Trinidad And Tobago",
+  "country_hu": "Trinidad És Tobago",
+  "nationality_zh": "特立尼达和多巴哥",
+  "nationality_en": "Trinidadian/tobagonian",
+  "nationality_hu": "Trinidad Es Tobago-I"
+ },
+ {
+  "country_zh": "突尼斯",
+  "country_en": "Tunisia",
+  "country_hu": "Tunézia",
+  "nationality_zh": "突尼斯",
+  "nationality_en": "Tunisian",
+  "nationality_hu": "Tunéziai"
+ },
+ {
+  "country_zh": "特克斯和凯科斯群岛",
+  "country_en": "Turks And Caicos Islands",
+  "country_hu": "Turks- És Caicos-Szigetek",
+  "nationality_zh": "特克斯和凯科斯群岛",
+  "nationality_en": "Turks and Caicos Islander",
+  "nationality_hu": "Turks- és Caicos-szigeteki"
+ },
+ {
+  "country_zh": "图瓦卢",
+  "country_en": "Tuvalu",
+  "country_hu": "Tuvalu",
+  "nationality_zh": "图瓦卢",
+  "nationality_en": "Tuvaluan",
+  "nationality_hu": "Tuvalui"
+ },
+ {
+  "country_zh": "塔吉克斯坦",
+  "country_en": "Tajikistan",
+  "country_hu": "Tádzsikisztán",
+  "nationality_zh": "塔吉克斯坦",
+  "nationality_en": "Tajikistani",
+  "nationality_hu": "Tadzsik"
+ },
+ {
+  "country_zh": "土耳其",
+  "country_en": "Turkey",
+  "country_hu": "Törökország",
+  "nationality_zh": "土耳其",
+  "nationality_en": "Turkish",
+  "nationality_hu": "Török"
+ },
+ {
+  "country_zh": "土库曼斯坦",
+  "country_en": "Turkmenistan",
+  "country_hu": "Türkmenisztán",
+  "nationality_zh": "土库曼斯坦",
+  "nationality_en": "Turkmen",
+  "nationality_hu": "Türkmen"
+ },
+ {
+  "country_zh": "乌干达",
+  "country_en": "Uganda",
+  "country_hu": "Uganda",
+  "nationality_zh": "乌干达",
+  "nationality_en": "Ugandan",
+  "nationality_hu": "Ugandai"
+ },
+ {
+  "country_zh": "乌克兰",
+  "country_en": "Ukraine",
+  "country_hu": "Ukrajna",
+  "nationality_zh": "乌克兰",
+  "nationality_en": "Ukrainian",
+  "nationality_hu": "Ukrán"
+ },
+ {
+  "country_zh": "乌拉圭",
+  "country_en": "Uruguay",
+  "country_hu": "Uruguay",
+  "nationality_zh": "乌拉圭",
+  "nationality_en": "Uruguayan",
+  "nationality_hu": "Uruguayi"
+ },
+ {
+  "country_zh": "瓦努阿图",
+  "country_en": "Vanuatu",
+  "country_hu": "Vanuatu",
+  "nationality_zh": "瓦努阿图",
+  "nationality_en": "Ni-Vanuatu",
+  "nationality_hu": "Vanuatui"
+ },
+ {
+  "country_zh": "梵蒂冈",
+  "country_en": "Vatican",
+  "country_hu": "Vatikán",
+  "nationality_zh": "梵蒂冈",
+  "nationality_en": "Vaticanese",
+  "nationality_hu": "Vatikáni"
+ },
+ {
+  "country_zh": "委内瑞拉",
+  "country_en": "Venezuela",
+  "country_hu": "Venezuela",
+  "nationality_zh": "委内瑞拉",
+  "nationality_en": "Venezuelan",
+  "nationality_hu": "Venezuelai"
+ },
+ {
+  "country_zh": "越南",
+  "country_en": "Vietnam",
+  "country_hu": "Vietnam",
+  "nationality_zh": "越南",
+  "nationality_en": "Vietnamese",
+  "nationality_hu": "Vietnámi"
+ },
+ {
+  "country_zh": "瓦利斯和富图纳",
+  "country_en": "Wallis And Futuna",
+  "country_hu": "Wallis És Futuna",
+  "nationality_zh": "瓦利斯和富图纳",
+  "nationality_en": "Wallis and Futuna Islander",
+  "nationality_hu": "Wallis és Futuna-i"
+ },
+ {
+  "country_zh": "前捷克斯洛伐克",
+  "country_en": "Former Czechoslovakia",
+  "country_hu": "Volt Csehszlovákia",
+  "nationality_zh": "捷克斯洛伐克",
+  "nationality_en": "Czechoslovak",
+  "nationality_hu": "Csehszlovák"
+ },
+ {
+  "country_zh": "前南斯拉夫",
+  "country_en": "Former Yugoslavia",
+  "country_hu": "Volt Jugoszlávia",
+  "nationality_zh": "南斯拉夫",
+  "nationality_en": "Yugoslavian",
+  "nationality_hu": "Jugoszláv"
+ },
+ {
+  "country_zh": "前东德",
+  "country_en": "Former Gdr",
+  "country_hu": "Volt Ndk",
+  "nationality_zh": "东德",
+  "nationality_en": "East German",
+  "nationality_hu": "Keletnémet"
+ },
+ {
+  "country_zh": "前苏联",
+  "country_en": "Former Soviet Union",
+  "country_hu": "Volt Szovjetúnió",
+  "nationality_zh": "苏联",
+  "nationality_en": "Soviet",
+  "nationality_hu": "Szovjet"
+ },
+ {
+  "country_zh": "扎伊尔",
+  "country_en": "Zaire",
+  "country_hu": "Zaire",
+  "nationality_zh": "刚果（扎伊尔）",
+  "nationality_en": "Congolese, Zairean",
+  "nationality_hu": "Kongói, Zairei"
+ },
+ {
+  "country_zh": "赞比亚",
+  "country_en": "Zambia",
+  "country_hu": "Zambia",
+  "nationality_zh": "赞比亚",
+  "nationality_en": "Zambian",
+  "nationality_hu": "Zambiai"
+ },
+ {
+  "country_zh": "津巴布韦",
+  "country_en": "Zimbabwe",
+  "country_hu": "Zimbabwe",
+  "nationality_zh": "津巴布韦",
+  "nationality_en": "Zimbabwean",
+  "nationality_hu": "Zimbabwei"
+ },
+ {
+  "country_zh": "佛得角",
+  "country_en": "Cape Verde",
+  "country_hu": "Zöld-Foki Köztársaság",
+  "nationality_zh": "佛得角",
+  "nationality_en": "Cape Verdean",
+  "nationality_hu": "Cape Verde-Beli"
+ },
+ {
+  "country_zh": "北马里亚纳群岛",
+  "country_en": "Northern Mariana Islands",
+  "country_hu": "Északi-Mariana-Szigetek",
+  "nationality_zh": "北马里亚纳群岛（美国）",
+  "nationality_en": "Northern Mariana Islander (American)",
+  "nationality_hu": "Eszaki Mariana Sziget-I (Amerikai)"
+ },
+ {
+  "country_zh": "爱沙尼亚",
+  "country_en": "Estonia",
+  "country_hu": "Észtország",
+  "nationality_zh": "爱沙尼亚",
+  "nationality_en": "Estonian",
+  "nationality_hu": "Észt"
+ },
+ {
+  "country_zh": "爱尔兰",
+  "country_en": "Ireland",
+  "country_hu": "Írország",
+  "nationality_zh": "爱尔兰",
+  "nationality_en": "Irish",
+  "nationality_hu": "Ír"
+ },
+ {
+  "country_zh": "亚美尼亚",
+  "country_en": "Armenia",
+  "country_hu": "Örményország",
+  "nationality_zh": "亚美尼亚",
+  "nationality_en": "Armenian",
+  "nationality_hu": "Örmény"
+ },
+ {
+  "country_zh": "新喀里多尼亚",
+  "country_en": "New Caledonia",
+  "country_hu": "Új-Kaledónia",
+  "nationality_zh": "新喀里多尼亚",
+  "nationality_en": "New Caledonian",
+  "nationality_hu": "Új-Kaledóniai"
+ },
+ {
+  "country_zh": "新西兰",
+  "country_en": "New Zealand",
+  "country_hu": "Új-Zéland",
+  "nationality_zh": "新西兰",
+  "nationality_en": "New Zealander",
+  "nationality_hu": "Új Zéland-I"
+ },
+ {
+  "country_zh": "乌兹别克斯坦",
+  "country_en": "Uzbekistan",
+  "country_hu": "Üzbegisztán",
+  "nationality_zh": "乌兹别克斯坦",
+  "nationality_en": "Uzbek",
+  "nationality_hu": "Üzbég"
+ }
+]
