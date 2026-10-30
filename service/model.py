@@ -64,10 +64,17 @@ FIELDS = {
     "_widget_1770019997163": "second_entry",         # 二次入职
     "_widget_1774179409819": "prev_permit_expiry",   # 上一居留卡有效期
     "_widget_1732603518944": "sign_date",            # 劳动合同预协议&居留许可申请表签字日期
+    "_widget_1730212322878": "sending_company",      # 原派出公司
+    "_widget_1773148604476": "sending_salary",       # 原派出公司工资
+    "_widget_1774114982916": "ict_position",         # 岗位类型（ICT）
+    "_widget_1768200681561": "sending_start",        # 原派出公司入职日期
+    "_widget_1732527942980": "contract_start",       # 劳动关系起始日期
 }
 
 DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
-               "prev_permit_expiry", "sign_date")
+               "prev_permit_expiry", "sign_date", "sending_start", "contract_start")
+
+SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(encoding="utf-8"))
 
 EMPLOYERS = json.loads((CONFIG / "employers.json").read_text(encoding="utf-8"))
 ACCOMMODATION = json.loads((CONFIG / "accommodation.json").read_text(encoding="utf-8"))
@@ -125,3 +132,16 @@ def build(record):
 def hu_money(n):
     """1234567 -> 1.234.567"""
     return f"{float(n):,.0f}".replace(",", ".") if n not in (None, "") else ""
+
+
+def hu_date(d):
+    """2015.03.01."""
+    return f"{d:%Y.%m.%d}." if d else ""
+
+
+def hu_since(d):
+    """2015.03.01-től / -tól（按日期序数词的元音和谐，规则沿用旧公式，已核对）"""
+    if not d:
+        return ""
+    back = d.day in (2, 20, 30) or d.day % 10 in (3, 6, 8)
+    return f"{d:%Y.%m.%d}-{'tól' if back else 'től'}"
