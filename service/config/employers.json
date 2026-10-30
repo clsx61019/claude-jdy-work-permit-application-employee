@@ -1,0 +1,81 @@
+{
+ "_说明": "来自简道云辅助表「雇主相关信息」（2026-10-30 导出）。部署后改为每次从简道云实时读取。",
+ "BorsodChem Zrt.": {
+  "name": "BorsodChem Zrt.",
+  "address": "3700 Kazincbarcika, Bolyai tér 1.",
+  "tax_no": "10600601-4-05",
+  "teaor": "2016",
+  "ksh": "10600601 2016 114 05",
+  "workplace_hu": "3700 Kazincbarcika, Bolyai tér 1., 1054 Budapest, Szabadság tér 7. és 2100 Gödöllő, Pattantyús Ábrahám krt. 12.",
+  "zip": "3700",
+  "city": "Kazincbarcika",
+  "street": "Bolyai",
+  "street_type": "tér",
+  "house_no": "1."
+ },
+ "CC6 Hungary Kft.": {
+  "name": "CC6 Hungary Kft.",
+  "address": "3700 Kazincbarcika, Egressy Béni út 19.",
+  "tax_no": "32451481-2-05",
+  "teaor": "6812",
+  "ksh": "32451481 6812 113 05",
+  "workplace_hu": "3700 Kazincbarcika, Bolyai tér 1.",
+  "zip": "3700",
+  "city": "Kazincbarcika",
+  "street": "Egressy Béni",
+  "street_type": "út",
+  "house_no": "19."
+ },
+ "Eastern Yizhao Engineering Kft.": {
+  "name": "Eastern Yizhao Engineering Kft.",
+  "address": "1101 Budapest, Kőbányai út 49.",
+  "tax_no": "32617904-2-42",
+  "teaor": "6812",
+  "ksh": "32617904 6812 113 01",
+  "workplace_hu": "3700 Kazincbarcika, Bolyai tér 1.",
+  "zip": "1101",
+  "city": "Budapest",
+  "street": "Kőbányai",
+  "street_type": "út",
+  "house_no": "49."
+ },
+ "Hungary HaoYi Construction Kft.": {
+  "name": "Hungary HaoYi Construction Kft.",
+  "address": "3700 Kazincbarcika, Dózsa György út 32.",
+  "tax_no": "32825857-2-05",
+  "teaor": "6812",
+  "ksh": "32825857 6812 113 05",
+  "workplace_hu": "3700 Kazincbarcika, Bolyai tér 1.",
+  "zip": "3700",
+  "city": "Kazincbarcika",
+  "street": "Dózsa György",
+  "street_type": "út",
+  "house_no": "32."
+ },
+ "Kangxilejia Catering Management Hungary Kft.": {
+  "name": "Kangxilejia Catering Management Hungary Kft.",
+  "address": "3700 Kazincbarcika, Bolyai tér 1.",
+  "tax_no": "32609811-2-05",
+  "teaor": "5510",
+  "ksh": "32609811 5510 113 05",
+  "workplace_hu": "3700 Kazincbarcika, Bolyai tér 1.",
+  "zip": "3700",
+  "city": "Kazincbarcika",
+  "street": "Bolyai",
+  "street_type": "tér",
+  "house_no": "1."
+ },
+ "Polimer Szolgáltató Kft.": {
+  "name": "Polimer Szolgáltató Kft.",
+  "address": "3700 Kazincbarcika, Szent Flórián tér 2.",
+  "tax_no": "11063087-2-05",
+  "teaor": "5510",
+  "ksh": "11063087 5510 113 05",
+  "workplace_hu": "3700 Kazincbarcika, Szent Flórián tér 2.",
+  "zip": "3700",
+  "city": "Kazincbarcika",
+  "street": "Szent Flórián",
+  "street_type": "tér",
+  "house_no": "2."
+ }
+}
