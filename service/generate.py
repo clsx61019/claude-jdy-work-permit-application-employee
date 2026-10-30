@@ -1,8 +1,9 @@
 """
 生成文件：读取一条简道云记录（API 返回格式），填写官方表单，输出 Word，可选转 PDF。
 
-用法: python -m service.generate <表单> <记录.json> <输出.docx> [--pdf]
-例如: python -m service.generate form09 tests/samples/ict.json out/ict.docx --pdf
+用法: python -m service.generate <表单> <记录.json> <输出.docx> [--no-pdf]
+默认同时输出 Word 和 PDF。
+例如: python -m service.generate form09 tests/samples/ict.json out/ict.docx
 """
 import importlib
 import json
@@ -37,7 +38,7 @@ def main(argv):
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     render(form_name, record).save(out)
     print("已生成", out)
-    if "--pdf" in argv:
+    if "--no-pdf" not in argv:
         print("已生成", to_pdf(out))
 
 

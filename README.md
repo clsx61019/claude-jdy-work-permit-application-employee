@@ -30,14 +30,14 @@ pip install -r requirements.txt
 ```
 
 ```bash
-python -m service.generate form09 tests/samples/ict.json out/09_ict.docx --pdf
+python -m service.generate form09 tests/samples/ict.json out/09_ict.docx
 ```
 
 ```bash
 python tests/run_tests.py
 ```
 
-转 PDF 需要安装 LibreOffice。改动规则后先跑测试：如果是预期内的变化，确认后再用 `python tests/run_tests.py --update` 更新基准。
+默认同时生成 Word 和 PDF（转 PDF 需要安装 LibreOffice，加 `--no-pdf` 只出 Word）。改动规则后先跑测试：如果是预期内的变化，确认后再用 `python tests/run_tests.py --update` 更新基准。
 
 ## 约定
 

@@ -5,5 +5,10 @@
   "delivery_address": "3700 Kazincbarcika, Bolyai tér 1.",
   "delivery_note": "Kérjük a tisztelt hatóságot, hogy határozataikat és szálláshely-bejelentőiket cégkapun vagy a meghatalmazott e-mail címére szíveskedjenek megküldeni.",
   "return_transport": "repülő",
-  "financial_means": "300.000 Ft"
+  "financial_means": "300.000 Ft",
+  "visa_pickup_country": "Kína",
+  "visa_pickup_city": "Peking",
+  "group_permit_a": "NGM/3943/6/2025",
+  "group_permit_b": "",
+  "other_language": "angol"
 }

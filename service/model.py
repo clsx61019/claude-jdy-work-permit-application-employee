@@ -53,9 +53,27 @@ FIELDS = {
     "_widget_1732527943149": "home_address",         # 详细地址
     "_widget_1743597826298": "home_zip",             # 邮编（国内）
     "_widget_1732527942981": "contract_end",         # 劳动关系终止日期
+    "_widget_1774092432294": "submit_place",         # 递交地点
+    "_widget_1732604018708": "employer",             # 雇主
+    "_widget_1730202212741": "accommodation",        # 匈牙利居住地
+    "_widget_1730212322963": "salary",               # 工资
+    "_widget_1732541277156": "job_title_hu",         # 岗位名称（匈牙利语）
+    "_widget_1732527943206": "feor",                 # FEOR编号
+    "_widget_1774092432374": "education",            # 学历
+    "_widget_1732713702038": "special_skills",       # 特殊知识和技能
+    "_widget_1770019997163": "second_entry",         # 二次入职
+    "_widget_1774179409819": "prev_permit_expiry",   # 上一居留卡有效期
+    "_widget_1732603518944": "sign_date",            # 劳动合同预协议&居留许可申请表签字日期
 }
 
-DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end")
+DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
+               "prev_permit_expiry", "sign_date")
+
+EMPLOYERS = json.loads((CONFIG / "employers.json").read_text(encoding="utf-8"))
+ACCOMMODATION = json.loads((CONFIG / "accommodation.json").read_text(encoding="utf-8"))
+
+# 母语：按国籍（Q12）。没有对应的留空，由人工补。
+NATIVE_LANGUAGE = {"Chinese": "kínai"}
 
 
 class Model(dict):
@@ -97,4 +115,13 @@ def build(record):
     p["home_country_hu"] = country_hu(p.home_country)               # Q5
     p["birth_place_en"] = en_part(p.birth_place)
     p["passport_place_en"] = en_part(p.passport_place)
+    p["employer_info"] = Model(EMPLOYERS.get(p.employer, {}))
+    p["accommodation_info"] = Model(ACCOMMODATION.get(p.accommodation, {}))
+    p["native_language"] = NATIVE_LANGUAGE.get(p.nationality, "")
+    p["submitted_by_employer"] = p.submit_place == "Hungary 匈牙利"
     return p
+
+
+def hu_money(n):
+    """1234567 -> 1.234.567"""
+    return f"{float(n):,.0f}".replace(",", ".") if n not in (None, "") else ""

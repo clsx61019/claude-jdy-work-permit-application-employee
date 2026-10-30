@@ -18,6 +18,8 @@ from service.generate import render  # noqa: E402
 CASES = [
     ("form09", "ict"),
     ("form09", "investment"),
+    ("form09_5", "investment_employer"),
+    ("form09_5", "investment_client"),
 ]
 
 

@@ -31,6 +31,19 @@ class FormDoc:
                 kind = "check" if ff.find(qn("w:checkBox")) is not None else "text"
                 self.fields.append((kind, fc))
         self._labels = self._collect_labels()
+        self._by_name = {}  # 有名字的域（重建的表单都有名字）：名字 -> 编号
+        for i, (_, fc) in enumerate(self.fields, 1):
+            n = fc.find(qn("w:ffData")).find(qn("w:name"))
+            name = n.get(qn("w:val")) if n is not None else ""
+            if name:
+                self._by_name.setdefault(name, []).append(i)
+
+    def no(self, name):
+        """按名字找域编号；名字不存在或重复都报错。"""
+        nos = self._by_name.get(name, [])
+        if len(nos) != 1:
+            raise ValueError(f"表单域「{name}」{'不存在' if not nos else '重名'}")
+        return nos[0]
 
     def _collect_labels(self):
         """文本域取前面的文字，勾选框取后面的文字（与 tools/list_form_fields.py 相同）。"""
