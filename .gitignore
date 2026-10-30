@@ -1,0 +1,7 @@
+# 生成的文件和真实数据不进仓库
+prototype/output/
+output/
+*.pdf
+__pycache__/
+.env
+*.png

@@ -1,0 +1,8 @@
+{
+  "_说明": "替代 6 个 IFS 公式（房屋注册号/邮编/城市/街道名称/街道类型/门牌号）。新增住处只需加一项。",
+  "Hotel BorsodChem": {"lot_no": "2617/1", "zip": "3700", "city": "Kazincbarcika", "street": "Szent Flórián", "street_type": "tér", "house_no": "2."},
+  "Hotel Fremon":     {"lot_no": "563, 564, 565, 566", "zip": "3704", "city": "Berente", "street": "Ipari", "street_type": "út", "house_no": "9-11."},
+  "Relax Center":     {"lot_no": "562", "zip": "3704", "city": "Berente", "street": "Ipari", "street_type": "út", "house_no": "13."},
+  "Hotel Lukács":     {"lot_no": "988/4", "zip": "3700", "city": "Kazincbarcika", "street": "Mátyás Király", "street_type": "út", "house_no": "50."},
+  "Other":            {"lot_no": "", "zip": "", "city": "", "street": "", "street_type": "", "house_no": ""}
+}
