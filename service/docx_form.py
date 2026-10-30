@@ -108,7 +108,8 @@ class FormDoc:
         for text, bold, size in lines:
             r = OxmlElement("w:r")
             rpr = copy.deepcopy(template_rpr) if template_rpr is not None else OxmlElement("w:rPr")
-            for tag in ("w:b", "w:sz", "w:szCs"):
+            # 没指定字号时沿用旁边文字的字号，只改加粗
+            for tag in ("w:b",) + (("w:sz", "w:szCs") if size else ()):
                 for old in rpr.findall(qn(tag)):
                     rpr.remove(old)
             if bold:
