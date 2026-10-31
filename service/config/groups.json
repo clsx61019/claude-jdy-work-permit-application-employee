@@ -1,0 +1,8 @@
+{
+  "_说明": "按钮分组：/generate?group=<键> 生成这一组里适用的文件。键用在按钮链接里，name 是压缩包名。",
+  "application": {"name": "申请表", "forms": ["form09", "form09_5", "form09_6", "form09_8", "form09_9", "form09_10"]},
+  "contract": {"name": "预协议和劳动合同", "forms": ["preliminary", "labour_contract_ordinary", "labour_contract_executive"]},
+  "authorization": {"name": "授权书", "forms": ["imo_authorization", "nav_authorization", "taj_authorization"]},
+  "declarations": {"name": "声明和证明", "forms": ["accommodation_certificate", "employer_notification", "request_previous_documents", "request_delivery_address", "declaration_address_unchanged", "employee_consent", "ict_declaration", "employer_certificate"]},
+  "taj": {"name": "TAJ", "forms": ["taj_application", "taj_order", "gdpr_declarations"]}
+}

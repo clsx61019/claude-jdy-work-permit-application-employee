@@ -92,6 +92,12 @@ def main():
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip&forms="
                           + urllib.parse.quote("GDPR声明"))
         assert code == 200 and body[:2] == b"PK", body[:200]
+        code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip&group=taj")
+        assert code == 200 and body[:2] == b"PK", body[:200]
+        import io, zipfile
+        names = zipfile.ZipFile(io.BytesIO(body)).namelist()
+        assert all(n.startswith(("TAJ", "GDPR")) or n == "结果.txt" for n in names), names
+        assert call(base, "/generate?data_id=rec1&token=secret&format=zip&group=nope")[0] == 400
         print("通过")
     finally:
         proc.terminate()

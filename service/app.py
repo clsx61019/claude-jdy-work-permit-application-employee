@@ -13,6 +13,7 @@
       forms      可选，逗号分隔的选项文字或模块名，或 all（附件只出对应居留许可类型的那份，其余逐个尝试，不适用的跳过）。
                  不填时读记录里的多选框 FIELD_SELECT；它也为空时按 all。
       app_id / entry_id   可选，默认用环境变量 JDY_APP_ID / JDY_ENTRY_ID
+      group      可选，按钮分组（见 config/groups.json），只生成这一组里适用的文件；优先于 forms
       format     json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
 - POST /jdy-webhook                   简道云「数据推送」：多选框 FIELD_SELECT 有值时生成，生成后把它清空
 
@@ -38,7 +39,7 @@ import traceback
 import zipfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 
 from . import jdy, model
 from .generate import render, to_pdf_many
@@ -47,6 +48,9 @@ FORMS = {k: v for k, v in json.loads(
     (Path(__file__).parent / "config" / "forms.json").read_text(encoding="utf-8")).items()
     if not k.startswith("_")}
 LABELS = {v: k for k, v in FORMS.items()}
+GROUPS = {k: v for k, v in json.loads(
+    (Path(__file__).parent / "config" / "groups.json").read_text(encoding="utf-8")).items()
+    if not k.startswith("_")}
 
 env = os.environ.get
 
@@ -60,18 +64,27 @@ class BadRequest(ValueError):
     pass
 
 
-def resolve_forms(spec, record):
+def applicable(modules, record):
+    """自动模式：9.x 附件只留与居留许可类型对应的那份，ICT 文件只给 ICT。其余不适用的生成时会报错跳过。"""
+    permit = model.build(record).permit_type
+    wanted = ANNEX_FOR_PERMIT.get(permit)
+    return [m for m in modules
+            if (m not in ANNEX_FOR_PERMIT.values() or m == wanted)
+            and (m not in ICT_ONLY or permit == "Intra-corporate Transfer")]
+
+
+def resolve_forms(spec, record, group=None):
     """返回模块名列表。"""
+    if group:
+        if group not in GROUPS:
+            raise BadRequest(f"不认识的分组「{group}」，可选：{'、'.join(GROUPS)}")
+        return applicable(GROUPS[group]["forms"], record)
     if not spec and env("FIELD_SELECT"):
         spec = record.get(env("FIELD_SELECT")) or []
     if isinstance(spec, str):
         spec = [s.strip() for s in spec.split(",") if s.strip()]
     if not spec or spec == ["all"]:
-        permit = model.build(record).permit_type
-        wanted = ANNEX_FOR_PERMIT.get(permit)
-        return [m for m in FORMS.values()
-                if (m not in ANNEX_FOR_PERMIT.values() or m == wanted)
-                and (m not in ICT_ONLY or permit == "Intra-corporate Transfer")]
+        return applicable(list(FORMS.values()), record)
     out = []
     for s in spec:
         mod = FORMS.get(s) or (s if s in LABELS else None)
@@ -147,15 +160,21 @@ def handle_generate(params):
     entry_id = params.get("entry_id") or env("JDY_ENTRY_ID")
     fmt = params.get("format", "json")
     record = jdy.get_record(app_id, entry_id, data_id)
-    files, skipped = generate(record, resolve_forms(params.get("forms"), record))
+    group = params.get("group")
+    files, skipped = generate(record, resolve_forms(params.get("forms"), record, group))
 
     if fmt == "zip":
+        if not files:  # 浏览器里点按钮时，与其下载空压缩包不如直接显示原因
+            body = "<br>".join(html.escape(x) for x in result_text(files, skipped).split("\n"))
+            return 200, "text/html; charset=utf-8", f"<meta charset=utf-8><p>没有可生成的文件。</p><p>{body}</p>"
+        p = model.build(record)
+        zipname = safe(f"{GROUPS[group]['name'] if group else '申请材料'} {p.surname} {p.given_name}") + ".zip"
         buf = io.BytesIO()
         with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
             for name, content in files:
                 z.writestr(name, content)
             z.writestr("结果.txt", result_text(files, skipped))
-        return 200, "application/zip", buf.getvalue()
+        return 200, "application/zip", buf.getvalue(), zipname
 
     if not env("FIELD_WORD"):
         raise BadRequest("没有配置 FIELD_WORD（附件字段），只能用 format=zip")
@@ -190,7 +209,7 @@ def handle_webhook(headers, raw, query):
 
 
 class Handler(BaseHTTPRequestHandler):
-    def _send(self, code, ctype, body):
+    def _send(self, code, ctype, body, filename="files.zip"):
         if isinstance(body, (dict, list)):
             body = json.dumps(body, ensure_ascii=False)
         if isinstance(body, str):
@@ -198,7 +217,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         if ctype == "application/zip":
-            self.send_header("Content-Disposition", 'attachment; filename="files.zip"')
+            self.send_header("Content-Disposition",  # 中文文件名按 RFC 5987 编码
+                             f"attachment; filename=\"files.zip\"; filename*=UTF-8''{quote(filename)}")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
