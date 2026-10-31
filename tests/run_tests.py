@@ -23,6 +23,10 @@ CASES = [
     ("form09_5", "investment_client"),
     ("form09_10", "ict_employer"),
     ("form09_10", "ict_client"),
+    ("form09", "employment_extension"),
+    ("form09_6", "employment_employer"),
+    ("form09_6", "employment_client"),
+    ("form09_6", "employment_extension"),
 ]
 
 
