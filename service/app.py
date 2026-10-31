@@ -53,6 +53,7 @@ env = os.environ.get
 # 自动模式（all）下，附件只生成与居留许可类型对应的那一份
 ANNEX_FOR_PERMIT = {"Investment": "form09_5", "Employment": "form09_6", "Hungarian Card": "form09_8",
                     "EU Blue Card": "form09_9", "Intra-corporate Transfer": "form09_10"}
+ICT_ONLY = {"ict_declaration", "employer_certificate"}  # ICT 声明、万华雇主证明只给 ICT
 
 
 class BadRequest(ValueError):
@@ -66,8 +67,11 @@ def resolve_forms(spec, record):
     if isinstance(spec, str):
         spec = [s.strip() for s in spec.split(",") if s.strip()]
     if not spec or spec == ["all"]:
-        wanted = ANNEX_FOR_PERMIT.get(model.build(record).permit_type)
-        return [m for m in FORMS.values() if m not in ANNEX_FOR_PERMIT.values() or m == wanted]
+        permit = model.build(record).permit_type
+        wanted = ANNEX_FOR_PERMIT.get(permit)
+        return [m for m in FORMS.values()
+                if (m not in ANNEX_FOR_PERMIT.values() or m == wanted)
+                and (m not in ICT_ONLY or permit == "Intra-corporate Transfer")]
     out = []
     for s in spec:
         mod = FORMS.get(s) or (s if s in LABELS else None)
