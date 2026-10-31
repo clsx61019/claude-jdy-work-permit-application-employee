@@ -24,13 +24,30 @@ on:
         description: "试生成时写回简道云附件字段（不勾只下载压缩包）"
         type: boolean
         default: false
+      probe:
+        description: "只调用一次已部署的函数看返回（不构建不部署）：查询参数，如 key=WP2026001&group=taj&format=attach（token 自动加）"
+        type: string
+        default: ""
       test_key:
         description: "写回时不用数据 ID，改按字段值找记录：字段ID,类型,值（如 _widget_123,text,E1234567）"
         type: string
         default: ""
 
 jobs:
+  probe:
+    if: inputs.probe != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: 调用函数
+        env:
+          URL: ${{ vars.FUNCTION_URL || 'https://1325784216-163j7jyac7.eu-frankfurt.tencentscf.com' }}
+          GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
+          Q: ${{ inputs.probe }}
+        run: |
+          curl -sS -m 300 -X POST -w '\nHTTP %{http_code}，用时 %{time_total}s\n' "$URL/generate?$Q&token=$(python3 -c 'import os,urllib.parse;print(urllib.parse.quote(os.environ["GEN_TOKEN"]))')"
+
   build-deploy:
+    if: inputs.probe == ''
     runs-on: ubuntu-latest
     env:
       IMAGE_URI: ${{ vars.TCR_REGISTRY || 'deccr.ccs.tencentyun.com' }}/${{ vars.TCR_NAMESPACE }}/jdy-print:${{ github.sha }}
