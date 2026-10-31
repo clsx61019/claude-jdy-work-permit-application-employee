@@ -12,6 +12,10 @@ on:
         description: "构建并测试后是否推送、部署（不勾只构建测试）"
         type: boolean
         default: true
+      test_data_id:
+        description: "部署后用这条简道云记录试生成（下载压缩包，不写回）；留空不测"
+        type: string
+        default: ""
 
 jobs:
   build-deploy:
@@ -38,6 +42,7 @@ jobs:
           docker push "$IMAGE_URI"
 
       - name: 部署云函数
+        id: deploy
         if: inputs.deploy
         env:
           TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
@@ -49,8 +54,8 @@ jobs:
           JDY_API_KEY: ${{ secrets.JDY_API_KEY }}
           GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
           JDY_PUSH_SECRET: ${{ secrets.JDY_PUSH_SECRET }}
-          JDY_APP_ID: ${{ vars.JDY_APP_ID }}
-          JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID }}
+          JDY_APP_ID: ${{ vars.JDY_APP_ID || '67501067fec27368c50bdf57' }}
+          JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID || '6ae1e985c2c60828dfc71ed4' }}  # 测试表
           FIELD_WORD: ${{ vars.FIELD_WORD }}
           FIELD_PDF: ${{ vars.FIELD_PDF }}
           FIELD_SELECT: ${{ vars.FIELD_SELECT }}
@@ -58,3 +63,16 @@ jobs:
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
           python deploy/deploy_scf.py
+
+      - name: 试生成
+        if: inputs.deploy && inputs.test_data_id != ''
+        env:
+          URL: ${{ vars.FUNCTION_URL || steps.deploy.outputs.url }}
+          GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
+          DATA_ID: ${{ inputs.test_data_id }}
+        run: |
+          curl -sS --fail-with-body -m 120 "$URL/health"; echo
+          time curl -sS --fail-with-body -m 300 -o out.zip -G "$URL/generate" \
+            --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID" --data-urlencode "format=zip"
+          unzip -l out.zip
+          unzip -p out.zip 结果.txt

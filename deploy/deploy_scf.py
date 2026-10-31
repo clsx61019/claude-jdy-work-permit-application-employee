@@ -129,7 +129,11 @@ def main():
         triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
         url_trigger = next(t for t in triggers if t.get("Type") == "http")
         desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
-    print("公网地址：", desc.get("NetConfig", {}).get("ExtranetUrl") or "（没拿到，去控制台「函数 URL」看）")
+    url = desc.get("NetConfig", {}).get("ExtranetUrl") or ""
+    print("公网地址：", url or "（没拿到，去控制台「函数 URL」看）")
+    if env("GITHUB_OUTPUT") and url:
+        with open(env("GITHUB_OUTPUT"), "a") as f:
+            f.write(f"url={url}\n")
 
 
 if __name__ == "__main__":
