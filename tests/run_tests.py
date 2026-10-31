@@ -22,6 +22,11 @@ for _emp in model.EMPLOYERS.values():
         _emp["representative_hu"] = _emp.get("representative_hu") or "Teszt Elek ügyvezető"
         _emp["representative_en"] = _emp.get("representative_en") or "Elek Teszt, Managing Director"
 
+# 雇主通知的落款日期是生成当天，测试时固定
+from datetime import date  # noqa: E402
+from service.forms import employer_notification  # noqa: E402
+employer_notification.today = lambda: date(2026, 10, 31)
+
 CASES = [
     ("form09", "ict"),
     ("form09", "investment"),
@@ -52,6 +57,16 @@ CASES = [
     ("imo_authorization", "authorization_china"),
     ("nav_authorization", "authorizations"),
     ("taj_authorization", "authorizations"),
+    ("accommodation_certificate", "employee_documents"),
+    ("accommodation_certificate", "employee_documents_new"),
+    ("employer_notification", "employee_documents"),
+    ("employer_notification", "employee_documents_new"),
+    ("request_previous_documents", "employee_documents"),
+    ("request_delivery_address", "employee_documents"),
+    ("request_delivery_address", "authorization_china"),
+    ("declaration_address_unchanged", "employee_documents"),
+    ("employee_consent", "employee_documents"),
+    ("employee_consent", "employee_documents_new"),
 ]
 
 

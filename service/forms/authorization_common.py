@@ -16,8 +16,11 @@ def mother_name(p):
 
 
 def hu_article(word):
-    """匈语定冠词：元音开头用 az"""
-    return "az" if word[:1].upper() in "AÁEÉIÍOÓÖŐUÚÜŰ" else "a"
+    """匈语定冠词：读音是元音开头的用 az。数字按读音：1（egy、ezer…）和 5（öt…）开头用 az"""
+    first = word[:1].upper()
+    if first.isdigit():
+        return "az" if first in "15" else "a"
+    return "az" if first in "AÁEÉIÍOÓÖŐUÚÜŰ" else "a"
 
 
 def official_date(d):

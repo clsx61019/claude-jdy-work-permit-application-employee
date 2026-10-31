@@ -4,24 +4,10 @@
 """
 from ..docx_text import TextDoc
 from .authorization_common import common_values, official_date, require_common
+from .employee_common import street
 
 DOC = TextDoc
 TEMPLATE = "../hu/taj_authorization.docx"
-
-
-def ordinal(v):
-    """匈语序数写法：数字结尾加句点（21 -> 21.，9-11. 不变，A 不变）"""
-    v = str(v).strip()
-    return v + "." if v[-1:].isdigit() else v
-
-
-def street(p):
-    """A1：街道 + 门牌号 + 楼号、单元、楼层、室：Ipari út 9-11. hsz, A ép., 2. lph., 3. em., 4. ajtó"""
-    parts = [f"{p.hu_street} {p.hu_street_type} {ordinal(p.hu_house_no)} hsz".replace("  ", " ")]
-    for value, label in ((p.hu_building, "ép."), (p.hu_staircase, "lph."), (p.hu_floor, "em."), (p.hu_door, "ajtó")):
-        if value:
-            parts.append(f"{ordinal(value)} {label}")
-    return ", ".join(parts)
 
 
 def fill(doc, p):
