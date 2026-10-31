@@ -105,8 +105,8 @@ def fill(f, p):
     # 12. 技能（Q11：专业经验年限留空）
     t("specialis_ismeret", p.special_skills)
     t("anyanyelv", p.native_language)                           # Q12
-    t("egyeb_nyelv", COMPANY["other_language"])
-    yes_no("magyarul", False)
+    t("egyeb_nyelv", p.other_languages_no_hu)
+    yes_no("magyarul", p.speaks_hungarian)
     second = p.second_entry == "Yes 是"
     yes_no("korabban_mo", second)
     if second:                                                  # Q13：二次入职只有万华员工，前任雇主一定是 BC

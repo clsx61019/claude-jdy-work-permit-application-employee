@@ -86,6 +86,7 @@ FIELDS = {
     "_widget_1756727041750": "tax_no",               # 税号（adóazonosító jel）
     "_widget_1756727041745": "card_no",              # 居留卡号（雇主通知）
     "_widget_1773210557411": "actual_start",         # 劳动关系实际起始日期（雇主通知）
+    "_widget_1793474342373": "languages",            # 语言（多选，会说的语言）
     # 授权书：被授权人（来自「选择被授权人」联动）
     "_widget_1732625466696": "auth_name",            # 被授权人姓名
     "_widget_1732625466698": "auth_mother",          # 被授权人母亲姓名
@@ -125,6 +126,11 @@ EXPAT_CATEGORIES = {"Expat", "Board Member", "Extended Stay"}
 
 # 母语：按国籍（Q12）。没有对应的留空，由人工补。
 NATIVE_LANGUAGE = {"Chinese": "kínai"}
+
+# 「语言」多选框选项 -> 匈牙利语。母语以外选中的语言写进「Egyéb nyelvismerete」
+LANGUAGES_HU = {"Chinese 中文": "kínai", "English 英语": "angol", "Hungarian 匈牙利语": "magyar",
+                "German 德语": "német", "French 法语": "francia", "Spanish 西班牙语": "spanyol",
+                "Czech 捷克语": "cseh", "Italian 意大利语": "olasz", "Swedish 瑞典语": "svéd"}
 
 
 class Model(dict):
@@ -169,6 +175,16 @@ def build(record):
     p["employer_info"] = Model(EMPLOYERS.get(p.employer, {}))
     p["accommodation_info"] = Model(ACCOMMODATION.get(p.accommodation, {}))
     p["native_language"] = NATIVE_LANGUAGE.get(p.nationality, "")
+    langs = p.languages if isinstance(p.languages, list) else ([p.languages] if p.languages else [])
+    unknown = [x for x in langs if x not in LANGUAGES_HU]
+    if unknown:
+        raise ValueError(f"「语言」里有不认识的选项：{'、'.join(unknown)}（service/model.py LANGUAGES_HU）")
+    langs_hu = [LANGUAGES_HU[x] for x in langs]
+    p["speaks_hungarian"] = "magyar" in langs_hu
+    # 没填「语言」时沿用以前的默认：其他语言 angol
+    others = [x for x in langs_hu if x != p.native_language] if langs else [COMPANY["other_language"]]
+    p["other_languages"] = ", ".join(others)
+    p["other_languages_no_hu"] = ", ".join(x for x in others if x != "magyar")  # 9.5 匈牙利语单独打勾
     p["submitted_by_employer"] = p.submit_place == "Hungary 匈牙利"
     if p.application_type and p.application_type not in APPLICATION_TYPES:
         raise ValueError(f"未知的申请类型「{p.application_type}」")

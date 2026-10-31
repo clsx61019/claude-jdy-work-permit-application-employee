@@ -56,9 +56,9 @@ jobs:
           JDY_PUSH_SECRET: ${{ secrets.JDY_PUSH_SECRET }}
           JDY_APP_ID: ${{ vars.JDY_APP_ID || '67501067fec27368c50bdf57' }}
           JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID || '6ae1e985c2c60828dfc71ed4' }}  # 测试表
-          FIELD_WORD: ${{ vars.FIELD_WORD }}
+          FIELD_WORD: ${{ vars.FIELD_WORD || '_widget_1793472112644' }}  # 测试表「申请材料」
           FIELD_PDF: ${{ vars.FIELD_PDF }}
-          FIELD_SELECT: ${{ vars.FIELD_SELECT }}
+          FIELD_SELECT: ${{ vars.FIELD_SELECT || '_widget_1793472112642' }}  # 测试表「所需文件」
           FIELD_RESULT: ${{ vars.FIELD_RESULT }}
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf

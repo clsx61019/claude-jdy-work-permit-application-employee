@@ -103,7 +103,7 @@ def fill(f, p):
     # 12. 技能
     f.text(150, "speciális ismerete", p.special_skills)
     f.text(153, "Anyanyelve", p.native_language)
-    f.text(156, "Egyéb nyelvismerete", COMPANY["other_language"])
+    f.text(156, "Egyéb nyelvismerete", p.other_languages)
     yes_no((159, 160), False)
     second = p.second_entry == "Yes 是"
     yes_no((161, 162), second)
