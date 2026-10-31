@@ -41,6 +41,7 @@ CASES = [
     ("form09_6", "employment_employer"),
     ("form09_6", "employment_client"),
     ("form09_6", "employment_extension"),
+    ("form09", "employment_change"),
     ("form09_8", "hungarian_card_employer"),
     ("form09_8", "hungarian_card_client"),
     ("form09_8", "hungarian_card_change"),
