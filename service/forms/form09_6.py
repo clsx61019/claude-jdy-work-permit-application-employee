@@ -112,7 +112,7 @@ def fill(f, p):
     f.check(121, "Nem", True)
     f.check(122, "Igen", False)
     f.check(124, "Nem", True)
-    # 13. 免劳动力市场审查（Q5，同旧模板）：BorsodChem → Igen，第 03 点；其他雇主 → Nem
+    # 13. 免劳动力市场审查（Q5，同旧模板）：BorsodChem → Igen，第 3 点（445/2013 第 9 条第 (1) 款第 3 点：外资控股公司）；其他雇主 → Nem
     f.check(125, "Igen", is_bc)
     f.text(126, None, COMPANY["labour_market_exemption_point"] if is_bc else "")
     f.check(127, "Nem", not is_bc)
