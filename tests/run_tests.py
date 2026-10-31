@@ -31,6 +31,9 @@ CASES = [
     ("form09_8", "hungarian_card_client"),
     ("form09_8", "hungarian_card_change"),
     ("form09", "hungarian_card_change"),
+    ("form09_9", "blue_card_employer"),
+    ("form09_9", "blue_card_client"),
+    ("form09_9", "blue_card_extension"),
 ]
 
 
