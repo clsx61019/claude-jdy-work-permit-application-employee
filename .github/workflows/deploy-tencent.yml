@@ -16,6 +16,10 @@ on:
         description: "部署后用这条简道云记录试生成（下载压缩包，不写回）；留空不测"
         type: string
         default: ""
+      test_write_back:
+        description: "试生成时写回简道云附件字段（不勾只下载压缩包）"
+        type: boolean
+        default: false
 
 jobs:
   build-deploy:
@@ -70,9 +74,15 @@ jobs:
           URL: ${{ vars.FUNCTION_URL || steps.deploy.outputs.url }}
           GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
           DATA_ID: ${{ inputs.test_data_id }}
+          WRITE_BACK: ${{ inputs.test_write_back }}
         run: |
           curl -sS --fail-with-body -m 120 "$URL/health"; echo
           time curl -sS --fail-with-body -m 300 -o out.zip -G "$URL/generate" \
             --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID" --data-urlencode "format=zip"
-          unzip -l out.zip
-          unzip -p out.zip 结果.txt
+          if [ "$WRITE_BACK" = "true" ]; then
+            curl -sS --fail-with-body -m 300 -G "$URL/generate" \
+              --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID"; echo
+          else
+            unzip -l out.zip
+            unzip -p out.zip 结果.txt
+          fi
