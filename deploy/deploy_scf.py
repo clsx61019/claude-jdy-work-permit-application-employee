@@ -63,7 +63,13 @@ def wait_active():
         if status == "Active":
             return
         if status and "Failed" in status:
-            sys.exit(f"函数状态 {status}：{f.get('StatusDesc')}")
+            print(f"函数状态 {status}：{f.get('StatusDesc')}")
+            print("原因：", json.dumps(f.get("StatusReasons"), ensure_ascii=False))
+            print("镜像配置：", json.dumps((f.get("ImageConfig") or {}), ensure_ascii=False))
+            if status == "CreateFailed":  # 创建失败的函数留着会挡住下次创建，删掉
+                call("DeleteFunction", {"FunctionName": NAME})
+                print("已删除创建失败的函数，修正后重新运行即可")
+            sys.exit(1)
         time.sleep(5)
     sys.exit("等了 10 分钟函数还没就绪")
 
@@ -76,13 +82,21 @@ SETTINGS = {
 
 
 def main():
-    if get_function() is None:
+    existing = get_function()
+    if existing and existing.get("Status") not in ("Active", "CreateFailed"):
+        wait_active()  # 控制台刚建的函数可能还在创建中
+        existing = get_function()
+    if existing and existing.get("Status") == "CreateFailed":
+        print("上次创建失败，先删除")
+        call("DeleteFunction", {"FunctionName": NAME})
+        time.sleep(10)
+        existing = None
+    if existing is None:
         print(f"创建函数 {NAME}")
         call("CreateFunction", {
             "FunctionName": NAME, "Type": "HTTP", "Description": "简道云居留许可文件生成（测试）",
             "Code": {"ImageConfig": image_config()}, "Environment": function_env(),
-            "PublicNetConfig": {"PublicNetStatus": "ENABLE", "EipConfig": {"EipStatus": "DISABLE"}},
-            **SETTINGS})
+            "MemorySize": SETTINGS["MemorySize"], "Timeout": SETTINGS["Timeout"]})
         wait_active()
     else:
         print(f"更新函数 {NAME}")
@@ -101,8 +115,25 @@ def main():
                                        "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
         triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
         url_trigger = next((t for t in triggers if t.get("Type") == "http"), None)
-    print("函数 URL 触发器：", json.dumps(url_trigger, ensure_ascii=False, indent=1))
-    print("（公网地址也可以在控制台「函数管理 → 函数 URL」里看到）")
+    desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
+    if not desc.get("NetConfig", {}).get("EnableExtranet"):  # 控制台默认只开内网
+        print("打开函数 URL 的公网访问")
+        try:
+            call("UpdateTrigger", {
+                "FunctionName": NAME, "TriggerName": url_trigger["TriggerName"], "Type": "http",
+                "Qualifier": url_trigger.get("Qualifier") or "$DEFAULT", "Enable": "OPEN",
+                "TriggerDesc": json.dumps({"AuthType": desc.get("AuthType", "NONE"),
+                                           "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
+        except TencentCloudSDKException as e:
+            print(f"打开公网访问失败（{e.code}），请在控制台「函数 URL」里手动开启公网访问")
+        triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
+        url_trigger = next(t for t in triggers if t.get("Type") == "http")
+        desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
+    url = desc.get("NetConfig", {}).get("ExtranetUrl") or ""
+    print("公网地址：", url or "（没拿到，去控制台「函数 URL」看）")
+    if env("GITHUB_OUTPUT") and url:
+        with open(env("GITHUB_OUTPUT"), "a") as f:
+            f.write(f"url={url}\n")
 
 
 if __name__ == "__main__":
