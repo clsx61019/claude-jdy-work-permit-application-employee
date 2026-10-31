@@ -93,8 +93,7 @@ def main():
         call("CreateFunction", {
             "FunctionName": NAME, "Type": "HTTP", "Description": "简道云居留许可文件生成（测试）",
             "Code": {"ImageConfig": image_config()}, "Environment": function_env(),
-            "PublicNetConfig": {"PublicNetStatus": "ENABLE", "EipConfig": {"EipStatus": "DISABLE"}},
-            **SETTINGS})
+            "MemorySize": SETTINGS["MemorySize"], "Timeout": SETTINGS["Timeout"]})
         wait_active()
     else:
         print(f"更新函数 {NAME}")
