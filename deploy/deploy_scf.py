@@ -118,11 +118,14 @@ def main():
     desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
     if not desc.get("NetConfig", {}).get("EnableExtranet"):  # 控制台默认只开内网
         print("打开函数 URL 的公网访问")
-        call("UpdateTrigger", {
-            "FunctionName": NAME, "TriggerName": url_trigger["TriggerName"], "Type": "http",
-            "Qualifier": url_trigger.get("Qualifier") or "$DEFAULT", "Enable": "OPEN",
-            "TriggerDesc": json.dumps({"AuthType": desc.get("AuthType", "NONE"),
-                                       "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
+        try:
+            call("UpdateTrigger", {
+                "FunctionName": NAME, "TriggerName": url_trigger["TriggerName"], "Type": "http",
+                "Qualifier": url_trigger.get("Qualifier") or "$DEFAULT", "Enable": "OPEN",
+                "TriggerDesc": json.dumps({"AuthType": desc.get("AuthType", "NONE"),
+                                           "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
+        except TencentCloudSDKException as e:
+            print(f"打开公网访问失败（{e.code}），请在控制台「函数 URL」里手动开启公网访问")
         triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
         url_trigger = next(t for t in triggers if t.get("Type") == "http")
         desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
