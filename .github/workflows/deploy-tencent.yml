@@ -81,7 +81,7 @@ jobs:
             --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID" --data-urlencode "format=zip"
           if [ "$WRITE_BACK" = "true" ]; then
             curl -sS --fail-with-body -m 300 -G "$URL/generate" \
-              --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID"; echo
+              --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID" --data-urlencode "format=attach"; echo
           else
             unzip -l out.zip
             unzip -p out.zip 结果.txt

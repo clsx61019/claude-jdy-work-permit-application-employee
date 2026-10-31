@@ -98,6 +98,15 @@ def main():
         names = zipfile.ZipFile(io.BytesIO(body)).namelist()
         assert all(n.startswith(("TAJ", "GDPR")) or n == "结果.txt" for n in names), names
         assert call(base, "/generate?data_id=rec1&token=secret&format=zip&group=nope")[0] == 400
+        # 智能助手：一个压缩包，按分组分文件夹，放进附件字段
+        code, body = call(base, "/generate?data_id=rec1&token=secret&format=attach")
+        assert code == 200, body
+        assert json.loads(body)["zip"].startswith("申请材料")
+        value = calls["updates"][-1]["data"]["_widget_word"]["value"]
+        assert len(value) == 1, value
+        code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip")
+        names = zipfile.ZipFile(io.BytesIO(body)).namelist()
+        assert "申请表/" in names and "TAJ/" in names and any(n.startswith("授权书/IMO") for n in names), names
         print("通过")
     finally:
         proc.terminate()

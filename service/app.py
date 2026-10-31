@@ -14,7 +14,7 @@
                  不填时读记录里的多选框 FIELD_SELECT；它也为空时按 all。
       app_id / entry_id   可选，默认用环境变量 JDY_APP_ID / JDY_ENTRY_ID
       group      可选，按钮分组（见 config/groups.json），只生成这一组里适用的文件；优先于 forms
-      format     json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
+      format     attach（一个压缩包放进附件字段 FIELD_WORD，替换旧的；给简道云智能助手用）/ json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
 - POST /jdy-webhook                   简道云「数据推送」：多选框 FIELD_SELECT 有值时生成，生成后把它清空
 
 环境变量
@@ -150,6 +150,30 @@ def write_back(app_id, entry_id, data_id, files, skipped, clear_select=False):
         jdy.update_record(app_id, entry_id, data_id, data, tid)
 
 
+GROUP_OF = {m: g["name"] for g in GROUPS.values() for m in g["forms"]}  # 模块 -> 文件夹名
+
+
+def make_zip(files, skipped, folders=False):
+    """folders=True：按分组放进文件夹（申请表/、授权书/……），没有文件的文件夹留空"""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        if folders:
+            for g in GROUPS.values():
+                z.writestr(g["name"] + "/", b"")
+        for name, content in files:
+            folder = next((GROUP_OF[m] + "/" for label, m in FORMS.items() if name.startswith(label + " ")), "") \
+                if folders else ""
+            z.writestr(folder + name, content)
+        z.writestr("结果.txt", result_text(files, skipped))
+    return buf.getvalue()
+
+
+def attach_zip(app_id, entry_id, data_id, zipname, content):
+    """附件字段只放这一个压缩包（替换旧的）"""
+    tid, (key,) = jdy.upload_files(app_id, entry_id, [(zipname, content)])
+    jdy.update_record(app_id, entry_id, data_id, {env("FIELD_WORD"): {"value": [key]}}, tid)
+
+
 def handle_generate(params):
     if not env("GEN_TOKEN") or not hmac.compare_digest(str(params.get("token", "")), env("GEN_TOKEN")):
         return 403, "application/json", {"error": "token 不对"}
@@ -163,18 +187,22 @@ def handle_generate(params):
     group = params.get("group")
     files, skipped = generate(record, resolve_forms(params.get("forms"), record, group))
 
+    p = model.build(record)
+    zipname = safe(f"{GROUPS[group]['name'] if group else '申请材料'} {p.surname} {p.given_name}") + ".zip"
+
     if fmt == "zip":
         if not files:  # 浏览器里点按钮时，与其下载空压缩包不如直接显示原因
             body = "<br>".join(html.escape(x) for x in result_text(files, skipped).split("\n"))
             return 200, "text/html; charset=utf-8", f"<meta charset=utf-8><p>没有可生成的文件。</p><p>{body}</p>"
-        p = model.build(record)
-        zipname = safe(f"{GROUPS[group]['name'] if group else '申请材料'} {p.surname} {p.given_name}") + ".zip"
-        buf = io.BytesIO()
-        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
-            for name, content in files:
-                z.writestr(name, content)
-            z.writestr("结果.txt", result_text(files, skipped))
-        return 200, "application/zip", buf.getvalue(), zipname
+        return 200, "application/zip", make_zip(files, skipped, folders=not group), zipname
+
+    if fmt == "attach":  # 一个压缩包（按分组分文件夹）放进附件字段，替换旧的
+        if not env("FIELD_WORD"):
+            raise BadRequest("没有配置 FIELD_WORD（附件字段）")
+        attach_zip(app_id, entry_id, data_id, zipname, make_zip(files, skipped, folders=not group))
+        return 200, "application/json", {
+            "zip": zipname if files else None,
+            "generated": [n for n, _ in files], "skipped": [{"file": l, "reason": r} for l, r in skipped]}
 
     if not env("FIELD_WORD"):
         raise BadRequest("没有配置 FIELD_WORD（附件字段），只能用 format=zip")
@@ -231,8 +259,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, "application/json", {"ok": True})
             if url.path == "/generate":
                 params = dict(query)
-                if raw and "json" in (self.headers.get("Content-Type") or ""):
+                ctype = self.headers.get("Content-Type") or ""
+                if raw and "json" in ctype:
                     params.update(json.loads(raw))
+                elif raw and "form-urlencoded" in ctype:
+                    params.update({k: v[-1] for k, v in parse_qs(raw.decode("utf-8")).items()})
                 return self._send(*handle_generate(params))
             if url.path == "/jdy-webhook" and self.command == "POST":
                 return self._send(*handle_webhook(self.headers, raw, query))
