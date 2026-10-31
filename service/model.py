@@ -147,6 +147,13 @@ def hu_money(n):
     return f"{float(n):,.0f}".replace(",", ".") if n not in (None, "") else ""
 
 
+def hu_money_cents(n):
+    """23704.52 -> 23.704,52（匈牙利格式：点分千位，逗号分小数，保留两位）"""
+    if n in (None, ""):
+        return ""
+    return f"{float(n):,.2f}".replace(",", " ").replace(".", ",").replace(" ", ".")
+
+
 def hu_date(d):
     """2015.03.01."""
     return f"{d:%Y.%m.%d}." if d else ""
