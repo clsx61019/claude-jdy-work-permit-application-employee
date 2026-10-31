@@ -44,7 +44,10 @@ jobs:
           GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
           Q: ${{ inputs.probe }}
         run: |
-          curl -sS -m 300 -X POST -w '\nHTTP %{http_code}，用时 %{time_total}s\n' "$URL/generate?$Q&token=$(python3 -c 'import os,urllib.parse;print(urllib.parse.quote(os.environ["GEN_TOKEN"]))')"
+          T=$(python3 -c 'import os,urllib.parse;print(urllib.parse.quote(os.environ["GEN_TOKEN"]))')
+          echo "== GET（和浏览器一样）"; curl -sS -m 300 -D - -w '\nHTTP %{http_code}，用时 %{time_total}s\n' "$URL/generate?$Q&token=$T" | head -c 3000; echo
+          echo "== token 错时"; curl -sS -m 60 -D - "$URL/generate?$Q&token=wrong" | head -c 1500; echo
+          echo "== /health"; curl -sS -m 60 -D - "$URL/health"
 
   build-deploy:
     if: inputs.probe == ''
