@@ -83,6 +83,9 @@ SETTINGS = {
 
 def main():
     existing = get_function()
+    if existing and existing.get("Status") not in ("Active", "CreateFailed"):
+        wait_active()  # 控制台刚建的函数可能还在创建中
+        existing = get_function()
     if existing and existing.get("Status") == "CreateFailed":
         print("上次创建失败，先删除")
         call("DeleteFunction", {"FunctionName": NAME})
