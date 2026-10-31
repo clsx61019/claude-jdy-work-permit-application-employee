@@ -92,6 +92,14 @@ class TextDoc:
         if not n:
             raise ValueError(f"找不到含「{contains}」的表格行，模板可能改过")
 
+    def remove_paragraphs(self, contains):
+        """删除含某段文字的段落（例如不适用时的整段说明）"""
+        ps = [p for p in paragraphs(self.doc) if contains in para_text(p)]
+        if not ps:
+            raise ValueError(f"找不到含「{contains}」的段落，模板可能改过")
+        for p in ps:
+            p.getparent().remove(p)
+
     def labels(self, no):
         return ""
 
