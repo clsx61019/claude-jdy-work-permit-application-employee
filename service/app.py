@@ -192,6 +192,19 @@ def attach_files(app_id, entry_id, data_id, zipname, files, skipped, group):
     return [n for n, _ in upload]
 
 
+def add_live_data(app_id, record):
+    """把辅助表里的实时数据带进记录：雇主代表（J13，读不到就用 config/employers.json）、
+    被授权人出生地/住址/税号/证件号（J15，按被授权人姓名找）。"""
+    for what, fetch in (("雇主代表", lambda: jdy.employer_representatives(app_id, record.get(model.EMPLOYER_WIDGET))),
+                        ("被授权人", lambda: jdy.authorized_person(app_id, record.get(model.AUTH_NAME_WIDGET)))):
+        try:
+            data = fetch()
+        except jdy.JdyError as e:
+            print(f"读{what}失败：{e}", flush=True)
+            data = {}
+        record.update({f"_{k}": v for k, v in data.items() if v})
+
+
 def find_by_key(app_id, entry_id, params):
     value = str(params.get("key") or "").strip()
     field = params.get("key_field") or env("FIELD_KEY")
@@ -211,6 +224,7 @@ def handle_generate(params):
     data_id = params.get("data_id") or find_by_key(app_id, entry_id, params)
     fmt = params.get("format", "json")
     record = jdy.get_record(app_id, entry_id, data_id)
+    add_live_data(app_id, record)
     group = params.get("group")
     files, skipped = generate(record, resolve_forms(params.get("forms"), record, group))
 
@@ -256,6 +270,7 @@ def handle_webhook(headers, raw, query):
     if body.get("op") not in ("data_create", "data_update") or not env("FIELD_SELECT") \
             or not record.get(env("FIELD_SELECT")):
         return 200, "application/json", {"ignored": True}
+    add_live_data(record["appId"], record)
     files, skipped = generate(record, resolve_forms(None, record))
     write_back(record["appId"], record["entryId"], record["_id"], files, skipped, clear_select=True)
     return 200, "application/json", {"generated": len(files), "skipped": len(skipped)}

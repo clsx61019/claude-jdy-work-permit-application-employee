@@ -19,13 +19,20 @@ ROOT = Path(__file__).resolve().parent.parent
 SAMPLE = json.loads((ROOT / "tests" / "samples" / "employee_documents.json").read_text(encoding="utf-8"))
 SAMPLE.update({"_id": "rec1", "appId": "app1", "entryId": "entry1"})
 
-calls = {"uploads": [], "updates": [], "lists": []}
+calls = {"uploads": [], "updates": [], "lists": [], "employers": [], "auth": []}
 
 
 class FakeJdy(BaseHTTPRequestHandler):
     def do_POST(self):
         raw = self.rfile.read(int(self.headers.get("Content-Length") or 0))
-        if self.path.endswith("/data/list"):
+        if self.path.endswith("/data/list") and json.loads(raw)["entry_id"] == "69beb7dbd92ecd4fdced0420":
+            calls["employers"].append(json.loads(raw)["filter"]["cond"][0]["value"])
+            out = {"data": [{"_widget_1774106588505": "Rep EN", "_widget_1774106588506": "Rep HU"}]}
+        elif self.path.endswith("/data/list") and json.loads(raw)["entry_id"] == "67501efb28e2adbc9a9d7bda":
+            calls["auth"].append(json.loads(raw)["filter"]["cond"][0]["value"])
+            out = {"data": [{"_widget_1793481372267": "Miskolc", "_widget_1793481372268": "3700 Kazincbarcika, Teszt u. 1.",
+                             "_widget_1793481372269": "8000000000", "_widget_1793481372270": "000000AA"}]}
+        elif self.path.endswith("/data/list"):
             cond = json.loads(raw)["filter"]["cond"][0]
             calls["lists"].append(cond)
             out = {"data": [{"_id": "rec1"}] if cond["value"] == ["SN-1"] else []}
@@ -123,6 +130,8 @@ def main():
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip")
         names = zipfile.ZipFile(io.BytesIO(body)).namelist()
         assert "申请表/" in names and "TAJ/" in names and any(n.startswith("授权书/IMO") for n in names), names
+        assert calls["employers"] and calls["employers"][0] == [SAMPLE["_widget_1732604018708"]], calls["employers"]
+        assert calls["auth"], "没有按被授权人姓名查辅助表"
         print("通过")
     finally:
         proc.terminate()

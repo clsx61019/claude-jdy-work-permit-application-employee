@@ -16,7 +16,7 @@ def fill(doc, p):
     emp = p.employer_info
     require({"雇主": p.employer, "雇主地址（config/employers.json）": emp.zip,
              "雇主税号（config/employers.json）": emp.tax_no,
-             "雇主代表（config/employers.json，待办 J13）": emp.representative_hu,
+             "雇主代表（辅助表「雇主相关信息」）": emp.representative_hu,
              "劳动关系实际起始日期": p.actual_start})  # B3
     check_person(doc, p)
     # B4：外籍员工；三个问题都是「nem」

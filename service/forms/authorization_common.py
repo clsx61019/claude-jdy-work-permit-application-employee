@@ -1,7 +1,7 @@
 """三份授权书（IMO / NAV / TAJ）共用的数据 —— 规则见 docs/rules/授权书.md
 
 被授权人和证人三份都取简道云「选择被授权人」「选择见证人1/2」联动出来的字段（B1）。
-NAV、TAJ 还要被授权人的出生地、住址、税号、证件号，简道云辅助表还没有这几列（待办 J15）。
+NAV、TAJ 还要被授权人的出生地、住址、税号、证件号，生成时按被授权人姓名从辅助表「被授权人」实时读取（J15）。
 """
 from .ict_common import require
 from .preliminary import en_long, hu_long

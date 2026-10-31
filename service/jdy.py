@@ -42,6 +42,48 @@ def find_records(app_id, entry_id, field, value, field_type="text"):
     })["data"]
 
 
+# 辅助表「雇主相关信息」：雇主代表（J13）在简道云里维护，生成时实时读取
+EMPLOYER_ENTRY = os.environ.get("JDY_EMPLOYER_ENTRY_ID", "69beb7dbd92ecd4fdced0420")
+EMPLOYER_FIELDS = {"employer": "_widget_1774106588504", "representative_en": "_widget_1774106588505",
+                   "representative_hu": "_widget_1774106588506"}
+
+
+def employer_representatives(app_id, employer):
+    """返回 {"representative_hu": …, "representative_en": …}；查不到返回 {}。"""
+    if not employer:
+        return {}
+    rows = _post("/v5/app/entry/data/list", {
+        "app_id": app_id, "entry_id": EMPLOYER_ENTRY, "limit": 10,
+        "fields": [EMPLOYER_FIELDS["representative_en"], EMPLOYER_FIELDS["representative_hu"]],
+        "filter": {"rel": "and", "cond": [{"field": EMPLOYER_FIELDS["employer"], "type": "text",
+                                           "method": "eq", "value": [employer]}]},
+    })["data"]
+    for row in rows:
+        out = {k: (row.get(EMPLOYER_FIELDS[k]) or "").strip() for k in ("representative_hu", "representative_en")}
+        if all(out.values()):
+            return out
+    return {}
+
+
+# 辅助表「被授权人」（J15）：按姓名找出生地、住址、税号、证件号
+AUTH_ENTRY = os.environ.get("JDY_AUTH_ENTRY_ID", "67501efb28e2adbc9a9d7bda")
+AUTH_NAME = "_widget_1732624873034"
+AUTH_FIELDS = {"auth_birth_place": "_widget_1793481372267", "auth_address": "_widget_1793481372268",
+               "auth_tax_no": "_widget_1793481372269", "auth_id_no": "_widget_1793481372270"}
+
+
+def authorized_person(app_id, name):
+    if not name:
+        return {}
+    rows = _post("/v5/app/entry/data/list", {
+        "app_id": app_id, "entry_id": AUTH_ENTRY, "limit": 2, "fields": list(AUTH_FIELDS.values()),
+        "filter": {"rel": "and", "cond": [{"field": AUTH_NAME, "type": "text", "method": "eq", "value": [name]}]},
+    })["data"]
+    if len(rows) != 1:
+        return {}
+    return {k: (rows[0].get(w) or "").strip() for k, w in AUTH_FIELDS.items()}
+
+
 def _upload_one(url, token, filename, content):
     boundary = uuid.uuid4().hex
     ctype = mimetypes.guess_type(filename)[0] or "application/octet-stream"

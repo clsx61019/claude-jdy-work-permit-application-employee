@@ -13,7 +13,7 @@ TEMPLATE = "../hu/taj_application.docx"
 
 
 def fill(doc, p):
-    require({"被授权人姓名": p.auth_name, "被授权人住址（简道云待办 J15）": p.auth_address})
+    require({"被授权人姓名": p.auth_name, "被授权人住址（辅助表「被授权人」里填）": p.auth_address})
     check_person(doc, p)
     doc.check("first_issue")  # A4：只办第一次
     values = {

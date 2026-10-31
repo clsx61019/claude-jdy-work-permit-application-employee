@@ -14,9 +14,9 @@ def fill(doc, p):
     require_common(p, {"出生地": p.birth_place_en, "护照号": p.passport_no,
                        "邮编（匈牙利）": p.hu_zip, "城市（匈牙利）": p.hu_city, "街道名称": p.hu_street,
                        "门牌号": p.hu_house_no,
-                       "被授权人出生地（简道云待办 J15）": p.auth_birth_place,
-                       "被授权人住址（简道云待办 J15）": p.auth_address,
-                       "被授权人证件号（简道云待办 J15）": p.auth_id_no})
+                       "被授权人出生地（辅助表「被授权人」里填）": p.auth_birth_place,
+                       "被授权人住址（辅助表「被授权人」里填）": p.auth_address,
+                       "被授权人证件号（辅助表「被授权人」里填）": p.auth_id_no})
     doc.fill({
         **common_values(p),
         "birth_place": p.birth_place_en,
