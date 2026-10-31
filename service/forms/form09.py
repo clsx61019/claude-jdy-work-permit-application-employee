@@ -33,8 +33,15 @@ def ymd(f, nos, d):
 
 
 def fill(f, p):
-    # 页眉：申请类型、联系方式、领取方式
-    f.check(1, "kiadása első alkalommal")
+    # 页眉：申请类型。变更（换许可类型）按新目的首次申请处理，待确认
+    extension = p.app_type == "extension"
+    f.check(1, "kiadása első alkalommal", not extension)
+    f.check(8, "meghosszabbítása", extension)
+    if extension:  # 现有居留卡的号码和有效期
+        f.text(9, "Az engedély száma", p.permit_card_no)
+        ymd(f, (12, 13, 14), p.permit_card_expiry)
+
+    # 页眉：联系方式、领取方式
     f.text(15, "Telefonszám", COMPANY["contact_phone"])
     f.text(17, "E-mail cím", COMPANY["contact_email"])
     f.check(19, "postai úton")
