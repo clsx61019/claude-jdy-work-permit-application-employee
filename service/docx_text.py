@@ -100,6 +100,32 @@ class TextDoc:
         for p in ps:
             p.getparent().remove(p)
 
+    def check(self, name, on=True):
+        """勾选/取消 Word 旧式复选框（按表单域名字，名字由 tools/ 下的转换脚本起好）"""
+        boxes = [ff for ff in self.doc.element.body.iter(qn("w:ffData"))
+                 if ff.find(qn("w:name")) is not None and ff.find(qn("w:name")).get(qn("w:val")) == name
+                 and ff.find(qn("w:checkBox")) is not None]
+        if len(boxes) != 1:
+            raise ValueError(f"复选框「{name}」应有 1 个，实际 {len(boxes)} 个，模板可能改过")
+        box = boxes[0].find(qn("w:checkBox"))
+        checked = box.find(qn("w:checked"))
+        if checked is None:
+            checked = box.makeelement(qn("w:checked"), {})
+            box.append(checked)
+        checked.set(qn("w:val"), "1" if on else "0")
+
+    def checkboxes(self):
+        """{复选框名字: 是否勾选}，用于测试对比"""
+        out = {}
+        for ff in self.doc.element.body.iter(qn("w:ffData")):
+            box = ff.find(qn("w:checkBox"))
+            if box is None or ff.find(qn("w:name")) is None:
+                continue
+            c = box.find(qn("w:checked"))
+            on = c is not None and c.get(qn("w:val"), "1") not in ("0", "false")
+            out[ff.find(qn("w:name")).get(qn("w:val"))] = on
+        return out
+
     def labels(self, no):
         return ""
 
@@ -111,6 +137,9 @@ class TextDoc:
             if t:
                 i += 1
                 out[str(i)] = t
+        for name, on in self.checkboxes().items():  # 复选框也比较
+            i += 1
+            out[str(i)] = f"[{'x' if on else ' '}] {name}"
         return out
 
     def save(self, path):

@@ -1,0 +1,402 @@
+{
+ "1": [
+  "",
+  "Az igénylőlapot nyomtatott nagybetűkkel kell kitölteni! Az olvashatóan kitöltött nyomtatványt, a magyarországi lakóhely (illetve lakcímkártyán szereplő érvényes tartózkodási hely) szerint illetékes kormányhivatal megyeszékhelyen működő járási hivatala egészségbiztosítási fő/osztályához kell benyújtani, Budapest és Pest megye esetében a XIII. Kerületi Hivatalhoz (Teve u. 1/a-c). Amennyiben nem az igénylő/törvényes képviselő jár el, úgy meghatalmazás is csatolandó!"
+ ],
+ "2": [
+  "",
+  "IGÉNYLŐLAP"
+ ],
+ "3": [
+  "",
+  "a Társadalombiztosítási Azonosító Jelet igazoló Hatósági Igazolvány kiadásához"
+ ],
+ "4": [
+  "",
+  "*Kiadás jogcíme:"
+ ],
+ "5": [
+  "",
+  "első kiadás"
+ ],
+ "6": [
+  "",
+  "elvesztés, ellopás, rongálódás"
+ ],
+ "7": [
+  "",
+  "névváltozás"
+ ],
+ "8": [
+  "",
+  "érvényesség lejárata"
+ ],
+ "9": [
+  "",
+  "A TAJ-t igénylő vezetékneve"
+ ],
+ "10": [
+  "",
+  "TESZT"
+ ],
+ "11": [
+  "",
+  "A TAJ-t igénylő utónevei"
+ ],
+ "12": [
+  "",
+  "MINTA"
+ ],
+ "13": [
+  "",
+  "Születési vezeték- és utóneve"
+ ],
+ "14": [
+  "",
+  "TESZT"
+ ],
+ "15": [
+  "",
+  "MINTA"
+ ],
+ "16": [
+  "",
+  "Anyja születési vezeték- és utóneve"
+ ],
+ "17": [
+  "",
+  "PROBA"
+ ],
+ "18": [
+  "",
+  "ANYA"
+ ],
+ "19": [
+  "",
+  "Születési helye"
+ ],
+ "20": [
+  "",
+  "SHANDONG, KÍNA"
+ ],
+ "21": [
+  "",
+  "Születési ideje"
+ ],
+ "22": [
+  "",
+  "1990"
+ ],
+ "23": [
+  "",
+  "év"
+ ],
+ "24": [
+  "",
+  "05"
+ ],
+ "25": [
+  "",
+  "hó"
+ ],
+ "26": [
+  "",
+  "07"
+ ],
+ "27": [
+  "",
+  "nap"
+ ],
+ "28": [
+  "",
+  "Állampolgársága"
+ ],
+ "29": [
+  "",
+  "KÍNAI"
+ ],
+ "30": [
+  "",
+  "*Neme"
+ ],
+ "31": [
+  "",
+  "férfi"
+ ],
+ "32": [
+  "",
+  "nő"
+ ],
+ "33": [
+  "",
+  "Lakóhelye"
+ ],
+ "34": [
+  "",
+  "irányítószám"
+ ],
+ "35": [
+  "",
+  "3704"
+ ],
+ "36": [
+  "",
+  "település"
+ ],
+ "37": [
+  "",
+  "BERENTE"
+ ],
+ "38": [
+  "",
+  "utca"
+ ],
+ "39": [
+  "",
+  "IPARI ÚT"
+ ],
+ "40": [
+  "",
+  "házszám"
+ ],
+ "41": [
+  "",
+  "9-11."
+ ],
+ "42": [
+  "",
+  "emelet, ajtó"
+ ],
+ "43": [
+  "",
+  "2., 3."
+ ],
+ "44": [
+  "",
+  "Tartózkodási helye"
+ ],
+ "45": [
+  "",
+  "irányítószám"
+ ],
+ "46": [
+  "",
+  "3704"
+ ],
+ "47": [
+  "",
+  "település"
+ ],
+ "48": [
+  "",
+  "BERENTE"
+ ],
+ "49": [
+  "",
+  "utca"
+ ],
+ "50": [
+  "",
+  "IPARI ÚT"
+ ],
+ "51": [
+  "",
+  "házszám"
+ ],
+ "52": [
+  "",
+  "9-11."
+ ],
+ "53": [
+  "",
+  "emelet, ajtó"
+ ],
+ "54": [
+  "",
+  "2., 3."
+ ],
+ "55": [
+  "",
+  "Az igényt előterjesztő neve"
+ ],
+ "56": [
+  "",
+  "PRÓBA PÉTER"
+ ],
+ "57": [
+  "",
+  "Lakóhelye, székhelye"
+ ],
+ "58": [
+  "",
+  "3700 KAZINCBARCIKA, PÉLDA UTCA 1."
+ ],
+ "59": [
+  "",
+  "Alulírott nyilatkozom arról, hogy külföldön EGT, Egyezményes államban, saját biztosítási rendszerrel rendelkező szervezetnél fennálló biztosítási jogviszonnyal nem rendelkezem***."
+ ],
+ "60": [
+  "",
+  "Dátum"
+ ],
+ "61": [
+  "",
+  "KAZINCBARCIKA"
+ ],
+ "62": [
+  "",
+  "2026"
+ ],
+ "63": [
+  "",
+  "év"
+ ],
+ "64": [
+  "",
+  "10"
+ ],
+ "65": [
+  "",
+  "hó"
+ ],
+ "66": [
+  "",
+  "31"
+ ],
+ "67": [
+  "",
+  "nap"
+ ],
+ "68": [
+  "",
+  "Igénylő/Meghatalmazott aláírása"
+ ],
+ "69": [
+  "",
+  "Hivatal tölti ki!"
+ ],
+ "70": [
+  "",
+  "Az igénylőlap kiállítása a bemutatott"
+ ],
+ "71": [
+  "",
+  "számú személyi igazolvány/útlevél/tartózkodási engedély**"
+ ],
+ "72": [
+  "",
+  "számú születési/házassági anyakönyvi kivonat,**"
+ ],
+ "73": [
+  "",
+  "számú egyéb okirat alapján történt**."
+ ],
+ "74": [
+  "",
+  "A TAJ kiadását megalapozó jogviszony megnevezése:"
+ ],
+ "75": [
+  "",
+  "Az adatok valódiságát ellenőriztem:"
+ ],
+ "76": [
+  "",
+  "Az igénylő Társadalombiztosítási Azonosító Jele"
+ ],
+ "77": [
+  "",
+  "Igazgatási szolgáltatási díj befizetésére vonatkozó feljegyzés"
+ ],
+ "78": [
+  "",
+  "Iktatószám, dátum:"
+ ],
+ "79": [
+  "",
+  "év"
+ ],
+ "80": [
+  "",
+  "hó"
+ ],
+ "81": [
+  "",
+  "nap"
+ ],
+ "82": [
+  "",
+  "Ügyintéző aláírása:"
+ ],
+ "83": [
+  "",
+  "Revizor aláírása:"
+ ],
+ "84": [
+  "",
+  "___________________________PH."
+ ],
+ "85": [
+  "",
+  "A TAJ-t igazoló hatósági Igazolványt átvettem."
+ ],
+ "86": [
+  "",
+  "Dátum:"
+ ],
+ "87": [
+  "",
+  "év"
+ ],
+ "88": [
+  "",
+  "hó"
+ ],
+ "89": [
+  "",
+  "nap"
+ ],
+ "90": [
+  "",
+  "Igénylő/Meghatalmazott aláírása:"
+ ],
+ "91": [
+  "",
+  "* A megfelelő rovat elé tegyen X-t!"
+ ],
+ "92": [
+  "",
+  "** A megfelelő aláhúzandó!"
+ ],
+ "93": [
+  "",
+  "*** Első TAJ kiadásához az új Tbj. 22.§ alá tartozó jogviszony esetében, a TAJ igénylést közvetlenül megelőző biztosítási időszakról a külföldi biztosítási szerv igazolása/formanyomtatványa csatolandó!"
+ ],
+ "94": [
+  "",
+  "- 2 -"
+ ],
+ "95": [
+  "",
+  "[x] first_issue"
+ ],
+ "96": [
+  "",
+  "[ ] lost"
+ ],
+ "97": [
+  "",
+  "[ ] name_change"
+ ],
+ "98": [
+  "",
+  "[ ] expired"
+ ],
+ "99": [
+  "",
+  "[ ] male"
+ ],
+ "100": [
+  "",
+  "[x] female"
+ ]
+}

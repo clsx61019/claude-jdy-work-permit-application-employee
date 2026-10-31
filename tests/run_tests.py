@@ -26,6 +26,8 @@ for _emp in model.EMPLOYERS.values():
 from datetime import date  # noqa: E402
 from service.forms import employer_notification  # noqa: E402
 employer_notification.today = lambda: date(2026, 10, 31)
+from service.forms import taj_common  # noqa: E402
+taj_common.today = lambda: date(2026, 10, 31)
 
 CASES = [
     ("form09", "ict"),
@@ -67,6 +69,13 @@ CASES = [
     ("declaration_address_unchanged", "employee_documents"),
     ("employee_consent", "employee_documents"),
     ("employee_consent", "employee_documents_new"),
+    ("taj_application", "employee_documents"),
+    ("taj_application", "authorizations"),
+    ("taj_order", "employee_documents"),
+    ("taj_application", "taj_male"),
+    ("taj_order", "taj_male"),
+    ("gdpr_declarations", "employee_documents"),
+    ("gdpr_declarations", "authorization_china"),
 ]
 
 
