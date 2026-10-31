@@ -34,6 +34,14 @@ def get_record(app_id, entry_id, data_id):
                  {"app_id": app_id, "entry_id": entry_id, "data_id": data_id})["data"]
 
 
+def find_records(app_id, entry_id, field, value, field_type="text"):
+    """按字段值等于 value 查记录，最多返回 2 条（够判断是否唯一）。"""
+    return _post("/v5/app/entry/data/list", {
+        "app_id": app_id, "entry_id": entry_id, "limit": 2, "fields": ["_id"],
+        "filter": {"rel": "and", "cond": [{"field": field, "type": field_type, "method": "eq", "value": [value]}]},
+    })["data"]
+
+
 def _upload_one(url, token, filename, content):
     boundary = uuid.uuid4().hex
     ctype = mimetypes.guess_type(filename)[0] or "application/octet-stream"

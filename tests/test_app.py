@@ -19,13 +19,17 @@ ROOT = Path(__file__).resolve().parent.parent
 SAMPLE = json.loads((ROOT / "tests" / "samples" / "employee_documents.json").read_text(encoding="utf-8"))
 SAMPLE.update({"_id": "rec1", "appId": "app1", "entryId": "entry1"})
 
-calls = {"uploads": [], "updates": []}
+calls = {"uploads": [], "updates": [], "lists": []}
 
 
 class FakeJdy(BaseHTTPRequestHandler):
     def do_POST(self):
         raw = self.rfile.read(int(self.headers.get("Content-Length") or 0))
-        if self.path.endswith("/data/get"):
+        if self.path.endswith("/data/list"):
+            cond = json.loads(raw)["filter"]["cond"][0]
+            calls["lists"].append(cond)
+            out = {"data": [{"_id": "rec1"}] if cond["value"] == ["SN-1"] else []}
+        elif self.path.endswith("/data/get"):
             out = {"data": SAMPLE}
         elif self.path.endswith("/get_upload_token"):
             out = {"token_and_url_list": [{"url": f"http://127.0.0.1:{self.server.server_port}/upload",
@@ -110,6 +114,12 @@ def main():
         attached = json.loads(body)["attached"]
         assert code == 200 and attached and all(n.endswith((".docx", ".pdf")) for n in attached), body
         assert list(calls["updates"][-1]["data"]) == ["_widget_taj"], calls["updates"][-1]
+        # 没有数据 ID 时按字段值找记录
+        code, body = call(base, "/generate?key=SN-1&key_field=_widget_sn&key_type=sn&token=secret&format=attach&group=taj")
+        assert code == 200, body
+        assert calls["lists"][-1] == {"field": "_widget_sn", "type": "sn", "method": "eq", "value": ["SN-1"]}
+        assert call(base, "/generate?key=NOPE&key_field=_widget_sn&token=secret&format=attach&group=taj")[0] == 400
+        assert call(base, "/generate?token=secret&format=attach&group=taj")[0] == 400
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip")
         names = zipfile.ZipFile(io.BytesIO(body)).namelist()
         assert "申请表/" in names and "TAJ/" in names and any(n.startswith("授权书/IMO") for n in names), names

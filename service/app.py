@@ -9,7 +9,9 @@
 - GET|POST /generate                  生成文件
     参数（查询字符串或 JSON）：
       token      必填，等于环境变量 GEN_TOKEN
-      data_id    必填，简道云记录 ID
+      data_id    简道云记录 ID。智能助手里拿不到数据 ID 时，改用 key：
+      key        按某个字段的值找记录（字段 = 参数 key_field，默认环境变量 FIELD_KEY，建议用「流水号」字段），
+                 必须正好找到一条
       forms      可选，逗号分隔的选项文字或模块名，或 all（附件只出对应居留许可类型的那份，其余逐个尝试，不适用的跳过）。
                  不填时读记录里的多选框 FIELD_SELECT；它也为空时按 all。
       app_id / entry_id   可选，默认用环境变量 JDY_APP_ID / JDY_ENTRY_ID
@@ -26,6 +28,7 @@
                    各分组压缩包的附件字段（format=attach&group=…），没配就用 FIELD_WORD
   FIELD_PDF        写回 PDF 的附件字段 _widget_ ID（不填则 Word、PDF 都写到 FIELD_WORD）
   FIELD_SELECT     多选框「选择要生成的文件」的 _widget_ ID（可选）
+  FIELD_KEY        可选：用 key 找记录时的字段 _widget_ ID（FIELD_KEY_TYPE 为字段类型，默认 text，流水号填 sn）
   FIELD_RESULT     多行文本，写生成结果和跳过原因（可选）
   JDY_PUSH_SECRET  数据推送的签名密钥（用 /jdy-webhook 时必填）
 """
@@ -189,14 +192,23 @@ def attach_files(app_id, entry_id, data_id, zipname, files, skipped, group):
     return [n for n, _ in upload]
 
 
+def find_by_key(app_id, entry_id, params):
+    value = str(params.get("key") or "").strip()
+    field = params.get("key_field") or env("FIELD_KEY")
+    if not value or not field:
+        raise BadRequest("缺少 data_id（或 key + key_field）")
+    found = jdy.find_records(app_id, entry_id, field, value, params.get("key_type") or env("FIELD_KEY_TYPE") or "text")
+    if len(found) != 1:
+        raise BadRequest(f"按 {field} = {value} 找到 {len(found)} 条记录，必须正好一条")
+    return found[0]["_id"]
+
+
 def handle_generate(params):
     if not env("GEN_TOKEN") or not hmac.compare_digest(str(params.get("token", "")), env("GEN_TOKEN")):
         return 403, "application/json", {"error": "token 不对"}
-    data_id = params.get("data_id")
-    if not data_id:
-        raise BadRequest("缺少 data_id")
     app_id = params.get("app_id") or env("JDY_APP_ID")
     entry_id = params.get("entry_id") or env("JDY_ENTRY_ID")
+    data_id = params.get("data_id") or find_by_key(app_id, entry_id, params)
     fmt = params.get("format", "json")
     record = jdy.get_record(app_id, entry_id, data_id)
     group = params.get("group")
