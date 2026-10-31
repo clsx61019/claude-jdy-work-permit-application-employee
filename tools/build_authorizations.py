@@ -20,6 +20,7 @@ from docx.oxml.ns import qn
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from service.docx_text import para_text, paragraphs, replace_in_paragraph  # noqa: E402
+from tools.bilingual import flip_labels, hungarian_left  # noqa: E402
 
 W = r"\$\{[^}]*?#_widget_"  # 占位符开头
 
@@ -68,6 +69,10 @@ def build_imo():
         fix(doc, W + rf"1733307002{name}\}}", f"{{{{w{i}_name}}}}", regex=True)
         fix(doc, W + rf"1733307002{idno}\}}", f"{{{{w{i}_id}}}}", regex=True)
         fix(doc, W + rf"1733307002{addr}\}}", f"{{{{w{i}_address}}}}", regex=True)
+    # 统一版式：左匈右英。证人一栏左右是两名证人，不动
+    hungarian_left(doc, keep=("Witness/Tanú", "Signature/Aláírás"))
+    flip_labels(doc, [("Principal", "Meghatalmazó"), ("Authorized person", "Meghatalmazott"), ("Witness", "Tanú"),
+                      ("Name", "Név"), ("ID", "Igazolvány"), ("Address", "Cím"), ("Signature", "Aláírás")])
     check_done(doc)
     doc.save(ROOT / "templates/hu/imo_authorization.docx")
 

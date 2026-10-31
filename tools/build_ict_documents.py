@@ -14,10 +14,12 @@ import sys
 from pathlib import Path
 
 from docx import Document
+from docx.oxml.ns import qn
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from service.docx_text import para_text, paragraphs, replace_in_paragraph  # noqa: E402
+from tools.bilingual import flip_labels, hungarian_left  # noqa: E402
 
 W = r"\$\{[^}]*?#_widget_"  # 占位符开头
 
@@ -101,6 +103,19 @@ def build_declaration():
     fix(doc, "hasonló helyzetben tévő", "hasonló helyzetben lévő")
     fix(doc, "duly executed this preliminary agreement", "duly executed this Declaration")
     fix(doc, "a felek a jelen megállapodást", "a felek a jelen nyilatkozatot")
+    # 统一版式：左匈右英。日期和签字两行左右是派出公司和接收公司两方，不动
+    hungarian_left(doc, keep=("Date/Dátum", "Sending Company/"))
+    flip_labels(doc, [("Date", "Dátum"), ("Sending Company", "Küldő Vállalat"), ("Host Company", "Fogadó Vállalat"),
+                      ("Employee", "Munkavállaló"),
+                      ("I accept and agree with the above terms", "a fentiekkel egyetértek és elfogadom")])
+    fix(doc, "a fentiekkel egyetértek és elfogadom / I accept", "A fentiekkel egyetértek és elfogadom / I accept")
+    fix(doc, "HU National Bank exchange rate, 13:00, {{rate_date_en}} / Magyar Nemzeti Bank árfolyama alapján, {{rate_date_hu}} 13:00",
+        "Magyar Nemzeti Bank árfolyama alapján, {{rate_date_hu}} 13:00 / HU National Bank exchange rate, 13:00, {{rate_date_en}}")
+    # 脚注原来有黄色高亮，打印出来有底色
+    for par in paragraphs(doc):
+        if "Magyar Nemzeti Bank árfolyama" in para_text(par):
+            for h in list(par.iter(qn("w:highlight"))):
+                h.getparent().remove(h)
     check_done(doc)
     doc.save(ROOT / "templates/hu/ict_declaration.docx")
 

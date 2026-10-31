@@ -21,6 +21,7 @@ from docx.oxml.ns import qn
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from service.docx_text import para_text, paragraphs, replace_in_paragraph  # noqa: E402
+from tools.bilingual import flip_labels, hungarian_left  # noqa: E402
 
 WIDGETS = {
     "_widget_1728475331388": "name",
@@ -139,7 +140,7 @@ def number_hu_point3(doc):
 
 def tidy_annex_break(doc):
     """合同正文和附件之间原来是空段 + 分页符段；正文刚好占满一页时会多出一张白纸。
-    改成：一个 1 磅的空段（两个表格之间必须隔一段），附件第一段设「段前分页」"""
+    改成：一个 1 磅的空段（两个表格之间必须隔一段），这个空段设「段前分页」"""
     body = doc.element.body
     tables = body.findall(qn("w:tbl"))
     between = [el for el in body if el.tag == qn("w:p")
@@ -159,12 +160,8 @@ def tidy_annex_break(doc):
     rows = tables[0].findall(qn("w:tr"))
     if not para_text(rows[-1]).strip():
         tables[0].remove(rows[-1])
-    first = tables[1].find(".//" + qn("w:p"))
-    fppr = first.find(qn("w:pPr"))
-    if fppr is None:
-        fppr = OxmlElement("w:pPr")
-        first.insert(0, fppr)
-    fppr.insert(0, OxmlElement("w:pageBreakBefore"))
+    # 段前分页放在这个 1 磅的空段上，不放在附件标题上：正文刚好写满一页时，空段带着分页跑到下一页也不会多出白纸
+    ppr.insert(0, OxmlElement("w:pageBreakBefore"))
 
 
 def add_entitlement(doc):
@@ -217,6 +214,11 @@ def build(kind):
     number_hu_point3(doc)
     tidy_annex_break(doc)
     add_entitlement(doc)
+    # 统一版式：左匈右英。签字栏左右是雇主和员工两方，不动
+    hungarian_left(doc, keep=("On behalf of", "Kazincbarcika, ……"))
+    flip_labels(doc, [("Signature", "Aláírás"), ("Employer", "Munkáltató"), ("Employee", "Munkavállaló")])
+    fix(doc, "On behalf of BorsodChem Zrt. / ", "A BorsodChem Zrt. nevében / ")
+    fix(doc, "a BorsodChem Zrt. nevében", "On behalf of BorsodChem Zrt.")
 
     out.parent.mkdir(parents=True, exist_ok=True)
     doc.save(out)
