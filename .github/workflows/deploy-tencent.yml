@@ -72,6 +72,8 @@ jobs:
           FIELD_PDF: ${{ vars.FIELD_PDF }}
           FIELD_SELECT: ${{ vars.FIELD_SELECT }}
           FIELD_RESULT: ${{ vars.FIELD_RESULT }}
+          FIELD_KEY: ${{ vars.FIELD_KEY || '_widget_1793478163742' }}  # 测试表「流水号」，智能助手按它找记录
+          FIELD_KEY_TYPE: ${{ vars.FIELD_KEY_TYPE || 'sn' }}
           FIELD_APPLICATION: ${{ vars.FIELD_APPLICATION || '_widget_1793474342567' }}  # 测试表「申请材料1」
           FIELD_CONTRACT: ${{ vars.FIELD_CONTRACT || '_widget_1793476906699' }}  # 测试表「申请材料2」
           FIELD_AUTHORIZATION: ${{ vars.FIELD_AUTHORIZATION || '_widget_1793476906700' }}  # 测试表「申请材料3」
