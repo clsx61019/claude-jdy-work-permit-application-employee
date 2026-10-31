@@ -33,7 +33,7 @@ def ymd(f, nos, d):
 
 
 def fill(f, p):
-    # 页眉：申请类型。变更（换许可类型）按新目的首次申请处理，待确认
+    # 页眉：申请类型。变更（换许可类型）也勾首次申请（已确认）
     extension = p.app_type == "extension"
     f.check(1, "kiadása első alkalommal", not extension)
     f.check(8, "meghosszabbítása", extension)
