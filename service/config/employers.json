@@ -1,5 +1,5 @@
 {
- "_说明": "来自简道云辅助表「雇主相关信息」（2026-10-30 导出）。部署后改为每次从简道云实时读取。",
+ "_说明": "来自简道云辅助表「雇主相关信息」（2026-10-30 导出）。部署后改为每次从简道云实时读取。 雇主代表（representative_hu / representative_en，预协议用）待补：取自辅助表的「雇主代表（匈牙利语 / 英语）」。workplace_en 为空时按匈牙利语自动转换。",
  "BorsodChem Zrt.": {
   "name": "BorsodChem Zrt.",
   "address": "3700 Kazincbarcika, Bolyai tér 1.",
@@ -11,7 +11,9 @@
   "city": "Kazincbarcika",
   "street": "Bolyai",
   "street_type": "tér",
-  "house_no": "1."
+  "house_no": "1.",
+  "representative_hu": "",
+  "representative_en": ""
  },
  "CC6 Hungary Kft.": {
   "name": "CC6 Hungary Kft.",
@@ -24,7 +26,9 @@
   "city": "Kazincbarcika",
   "street": "Egressy Béni",
   "street_type": "út",
-  "house_no": "19."
+  "house_no": "19.",
+  "representative_hu": "",
+  "representative_en": ""
  },
  "Eastern Yizhao Engineering Kft.": {
   "name": "Eastern Yizhao Engineering Kft.",
@@ -37,7 +41,9 @@
   "city": "Budapest",
   "street": "Kőbányai",
   "street_type": "út",
-  "house_no": "49."
+  "house_no": "49.",
+  "representative_hu": "",
+  "representative_en": ""
  },
  "Hungary HaoYi Construction Kft.": {
   "name": "Hungary HaoYi Construction Kft.",
@@ -50,7 +56,9 @@
   "city": "Kazincbarcika",
   "street": "Dózsa György",
   "street_type": "út",
-  "house_no": "32."
+  "house_no": "32.",
+  "representative_hu": "",
+  "representative_en": ""
  },
  "Kangxilejia Catering Management Hungary Kft.": {
   "name": "Kangxilejia Catering Management Hungary Kft.",
@@ -63,7 +71,9 @@
   "city": "Kazincbarcika",
   "street": "Bolyai",
   "street_type": "tér",
-  "house_no": "1."
+  "house_no": "1.",
+  "representative_hu": "",
+  "representative_en": ""
  },
  "Polimer Szolgáltató Kft.": {
   "name": "Polimer Szolgáltató Kft.",
@@ -76,6 +86,8 @@
   "city": "Kazincbarcika",
   "street": "Szent Flórián",
   "street_type": "tér",
-  "house_no": "2."
+  "house_no": "2.",
+  "representative_hu": "",
+  "representative_en": ""
  }
 }
