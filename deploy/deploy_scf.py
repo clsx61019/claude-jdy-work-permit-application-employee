@@ -1,0 +1,109 @@
+"""
+把已推送到腾讯云容器镜像服务（TCR）的镜像部署成云函数（Web 函数），并确保有一个公网「函数 URL」。
+函数不存在就创建，存在就更新镜像和环境变量。由 .github/workflows/deploy-tencent.yml 调用。
+
+需要的环境变量：
+  TENCENTCLOUD_SECRET_ID / TENCENTCLOUD_SECRET_KEY   腾讯云 API 密钥（建议用只授权 SCF 的子账号）
+  TENCENT_REGION     地域，如 eu-frankfurt
+  SCF_FUNCTION       函数名
+  IMAGE_URI          完整镜像地址，如 deccr.ccs.tencentyun.com/命名空间/jdy-print:abc123
+  IMAGE_TYPE         personal（个人版，默认）/ enterprise
+  TCR_REGISTRY_ID    企业版实例 ID（IMAGE_TYPE=enterprise 时必填）
+函数自己的环境变量（原样传进函数）：见 FUNCTION_ENV。
+"""
+import json
+import os
+import sys
+import time
+
+from tencentcloud.common import credential
+from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
+from tencentcloud.scf.v20180416 import models, scf_client
+
+FUNCTION_ENV = ["JDY_API_KEY", "GEN_TOKEN", "JDY_APP_ID", "JDY_ENTRY_ID",
+                "FIELD_WORD", "FIELD_PDF", "FIELD_SELECT", "FIELD_RESULT", "JDY_PUSH_SECRET"]
+
+env = os.environ.get
+NAME = env("SCF_FUNCTION", "jdy-print")
+client = scf_client.ScfClient(
+    credential.Credential(env("TENCENTCLOUD_SECRET_ID"), env("TENCENTCLOUD_SECRET_KEY")),
+    env("TENCENT_REGION", "eu-frankfurt"))
+
+
+def call(action, params):
+    req = getattr(models, f"{action}Request")()
+    req.from_json_string(json.dumps(params))
+    return json.loads(getattr(client, action)(req).to_json_string())
+
+
+def image_config():
+    cfg = {"ImageType": env("IMAGE_TYPE") or "personal", "ImageUri": env("IMAGE_URI"), "ImagePort": 9000}
+    if env("TCR_REGISTRY_ID"):
+        cfg["RegistryId"] = env("TCR_REGISTRY_ID")
+    return cfg
+
+
+def function_env():
+    return {"Variables": [{"Key": k, "Value": env(k)} for k in FUNCTION_ENV if env(k)]}
+
+
+def get_function():
+    try:
+        return call("GetFunction", {"FunctionName": NAME})
+    except TencentCloudSDKException as e:
+        if "ResourceNotFound" in (e.code or ""):
+            return None
+        raise
+
+
+def wait_active():
+    for _ in range(120):
+        f = get_function()
+        status = f and f.get("Status")
+        if status == "Active":
+            return
+        if status and "Failed" in status:
+            sys.exit(f"函数状态 {status}：{f.get('StatusDesc')}")
+        time.sleep(5)
+    sys.exit("等了 10 分钟函数还没就绪")
+
+
+SETTINGS = {
+    "MemorySize": 2048,   # LibreOffice 转 PDF 要内存；镜像越大内存也要越大
+    "Timeout": 300,       # 一次生成二十来份文件，留足余量
+    "InitTimeout": 90,
+}
+
+
+def main():
+    if get_function() is None:
+        print(f"创建函数 {NAME}")
+        call("CreateFunction", {
+            "FunctionName": NAME, "Type": "HTTP", "Description": "简道云居留许可文件生成（测试）",
+            "Code": {"ImageConfig": image_config()}, "Environment": function_env(),
+            "PublicNetConfig": {"PublicNetStatus": "ENABLE", "EipConfig": {"EipStatus": "DISABLE"}},
+            **SETTINGS})
+        wait_active()
+    else:
+        print(f"更新函数 {NAME}")
+        call("UpdateFunctionCode", {"FunctionName": NAME, "Code": {"ImageConfig": image_config()}})
+        wait_active()
+        call("UpdateFunctionConfiguration", {"FunctionName": NAME, "Environment": function_env(), **SETTINGS})
+        wait_active()
+
+    triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
+    url_trigger = next((t for t in triggers if t.get("Type") == "http"), None)
+    if not url_trigger:
+        print("创建函数 URL")
+        call("CreateTrigger", {
+            "FunctionName": NAME, "TriggerName": "url", "Type": "http", "Enable": "OPEN",
+            "TriggerDesc": json.dumps({"AuthType": "NONE",
+                                       "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
+        triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
+        url_trigger = next((t for t in triggers if t.get("Type") == "http"), None)
+    print("函数 URL 触发器：", json.dumps(url_trigger, ensure_ascii=False, indent=1))
+    print("（公网地址也可以在控制台「函数管理 → 函数 URL」里看到）")
+
+
+if __name__ == "__main__":
+    main()

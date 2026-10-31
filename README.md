@@ -20,6 +20,7 @@
 | `templates/official/` | 官方原版表单（不修改） |
 | `service/` | 文件生成：数据模型、各表单的填写规则、公司固定答案 |
 | `tests/` | 虚构样例和"正确结果"，用于对比测试 |
+| `deploy/` | 部署到腾讯云函数（说明见 `deploy/腾讯云部署.md`） |
 | `tools/` | 辅助工具，如列出官方表单里的可填写域 |
 | `prototype/` | 早期原型（简道云模板改 Jinja 的方案，已不采用） |
 
@@ -35,7 +36,10 @@ python -m service.generate form09 tests/samples/ict.json out/09_ict.docx
 
 ```bash
 python tests/run_tests.py
+python tests/test_app.py      # HTTP 服务端到端测试（假的简道云接口）
 ```
+
+本地起 HTTP 服务：`python -m service.app`（端口 9000，接口说明见 `service/app.py` 开头）。
 
 默认同时生成 Word 和 PDF（转 PDF 需要安装 LibreOffice，加 `--no-pdf` 只出 Word）。改动规则后先跑测试：如果是预期内的变化，确认后再用 `python tests/run_tests.py --update` 更新基准。
 

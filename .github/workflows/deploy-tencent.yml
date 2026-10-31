@@ -1,0 +1,60 @@
+# 构建打印服务镜像 -> 在镜像里跑测试 -> 推送到腾讯云容器镜像服务 -> 部署/更新云函数
+# 手动运行：GitHub 仓库 → Actions → 「部署到腾讯云」→ Run workflow
+# 需要的 Secrets / Variables 见 deploy/腾讯云部署.md
+name: 部署到腾讯云
+
+on:
+  pull_request:          # PR 上只构建和测试，不部署
+    paths: ["Dockerfile", "service/**", "templates/**", "deploy/**", "tests/**", "requirements.txt", ".github/workflows/deploy-tencent.yml"]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "构建并测试后是否推送、部署（不勾只构建测试）"
+        type: boolean
+        default: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_URI: ${{ vars.TCR_REGISTRY || 'deccr.ccs.tencentyun.com' }}/${{ vars.TCR_NAMESPACE }}/jdy-print:${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 构建镜像（x86）
+        run: docker build --platform linux/amd64 -t jdy-print:ci .
+
+      - name: 在镜像里跑测试
+        run: |
+          docker run --rm -v "$PWD/tests:/app/tests" jdy-print:ci python tests/run_tests.py
+          docker run --rm -v "$PWD/tests:/app/tests" jdy-print:ci python tests/test_app.py
+          docker image ls jdy-print:ci
+
+      - name: 推送到腾讯云容器镜像服务
+        if: inputs.deploy
+        run: |
+          echo "${{ secrets.TCR_PASSWORD }}" | docker login "${IMAGE_URI%%/*}" -u "${{ secrets.TCR_USERNAME }}" --password-stdin
+          docker tag jdy-print:ci "$IMAGE_URI"
+          docker push "$IMAGE_URI"
+
+      - name: 部署云函数
+        if: inputs.deploy
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+          TENCENT_REGION: ${{ vars.TENCENT_REGION || 'eu-frankfurt' }}
+          SCF_FUNCTION: ${{ vars.SCF_FUNCTION || 'jdy-print' }}
+          IMAGE_TYPE: ${{ vars.TCR_IMAGE_TYPE || 'personal' }}
+          TCR_REGISTRY_ID: ${{ vars.TCR_REGISTRY_ID }}
+          JDY_API_KEY: ${{ secrets.JDY_API_KEY }}
+          GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
+          JDY_PUSH_SECRET: ${{ secrets.JDY_PUSH_SECRET }}
+          JDY_APP_ID: ${{ vars.JDY_APP_ID }}
+          JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID }}
+          FIELD_WORD: ${{ vars.FIELD_WORD }}
+          FIELD_PDF: ${{ vars.FIELD_PDF }}
+          FIELD_SELECT: ${{ vars.FIELD_SELECT }}
+          FIELD_RESULT: ${{ vars.FIELD_RESULT }}
+        run: |
+          pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
+          python deploy/deploy_scf.py
