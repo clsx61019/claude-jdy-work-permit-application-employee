@@ -63,7 +63,13 @@ def wait_active():
         if status == "Active":
             return
         if status and "Failed" in status:
-            sys.exit(f"函数状态 {status}：{f.get('StatusDesc')}")
+            print(f"函数状态 {status}：{f.get('StatusDesc')}")
+            print("原因：", json.dumps(f.get("StatusReasons"), ensure_ascii=False))
+            print("镜像配置：", json.dumps((f.get("ImageConfig") or {}), ensure_ascii=False))
+            if status == "CreateFailed":  # 创建失败的函数留着会挡住下次创建，删掉
+                call("DeleteFunction", {"FunctionName": NAME})
+                print("已删除创建失败的函数，修正后重新运行即可")
+            sys.exit(1)
         time.sleep(5)
     sys.exit("等了 10 分钟函数还没就绪")
 
@@ -76,7 +82,13 @@ SETTINGS = {
 
 
 def main():
-    if get_function() is None:
+    existing = get_function()
+    if existing and existing.get("Status") == "CreateFailed":
+        print("上次创建失败，先删除")
+        call("DeleteFunction", {"FunctionName": NAME})
+        time.sleep(10)
+        existing = None
+    if existing is None:
         print(f"创建函数 {NAME}")
         call("CreateFunction", {
             "FunctionName": NAME, "Type": "HTTP", "Description": "简道云居留许可文件生成（测试）",
