@@ -68,6 +68,11 @@ jobs:
           FIELD_PDF: ${{ vars.FIELD_PDF }}
           FIELD_SELECT: ${{ vars.FIELD_SELECT }}
           FIELD_RESULT: ${{ vars.FIELD_RESULT }}
+          FIELD_APPLICATION: ${{ vars.FIELD_APPLICATION }}
+          FIELD_CONTRACT: ${{ vars.FIELD_CONTRACT }}
+          FIELD_AUTHORIZATION: ${{ vars.FIELD_AUTHORIZATION }}
+          FIELD_DECLARATIONS: ${{ vars.FIELD_DECLARATIONS }}
+          FIELD_TAJ: ${{ vars.FIELD_TAJ }}
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
           python deploy/deploy_scf.py

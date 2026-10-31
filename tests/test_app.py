@@ -64,7 +64,8 @@ def main():
     threading.Thread(target=fake.serve_forever, daemon=True).start()
     env = dict(os.environ, PORT="9123", JDY_API_BASE=f"http://127.0.0.1:{fake.server_port}/api",
                JDY_API_KEY="test", JDY_APP_ID="app1", JDY_ENTRY_ID="entry1", GEN_TOKEN="secret",
-               FIELD_WORD="_widget_word", FIELD_PDF="_widget_pdf", FIELD_RESULT="_widget_result")
+               FIELD_WORD="_widget_word", FIELD_PDF="_widget_pdf", FIELD_RESULT="_widget_result",
+               FIELD_TAJ="_widget_taj")
     proc = subprocess.Popen([sys.executable, "-m", "service.app"], cwd=ROOT, env=env)
     base = "http://127.0.0.1:9123"
     for _ in range(50):
@@ -104,15 +105,10 @@ def main():
         assert json.loads(body)["zip"].startswith("申请材料")
         value = calls["updates"][-1]["data"]["_widget_word"]["value"]
         assert len(value) == 1, value
-        # 按分组：保留其他分组的旧包，替换同组旧包，散落的文件去掉
-        SAMPLE["_widget_word"] = [{"name": "TAJ TESZT MINTA.zip", "url": "https://files.example/oldtaj?x=1"},
-                                  {"name": "申请表 TESZT MINTA.zip", "url": "https://files.example/oldapp?x=1"},
-                                  {"name": "随便.docx", "url": "https://files.example/loose"}]
-        code, body = call(base, "/generate?data_id=rec1&token=secret&format=attach&group=application")
-        assert code == 200 and json.loads(body)["zip"].startswith("申请表"), body
-        value = calls["updates"][-1]["data"]["_widget_word"]["value"]
-        assert value[0] == "oldtaj" and len(value) == 2 and value[1].startswith("key"), value
-        del SAMPLE["_widget_word"]
+        # 按分组：写进该组自己的附件字段
+        code, body = call(base, "/generate?data_id=rec1&token=secret&format=attach&group=taj")
+        assert code == 200 and json.loads(body)["zip"].startswith("TAJ"), body
+        assert list(calls["updates"][-1]["data"]) == ["_widget_taj"], calls["updates"][-1]
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip")
         names = zipfile.ZipFile(io.BytesIO(body)).namelist()
         assert "申请表/" in names and "TAJ/" in names and any(n.startswith("授权书/IMO") for n in names), names
