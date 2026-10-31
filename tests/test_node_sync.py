@@ -109,7 +109,10 @@ def test_push():
     INSTANCES["r4"]["tasks"].append(
         {"status": 0, "flow_name": "2. 收到证书", "assignee": {"username": "reka"}, "create_time": "2026-11-02T08:00:00Z"})
     INSTANCES["r4"]["tasks"][0]["status"] = 1
-    out = push({"op": "workflow_task", "data": {"instance_id": "r4", "form_id": "entry1"}})
+    # 官方「流程待办变更时」样例的格式
+    out = push({"schema": "2.0", "header": {"event_type": "task_update", "created_at": 1761703465254},
+                "event": {"app_id": "app1", "form_id": "entry1", "instance_id": "r4", "flow_id": 7,
+                          "flow_name": "2. 收到证书", "completed_tasks": [], "created_tasks": []}})
     assert out["statusCode"] == 200, out
     assert RECORDS["r4"]["w_node"] == "02 收到证书" and RECORDS["r4"]["w_who"] == ["reka"]
     # 写回引起的再次推送：值没变，不写
@@ -118,6 +121,8 @@ def test_push():
     assert len(updates) == before
     # 别的表单、签名不对
     assert json.loads(push({"data": {"_id": "x", "entryId": "other"}})["body"]) == {"ignored": True}
+    assert json.loads(push({"schema": "2.0", "header": {"event_type": "process_update"},
+                            "event": {"form_id": "other", "instance_id": "x", "status": 2}})["body"]) == {"ignored": True}
     assert push({"data": {"_id": "r4"}}, secret="wrong")["statusCode"] == 403
 
 

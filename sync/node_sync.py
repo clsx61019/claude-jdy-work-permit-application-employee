@@ -208,8 +208,12 @@ def pushed_ids(body):
     """从推送内容里找出记录 ID（= 流程实例 ID）和表单 ID。
     表单推送（data_create/data_update）和流程推送（待办变更、流程状态变更）的格式不同，
     这里不依赖具体格式：在常见位置找 _id / data_id / instance_id 和 entryId / form_id / entry_id。"""
+    # 流程推送（schema 2.0）：{"header": {"event_type": "task_update" | "process_update"},
+    #                          "event": {"app_id", "form_id", "instance_id", ...}}
+    # 表单推送：{"op": "data_update", "data": {"_id", "appId", "entryId", ...}}
     data = body.get("data") if isinstance(body.get("data"), dict) else {}
-    spots = [data, body, data.get("instance") or {}, data.get("task") or {}]
+    event = body.get("event") if isinstance(body.get("event"), dict) else {}
+    spots = [event, data, body]
     rid = next((s.get(k) for s in spots for k in ("instance_id", "data_id", "_id") if s.get(k)), None)
     eid = next((s.get(k) for s in spots for k in ("entryId", "form_id", "entry_id") if s.get(k)), None)
     return rid, eid
@@ -217,6 +221,7 @@ def pushed_ids(body):
 
 def handle_push(headers, raw, query, now=None):
     if not check_signature(headers, raw, query):
+        print("签名不对。请求头：", sorted((headers or {}).keys()), "查询参数：", sorted(query.keys()), file=sys.stderr)
         return 403, {"error": "签名不对"}
     body = json.loads(raw)
     print("收到推送：", json.dumps(body, ensure_ascii=False)[:1000])  # 先把格式记进日志，便于核对
