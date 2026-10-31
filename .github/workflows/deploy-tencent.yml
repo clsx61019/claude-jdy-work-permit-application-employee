@@ -64,15 +64,15 @@ jobs:
           JDY_PUSH_SECRET: ${{ secrets.JDY_PUSH_SECRET }}
           JDY_APP_ID: ${{ vars.JDY_APP_ID || '67501067fec27368c50bdf57' }}
           JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID || '6ae1e985c2c60828dfc71ed4' }}  # 测试表
-          FIELD_WORD: ${{ vars.FIELD_WORD || '_widget_1793474342567' }}  # 测试表「申请材料」
+          FIELD_WORD: ${{ vars.FIELD_WORD || '_widget_1793474342567' }}  # 不带分组时写这里（测试表「申请材料1」）
           FIELD_PDF: ${{ vars.FIELD_PDF }}
           FIELD_SELECT: ${{ vars.FIELD_SELECT }}
           FIELD_RESULT: ${{ vars.FIELD_RESULT }}
-          FIELD_APPLICATION: ${{ vars.FIELD_APPLICATION }}
-          FIELD_CONTRACT: ${{ vars.FIELD_CONTRACT }}
-          FIELD_AUTHORIZATION: ${{ vars.FIELD_AUTHORIZATION }}
-          FIELD_DECLARATIONS: ${{ vars.FIELD_DECLARATIONS }}
-          FIELD_TAJ: ${{ vars.FIELD_TAJ }}
+          FIELD_APPLICATION: ${{ vars.FIELD_APPLICATION || '_widget_1793474342567' }}  # 测试表「申请材料1」
+          FIELD_CONTRACT: ${{ vars.FIELD_CONTRACT || '_widget_1793476906699' }}  # 测试表「申请材料2」
+          FIELD_AUTHORIZATION: ${{ vars.FIELD_AUTHORIZATION || '_widget_1793476906700' }}  # 测试表「申请材料3」
+          FIELD_DECLARATIONS: ${{ vars.FIELD_DECLARATIONS || '_widget_1793476906701' }}  # 测试表「申请材料4」
+          FIELD_TAJ: ${{ vars.FIELD_TAJ || '_widget_1793476906702' }}  # 测试表「申请材料5」
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
           python deploy/deploy_scf.py
