@@ -14,7 +14,7 @@
                  不填时读记录里的多选框 FIELD_SELECT；它也为空时按 all。
       app_id / entry_id   可选，默认用环境变量 JDY_APP_ID / JDY_ENTRY_ID
       group      可选，按钮分组（见 config/groups.json），只生成这一组里适用的文件；优先于 forms
-      format     attach（一个压缩包放进附件字段 FIELD_WORD，替换旧的；给简道云智能助手用）/ json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
+      format     attach（压缩包放进附件字段 FIELD_WORD；带 group 时只替换同组旧包，给简道云智能助手用）/ json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
 - POST /jdy-webhook                   简道云「数据推送」：多选框 FIELD_SELECT 有值时生成，生成后把它清空
 
 环境变量
@@ -168,10 +168,29 @@ def make_zip(files, skipped, folders=False):
     return buf.getvalue()
 
 
-def attach_zip(app_id, entry_id, data_id, zipname, content):
-    """附件字段只放这一个压缩包（替换旧的）"""
+def _existing_key(entry):
+    """简道云读出来的附件只有下载链接，文件 key 是链接路径的最后一段"""
+    return urlparse(entry.get("url", "")).path.rsplit("/", 1)[-1]
+
+
+def attach_zip(app_id, entry_id, data_id, record, zipname, content, group):
+    """压缩包放进附件字段。按分组生成时只替换同组的旧压缩包，其他分组的保留；不分组时替换全部。"""
+    field = env("FIELD_WORD")
+    keep = []
+    if group:
+        prefix = GROUPS[group]["name"] + " "
+        keep = [e for e in (record.get(field) or [])
+                if e.get("name", "").endswith(".zip") and not e["name"].startswith(prefix)]
     tid, (key,) = jdy.upload_files(app_id, entry_id, [(zipname, content)])
-    jdy.update_record(app_id, entry_id, data_id, {env("FIELD_WORD"): {"value": [key]}}, tid)
+    try:
+        jdy.update_record(app_id, entry_id, data_id,
+                          {field: {"value": [_existing_key(e) for e in keep] + [key]}}, tid)
+    except jdy.JdyError:
+        if not keep:
+            raise
+        print("保留其他分组的压缩包失败，只写入新的", flush=True)
+        tid, (key,) = jdy.upload_files(app_id, entry_id, [(zipname, content)])
+        jdy.update_record(app_id, entry_id, data_id, {field: {"value": [key]}}, tid)
 
 
 def handle_generate(params):
@@ -196,10 +215,10 @@ def handle_generate(params):
             return 200, "text/html; charset=utf-8", f"<meta charset=utf-8><p>没有可生成的文件。</p><p>{body}</p>"
         return 200, "application/zip", make_zip(files, skipped, folders=not group), zipname
 
-    if fmt == "attach":  # 一个压缩包（按分组分文件夹）放进附件字段，替换旧的
+    if fmt == "attach":  # 压缩包放进附件字段（给简道云智能助手用）
         if not env("FIELD_WORD"):
             raise BadRequest("没有配置 FIELD_WORD（附件字段）")
-        attach_zip(app_id, entry_id, data_id, zipname, make_zip(files, skipped, folders=not group))
+        attach_zip(app_id, entry_id, data_id, record, zipname, make_zip(files, skipped, folders=not group), group)
         return 200, "application/json", {
             "zip": zipname if files else None,
             "generated": [n for n, _ in files], "skipped": [{"file": l, "reason": r} for l, r in skipped]}
