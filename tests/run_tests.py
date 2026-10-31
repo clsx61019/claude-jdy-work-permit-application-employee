@@ -48,6 +48,10 @@ CASES = [
     ("labour_contract_executive", "labour_executive"),
     ("ict_declaration", "ict_documents"),
     ("employer_certificate", "ict_documents"),
+    ("imo_authorization", "authorizations"),
+    ("imo_authorization", "authorization_china"),
+    ("nav_authorization", "authorizations"),
+    ("taj_authorization", "authorizations"),
 ]
 
 

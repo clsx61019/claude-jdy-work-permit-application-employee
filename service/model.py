@@ -83,10 +83,32 @@ FIELDS = {
     "_widget_1770019996879": "duties_en",            # 主要职责（英语）
     "_widget_1770019996878": "duties_hu",            # 主要职责（匈牙利语）
     "_widget_1773148604477": "rate_date",            # 汇率日期
+    "_widget_1756727041750": "tax_no",               # 税号（adóazonosító jel）
+    # 授权书：被授权人（来自「选择被授权人」联动）
+    "_widget_1732625466696": "auth_name",            # 被授权人姓名
+    "_widget_1732625466698": "auth_mother",          # 被授权人母亲姓名
+    "_widget_1732625466760": "auth_birth_date",      # 被授权人出生日期
+    "_widget_1732625466780": "auth_position",        # 被授权人岗位
+    "_widget_1732625466781": "auth_company",         # 被授权人公司
+    # 简道云待办 J15：被授权人辅助表还没有这 4 列。字段建好后把键换成 _widget_ ID
+    "J15_被授权人出生地": "auth_birth_place",
+    "J15_被授权人住址": "auth_address",
+    "J15_被授权人税号": "auth_tax_no",
+    "J15_被授权人证件号": "auth_id_no",
+    # 授权书：见证人（来自「选择见证人1/2」联动）
+    "_widget_1733307002943": "w1_name",
+    "_widget_1733307002944": "w1_id",
+    "_widget_1733307002945": "w1_address",
+    "_widget_1756728816075": "w1_mother",
+    "_widget_1733307002946": "w2_name",
+    "_widget_1733307002947": "w2_id",
+    "_widget_1733307002948": "w2_address",
+    "_widget_1756728816076": "w2_mother",
 }
 
 DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
-               "prev_permit_expiry", "sign_date", "sending_start", "contract_start", "rate_date")
+               "prev_permit_expiry", "sign_date", "sending_start", "contract_start", "rate_date",
+               "auth_birth_date")
 
 SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(encoding="utf-8"))
 
