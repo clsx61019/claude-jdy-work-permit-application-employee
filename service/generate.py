@@ -9,6 +9,7 @@ import importlib
 import json
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 from . import model
@@ -26,10 +27,19 @@ def render(form_name, record):
 
 
 def to_pdf(docx_path):
-    subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir",
-                    str(Path(docx_path).parent), str(docx_path)],
-                   check=True, capture_output=True, timeout=180)
-    return Path(docx_path).with_suffix(".pdf")
+    return to_pdf_many([docx_path])[0]
+
+
+def to_pdf_many(docx_paths):
+    """一次启动 LibreOffice 转多个文件（每次启动要几秒）。配置目录放 /tmp，云函数里只有 /tmp 可写。"""
+    paths = [Path(x) for x in docx_paths]
+    if not paths:
+        return []
+    profile = Path(tempfile.gettempdir()) / "lo-profile"
+    subprocess.run(["soffice", f"-env:UserInstallation=file://{profile}", "--headless",
+                    "--convert-to", "pdf", "--outdir", str(paths[0].parent), *map(str, paths)],
+                   check=True, capture_output=True, timeout=600)
+    return [x.with_suffix(".pdf") for x in paths]
 
 
 def main(argv):
