@@ -1,11 +1,11 @@
 {
- "1": [
-  "A kérelmező az okmányt a kiállító hatóságnál veszi át. Telefonszám:",
-  true
- ],
  "2": [
   "A kérelmező az okmányt a kiállító hatóságnál veszi át. Telefonszám:",
   "+36 30 960 4086"
+ ],
+ "5": [
+  "A kérelmező az okmány postai úton történő megküldését kéri. E-mail cím:",
+  true
  ],
  "6": [
   "A kérelmező az okmány postai úton történő megküldését kéri. E-mail cím:",

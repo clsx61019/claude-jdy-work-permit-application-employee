@@ -34,9 +34,9 @@ def fill(f, p):
 
     emp = p.employer_info
 
-    # 页眉：证件领取方式（Q1：去签发机关领取，电话、邮箱用公司联系人）
-    f.check(1, "kiállító hatóságnál")
-    f.check(5, "postai úton", False)
+    # 页眉：证件领取方式（Q1：邮寄，同旧模板；电话、邮箱用公司联系人）
+    f.check(1, "kiállító hatóságnál", False)
+    f.check(5, "postai úton")
     f.text(2, "Telefonszám", COMPANY["contact_phone"])
     f.text(6, "E-mail cím", COMPANY["contact_email"])
 
@@ -107,10 +107,12 @@ def fill(f, p):
         f.text(113, "Neve", name)
         f.text(116, "Címe", addr)
 
-    # 11–13. 豁免（Q5：都勾「Nem」）
+    # 11、12. 豁免：都勾「Nem」（Q5，同旧模板）
     f.check(119, "Igen", False)
     f.check(121, "Nem", True)
     f.check(122, "Igen", False)
     f.check(124, "Nem", True)
-    f.check(125, "Igen", False)
-    f.check(127, "Nem", True)
+    # 13. 免劳动力市场审查（Q5，同旧模板）：BorsodChem → Igen，第 03 点；其他雇主 → Nem
+    f.check(125, "Igen", is_bc)
+    f.text(126, None, COMPANY["labour_market_exemption_point"] if is_bc else "")
+    f.check(127, "Nem", not is_bc)

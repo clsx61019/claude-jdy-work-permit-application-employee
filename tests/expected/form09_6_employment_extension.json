@@ -1,11 +1,11 @@
 {
- "1": [
-  "A kérelmező az okmányt a kiállító hatóságnál veszi át. Telefonszám:",
-  true
- ],
  "2": [
   "A kérelmező az okmányt a kiállító hatóságnál veszi át. Telefonszám:",
   "+36 30 960 4086"
+ ],
+ "5": [
+  "A kérelmező az okmány postai úton történő megküldését kéri. E-mail cím:",
+  true
  ],
  "6": [
   "A kérelmező az okmány postai úton történő megküldését kéri. E-mail cím:",
@@ -139,8 +139,12 @@
   "Nem.",
   true
  ],
- "127": [
-  "Nem.",
+ "125": [
+  "Igen, a kérelmező foglalkoztatása mentes a munkaerőpiaci helyzet vizsgálata alól a 445/2013. (XI. 28.) Korm. rendelet 9. § (1) bekezdés",
   true
+ ],
+ "126": [
+  "Igen, a kérelmező foglalkoztatása mentes a munkaerőpiaci helyzet vizsgálata alól a 445/2013. (XI. 28.) Korm. rendelet 9. § (1) bekezdés",
+  "03"
  ]
 }
