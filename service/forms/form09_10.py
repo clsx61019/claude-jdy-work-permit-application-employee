@@ -4,7 +4,7 @@
 官方匈牙利语 Word 表单，按编号填写，并校验旁边的文字。
 与 9.5 相同的规则（递交方、签证领取地、工作地点、语言、前任雇主等）沿用 9.5 的决定。
 """
-from ..model import COMPANY, EMPLOYERS, SENDING_COMPANIES, hu_date, hu_money, hu_since
+from ..model import COMPANY, EMPLOYERS, SENDING_COMPANIES, hu_date, hu_money_cents, hu_since
 
 TEMPLATE = "09_10_Betetlap_ICT_HU.docx"
 
@@ -50,8 +50,8 @@ def fill(f, p):
     f.text(22, "Telefonszám", COMPANY["contact_phone"])
     f.text(26, "E-mail cím", COMPANY["contact_email"])
 
-    # 1. 生活来源（Q1：原派出公司工资，CNY）
-    salary = f"CNY {hu_money(p.sending_salary)}" if p.sending_salary != "" else ""
+    # 1. 生活来源（Q1：原派出公司工资，CNY，保留两位小数；不换行空格让币种和金额不分开）
+    salary = f"CNY\u00a0{hu_money_cents(p.sending_salary)}" if p.sending_salary != "" else ""
     f.text(30, "várható jövedelem összege", salary)
 
     # 2. 匈牙利接收单位 = 雇主（Q2）
