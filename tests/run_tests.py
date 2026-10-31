@@ -13,7 +13,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from service import model  # noqa: E402
 from service.generate import render  # noqa: E402
+
+# 预协议需要雇主代表，真实名单还没补进 config（待办），测试时用虚构的名字
+for _emp in model.EMPLOYERS.values():
+    if isinstance(_emp, dict):
+        _emp["representative_hu"] = _emp.get("representative_hu") or "Teszt Elek ügyvezető"
+        _emp["representative_en"] = _emp.get("representative_en") or "Elek Teszt, Managing Director"
 
 CASES = [
     ("form09", "ict"),
@@ -34,6 +41,8 @@ CASES = [
     ("form09_9", "blue_card_employer"),
     ("form09_9", "blue_card_client"),
     ("form09_9", "blue_card_extension"),
+    ("preliminary", "preliminary_bc"),
+    ("preliminary", "preliminary_polimer"),
 ]
 
 

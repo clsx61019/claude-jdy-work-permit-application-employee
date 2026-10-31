@@ -60,6 +60,8 @@ FIELDS = {
     "_widget_1730202212741": "accommodation",        # 匈牙利居住地
     "_widget_1730212322963": "salary",               # 工资
     "_widget_1732541277156": "job_title_hu",         # 岗位名称（匈牙利语）
+    "_widget_1730212322930": "job_title_en",         # 岗位名称（英语）
+    "_widget_1728480011277": "qualification_en",     # 职业资格/专业（英语）
     "_widget_1732527943206": "feor",                 # FEOR编号
     "_widget_1774092432374": "education",            # 学历
     "_widget_1732713702038": "special_skills",       # 特殊知识和技能

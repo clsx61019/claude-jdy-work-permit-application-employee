@@ -20,7 +20,7 @@ OFFICIAL = ROOT / "templates" / "official"
 
 def render(form_name, record):
     form = importlib.import_module(f"service.forms.{form_name}")
-    doc = FormDoc(OFFICIAL / form.TEMPLATE)
+    doc = getattr(form, "DOC", FormDoc)(OFFICIAL / form.TEMPLATE)  # 普通 Word 模板用 TextDoc
     form.fill(doc, model.build(record))
     return doc
 
