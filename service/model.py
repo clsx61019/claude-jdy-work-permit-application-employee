@@ -14,6 +14,8 @@ COUNTRIES = json.loads((CONFIG / "countries.json").read_text(encoding="utf-8"))
 COMPANY = json.loads((CONFIG / "company.json").read_text(encoding="utf-8"))
 
 FIELDS = {
+    "_widget_1793435045595": "application_type",     # 申请类型：New 新申请 / Change 变更 / Extension 延期
+    "_widget_1730212322947": "person_category",      # 人员分类：Expat / Local Recruited / Board Member / Extended Stay / External
     "_widget_1732634740106": "permit_type",          # 居留许可类型
     "_widget_1728475331386": "surname",              # 姓氏（拼音）
     "_widget_1728475331387": "given_name",           # 名字（拼音）
@@ -62,7 +64,8 @@ FIELDS = {
     "_widget_1774092432374": "education",            # 学历
     "_widget_1732713702038": "special_skills",       # 特殊知识和技能
     "_widget_1770019997163": "second_entry",         # 二次入职
-    "_widget_1774179409819": "prev_permit_expiry",   # 上一居留卡有效期
+    "_widget_1793435045657": "prev_card_no",         # 原居留卡号（延期时 = 正在延期的那张卡）
+    "_widget_1774179409819": "prev_permit_expiry",   # 原居留卡有效期（延期：正在延期的卡；二次入职：之前那张卡）
     "_widget_1732603518944": "sign_date",            # 劳动合同预协议&居留许可申请表签字日期
     "_widget_1730212322878": "sending_company",      # 原派出公司
     "_widget_1773148604476": "sending_salary",       # 原派出公司工资
@@ -78,6 +81,12 @@ SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(enc
 
 EMPLOYERS = json.loads((CONFIG / "employers.json").read_text(encoding="utf-8"))
 ACCOMMODATION = json.loads((CONFIG / "accommodation.json").read_text(encoding="utf-8"))
+
+# 申请类型：选项文字 -> 编码。空值（加这个字段之前的历史记录）当作新申请。
+APPLICATION_TYPES = {"New 新申请": "new", "Change 变更": "change", "Extension 延期": "extension"}
+
+# 人员分类：Board Member、Extended Stay 本质上与 Expat 相同，都算万华外派
+EXPAT_CATEGORIES = {"Expat", "Board Member", "Extended Stay"}
 
 # 母语：按国籍（Q12）。没有对应的留空，由人工补。
 NATIVE_LANGUAGE = {"Chinese": "kínai"}
@@ -126,6 +135,10 @@ def build(record):
     p["accommodation_info"] = Model(ACCOMMODATION.get(p.accommodation, {}))
     p["native_language"] = NATIVE_LANGUAGE.get(p.nationality, "")
     p["submitted_by_employer"] = p.submit_place == "Hungary 匈牙利"
+    if p.application_type and p.application_type not in APPLICATION_TYPES:
+        raise ValueError(f"未知的申请类型「{p.application_type}」")
+    p["app_type"] = APPLICATION_TYPES.get(p.application_type, "new")
+    p["is_expat"] = p.person_category in EXPAT_CATEGORIES
     return p
 
 
