@@ -43,6 +43,9 @@ CASES = [
     ("form09_9", "blue_card_extension"),
     ("preliminary", "preliminary_bc"),
     ("preliminary", "preliminary_polimer"),
+    ("labour_contract_ordinary", "labour_ordinary"),
+    ("labour_contract_ordinary", "labour_ordinary_plain"),
+    ("labour_contract_executive", "labour_executive"),
 ]
 
 

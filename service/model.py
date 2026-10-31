@@ -74,6 +74,10 @@ FIELDS = {
     "_widget_1774114982916": "ict_position",         # 岗位类型（ICT）
     "_widget_1768200681561": "sending_start",        # 原派出公司入职日期
     "_widget_1732527942980": "contract_start",       # 劳动关系起始日期
+    "_widget_1730212322934": "rights_holder",        # 雇主职权行使人岗位（劳动合同）
+    "_widget_1730212322932": "line_manager",         # 直线上级岗位（劳动合同）
+    "_widget_1730212322964": "bonus_factor",         # 奖金系数（> 0 = 有奖金）
+    "_widget_1730212322980": "cafeteria",            # Cafeteria福利：Yes 是 / No 否
 }
 
 DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
