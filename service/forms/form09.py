@@ -37,9 +37,9 @@ def fill(f, p):
     extension = p.app_type == "extension"
     f.check(1, "kiadása első alkalommal", not extension)
     f.check(8, "meghosszabbítása", extension)
-    if extension:  # 现有居留卡的号码和有效期
-        f.text(9, "Az engedély száma", p.permit_card_no)
-        ymd(f, (12, 13, 14), p.permit_card_expiry)
+    if extension:  # 正在延期的那张卡：原居留卡号、原居留卡有效期（新卡另存在「居留卡号」「居留卡有效期」）
+        f.text(9, "Az engedély száma", p.prev_card_no)
+        ymd(f, (12, 13, 14), p.prev_permit_expiry)
 
     # 页眉：联系方式、领取方式
     f.text(15, "Telefonszám", COMPANY["contact_phone"])

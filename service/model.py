@@ -64,9 +64,8 @@ FIELDS = {
     "_widget_1774092432374": "education",            # 学历
     "_widget_1732713702038": "special_skills",       # 特殊知识和技能
     "_widget_1770019997163": "second_entry",         # 二次入职
-    "_widget_1774179409819": "prev_permit_expiry",   # 上一居留卡有效期（二次入职时之前那张卡）
-    "_widget_1756727041745": "permit_card_no",       # 居留卡号（延期时 = 现有居留卡）
-    "_widget_1756727041748": "permit_card_expiry",   # 居留卡有效期（延期时 = 现有居留卡）
+    "_widget_1793435045657": "prev_card_no",         # 原居留卡号（延期时 = 正在延期的那张卡）
+    "_widget_1774179409819": "prev_permit_expiry",   # 原居留卡有效期（延期：正在延期的卡；二次入职：之前那张卡）
     "_widget_1732603518944": "sign_date",            # 劳动合同预协议&居留许可申请表签字日期
     "_widget_1730212322878": "sending_company",      # 原派出公司
     "_widget_1773148604476": "sending_salary",       # 原派出公司工资
@@ -76,7 +75,7 @@ FIELDS = {
 }
 
 DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
-               "prev_permit_expiry", "permit_card_expiry", "sign_date", "sending_start", "contract_start")
+               "prev_permit_expiry", "sign_date", "sending_start", "contract_start")
 
 SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(encoding="utf-8"))
 
