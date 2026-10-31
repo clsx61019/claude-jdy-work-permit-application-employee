@@ -15,7 +15,7 @@
   JDY_API_KEY        简道云 API 密钥
   JDY_APP_ID         应用 ID
   JDY_ENTRY_ID       表单 ID
-  SYNC_PUSH_SECRET   数据推送的签名密钥（用推送时必填）
+  SYNC_PUSH_SECRET   数据推送的签名密钥（配置后才校验签名，没配置时放行）
   FIELD_NODE         当前节点（单行文本）
   FIELD_ASSIGNEE     当前负责人（成员多选）
   FIELD_ENTERED      进入当前节点时间（日期时间）
@@ -197,7 +197,10 @@ def sync_all(now=None):
 def check_signature(headers, raw, query):
     secret = env("SYNC_PUSH_SECRET")
     if not secret:
-        return False
+        # 还没生成密钥时先放行（简道云要先填好地址才能生成密钥）。
+        # 推送只会让函数去官方接口重读真实状态，伪造的推送写不进错误的值。
+        print("还没配置 SYNC_PUSH_SECRET，暂不校验签名", file=sys.stderr)
+        return True
     nonce, ts = query.get("nonce", ""), query.get("timestamp", "")
     expected = hashlib.sha1(f"{nonce}:{raw}:{secret}:{ts}".encode("utf-8")).hexdigest()
     got = {k.lower(): v for k, v in (headers or {}).items()}.get("x-jdy-signature", "")

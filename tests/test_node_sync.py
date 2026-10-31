@@ -124,6 +124,11 @@ def test_push():
     assert json.loads(push({"schema": "2.0", "header": {"event_type": "process_update"},
                             "event": {"form_id": "other", "instance_id": "x", "status": 2}})["body"]) == {"ignored": True}
     assert push({"data": {"_id": "r4"}}, secret="wrong")["statusCode"] == 403
+    os.environ.pop("SYNC_PUSH_SECRET")
+    try:
+        assert ns.check_signature({}, "{}", {})  # 没配置密钥时放行
+    finally:
+        os.environ["SYNC_PUSH_SECRET"] = "s3"
 
 
 if __name__ == "__main__":

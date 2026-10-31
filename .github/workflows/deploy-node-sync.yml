@@ -1,7 +1,7 @@
 # 部署「节点同步」云函数（sync/node_sync.py）：先跑单元测试，再打 zip 上传到腾讯云事件函数，最后试跑一次。
 # 手动运行：GitHub 仓库 → Actions → 「部署节点同步」→ Run workflow
 # 需要：Secrets TENCENTCLOUD_SECRET_ID / TENCENTCLOUD_SECRET_KEY / JDY_API_KEY / SYNC_PUSH_SECRET
-#       Variables FIELD_NODE / FIELD_ASSIGNEE / FIELD_ENTERED / FIELD_DAYS / FIELD_SYNCED（测试表里的字段 ID）
+#       Variables FIELD_*（可选，默认是测试表里的字段 ID）
 name: 部署节点同步
 
 on:
@@ -36,11 +36,11 @@ jobs:
           SYNC_PUSH_SECRET: ${{ secrets.SYNC_PUSH_SECRET }}
           JDY_APP_ID: ${{ vars.JDY_APP_ID || '67501067fec27368c50bdf57' }}
           JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID || '6ae1e985c2c60828dfc71ed4' }}  # 测试表
-          FIELD_NODE: ${{ vars.FIELD_NODE }}
-          FIELD_ASSIGNEE: ${{ vars.FIELD_ASSIGNEE }}
-          FIELD_ENTERED: ${{ vars.FIELD_ENTERED }}
-          FIELD_DAYS: ${{ vars.FIELD_DAYS }}
-          FIELD_SYNCED: ${{ vars.FIELD_SYNCED }}
+          FIELD_NODE: ${{ vars.FIELD_NODE || '_widget_1793485058096' }}
+          FIELD_ASSIGNEE: ${{ vars.FIELD_ASSIGNEE || '_widget_1793485058097' }}
+          FIELD_ENTERED: ${{ vars.FIELD_ENTERED || '_widget_1793485058098' }}
+          FIELD_DAYS: ${{ vars.FIELD_DAYS || '_widget_1793485058099' }}
+          FIELD_SYNCED: ${{ vars.FIELD_SYNCED || '_widget_1793485058100' }}
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
           python deploy/deploy_sync.py
