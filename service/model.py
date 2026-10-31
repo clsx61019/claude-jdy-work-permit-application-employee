@@ -84,6 +84,8 @@ FIELDS = {
     "_widget_1770019996878": "duties_hu",            # 主要职责（匈牙利语）
     "_widget_1773148604477": "rate_date",            # 汇率日期
     "_widget_1756727041750": "tax_no",               # 税号（adóazonosító jel）
+    "_widget_1756727041745": "card_no",              # 居留卡号（雇主通知）
+    "_widget_1773210557411": "actual_start",         # 劳动关系实际起始日期（雇主通知）
     # 授权书：被授权人（来自「选择被授权人」联动）
     "_widget_1732625466696": "auth_name",            # 被授权人姓名
     "_widget_1732625466698": "auth_mother",          # 被授权人母亲姓名
@@ -108,7 +110,7 @@ FIELDS = {
 
 DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
                "prev_permit_expiry", "sign_date", "sending_start", "contract_start", "rate_date",
-               "auth_birth_date")
+               "auth_birth_date", "actual_start")
 
 SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(encoding="utf-8"))
 

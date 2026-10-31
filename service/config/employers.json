@@ -1,5 +1,5 @@
 {
- "_说明": "来自简道云辅助表「雇主相关信息」（2026-10-30 导出）。部署后改为每次从简道云实时读取。 雇主代表（representative_hu / representative_en，预协议用）待补：取自辅助表的「雇主代表（匈牙利语 / 英语）」。workplace_en 为空时按匈牙利语自动转换。",
+ "_说明": "来自简道云辅助表「雇主相关信息」（2026-10-30 导出）。部署后改为每次从简道云实时读取。 雇主代表（representative_hu / representative_en，预协议用）待补：取自辅助表的「雇主代表（匈牙利语 / 英语）」。workplace_en 为空时按匈牙利语自动转换。 registration_no = 公司注册号（cégjegyzékszám，雇主通知用，2026-10-31 取自简道云辅助字段）。",
  "BorsodChem Zrt.": {
   "name": "BorsodChem Zrt.",
   "address": "3700 Kazincbarcika, Bolyai tér 1.",
@@ -13,7 +13,8 @@
   "street_type": "tér",
   "house_no": "1.",
   "representative_hu": "",
-  "representative_en": ""
+  "representative_en": "",
+  "registration_no": "05-10-000054"
  },
  "CC6 Hungary Kft.": {
   "name": "CC6 Hungary Kft.",
@@ -28,7 +29,8 @@
   "street_type": "út",
   "house_no": "19.",
   "representative_hu": "",
-  "representative_en": ""
+  "representative_en": "",
+  "registration_no": "05-09-037329"
  },
  "Eastern Yizhao Engineering Kft.": {
   "name": "Eastern Yizhao Engineering Kft.",
@@ -43,7 +45,8 @@
   "street_type": "út",
   "house_no": "49.",
   "representative_hu": "",
-  "representative_en": ""
+  "representative_en": "",
+  "registration_no": "01-09-433730"
  },
  "Hungary HaoYi Construction Kft.": {
   "name": "Hungary HaoYi Construction Kft.",
@@ -58,7 +61,8 @@
   "street_type": "út",
   "house_no": "32.",
   "representative_hu": "",
-  "representative_en": ""
+  "representative_en": "",
+  "registration_no": ""
  },
  "Kangxilejia Catering Management Hungary Kft.": {
   "name": "Kangxilejia Catering Management Hungary Kft.",
@@ -73,7 +77,8 @@
   "street_type": "tér",
   "house_no": "1.",
   "representative_hu": "",
-  "representative_en": ""
+  "representative_en": "",
+  "registration_no": "05-09-037990"
  },
  "Polimer Szolgáltató Kft.": {
   "name": "Polimer Szolgáltató Kft.",
@@ -88,6 +93,7 @@
   "street_type": "tér",
   "house_no": "2.",
   "representative_hu": "",
-  "representative_en": ""
+  "representative_en": "",
+  "registration_no": "05-09-002338"
  }
 }

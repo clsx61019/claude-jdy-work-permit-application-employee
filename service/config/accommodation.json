@@ -1,8 +1,8 @@
 {
-  "_说明": "匈牙利住处。capacity = 可容纳人数（9.5 第 2 部分）；permit_* = 住处许可证（签发机关、编号、日期），待负责人提供，空着就不填。",
-  "Hotel BorsodChem": {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": ""},
-  "Hotel Fremon":     {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": ""},
-  "Relax Center":     {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": ""},
-  "Hotel Lukács":     {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": ""},
-  "Other":            {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": ""}
+  "_说明": "匈牙利住处。capacity = 可容纳人数（9.5 第 2 部分）；permit_* = 住处许可证（签发机关、编号、日期），待负责人提供，空着就不填。 operator = 经营单位（住宿证明的出具单位）：Hotel BorsodChem、Hotel Fremon、Relax Center 归 Polimer Szolgáltató Kft.（2026-10-31 确认），其他住处没有住宿证明模板。",
+  "Hotel BorsodChem": {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": "", "operator": "Polimer Szolgáltató Kft."},
+  "Hotel Fremon":     {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": "", "operator": "Polimer Szolgáltató Kft."},
+  "Relax Center":     {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": "", "operator": "Polimer Szolgáltató Kft."},
+  "Hotel Lukács":     {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": "", "operator": ""},
+  "Other":            {"capacity": "", "permit_issuer": "", "permit_no": "", "permit_date": "", "operator": ""}
 }

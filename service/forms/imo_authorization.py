@@ -4,21 +4,17 @@
 """
 from ..docx_text import TextDoc
 from .authorization_common import common_values, hu_article, require_common
+from .employee_common import place
 from .preliminary import en_long, hu_long
 
 DOC = TextDoc
 TEMPLATE = "../hu/imo_authorization.docx"
 
-# B2：签字地点按「递交地点」
-PLACES = {"China 中国": ("Beijing", "Peking"), "Hungary 匈牙利": ("Kazincbarcika", "Kazincbarcika")}
-
 
 def fill(doc, p):
-    if p.submit_place not in PLACES:
-        raise ValueError(f"递交地点「{p.submit_place}」没有对应的签字地点")
     require_common(p, {"被授权人岗位": p.auth_position, "被授权人公司": p.auth_company,
                        "见证人1证件号": p.w1_id, "见证人2证件号": p.w2_id})
-    place_en, place_hu = PLACES[p.submit_place]
+    place_en, place_hu = place(p)  # B2：签字地点按「递交地点」
     doc.fill({
         **common_values(p),
         "birth_date_en": en_long(p.birth_date),
