@@ -124,8 +124,8 @@ def write_back(app_id, entry_id, data_id, files, skipped, clear_select=False):
         tid, keys = jdy.upload_files(app_id, entry_id, files)
         words = [k for (n, _), k in zip(files, keys) if n.endswith(".docx")]
         pdfs = [k for (n, _), k in zip(files, keys) if n.endswith(".pdf")]
-        if word_field == pdf_field:
-            data[word_field] = {"value": words + pdfs}
+        if word_field == pdf_field:  # 同一个字段：每份文件的 Word、PDF 挨在一起
+            data[word_field] = {"value": keys}
         else:
             data[word_field] = {"value": words}
             data[pdf_field] = {"value": pdfs}
