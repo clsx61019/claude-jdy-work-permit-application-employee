@@ -14,11 +14,11 @@ from .preliminary import en_long, hu_long
 DOC = TextDoc
 BORSODCHEM = "BorsodChem Zrt."
 
-# C7：附件 1 第 3 点列出的公司制度，按「奖金系数」「Cafeteria福利」增加
+# C7：附件 1 第 3 点列出的公司制度，按「奖金系数」「Cafeteria福利」增加。
+# 文字和旧辅助字段「辅助_奖金和Cafeteria福利（英语 / 匈牙利语）」的输出一致（2026-10-31 对照现有数据）
 POLICIES_EN = ["Remuneration Policy", "Training Policy"]
-POLICIES_HU = ["a Juttatási Szabályzat", "a hatályos képzési szabályzat"]
 BONUS_EN = "BorsodChem Comprehensive Performance Management and Incentive System Policy"
-BONUS_HU = "a BorsodChem Átfogó Teljesítménymenedzsment és Ösztönzési Rendszer Szabályzata"
+BONUS_HU = "a BorsodChem Átfogó Teljesítménymenedzsment és Ösztönzési rendszerre vonatkozó aktuális évi szabályzata"
 CAFETERIA_EN = "Cafeteria Policy"
 CAFETERIA_HU = "a Cafeteria Szabályzat"
 
@@ -29,29 +29,30 @@ def join(items, last_word):
 
 
 def benefits(p):
-    """返回 (policies_en, policies_hu, entitlement_en, entitlement_hu)；没有福利时说明为空"""
+    """返回 (policies_en, policies_hu, entitlement_en, entitlement_hu)；没有福利时说明为空。
+    匈语模板里固定写着「a Juttatási Szabályzat, illetve a hatályos képzési szabályzat」，policies_hu 接在后面"""
     has_bonus = float(p.bonus_factor or 0) > 0
     has_caf = p.cafeteria == "Yes 是"
-    en, hu = list(POLICIES_EN), list(POLICIES_HU)
-    what_en, what_hu = [], []
+    en, extra_hu, what_en, what_hu = list(POLICIES_EN), [], [], []
     if has_bonus:
         en.append(BONUS_EN)
-        hu.append(BONUS_HU)
+        extra_hu.append(BONUS_HU)
     if has_caf:
         en.append(CAFETERIA_EN)
-        hu.append(CAFETERIA_HU)
+        extra_hu.append(CAFETERIA_HU)
         what_en.append("Cafeteria")
-        what_hu.append("cafeteriára")
+        what_hu.append("cafeteria-juttatásra")
     if has_bonus:
         what_en.append("bonus")
         what_hu.append("bónuszra")
+    policies_hu = (", valamint " + " és ".join(extra_hu) if extra_hu else "") + "."
     ent_en = ent_hu = ""
     if what_en:
         ent_en = (f"The Employer informs the Employee that he/she is entitled to {' and '.join(what_en)} "
                   "according to the Policies stated in point 3).")
-        ent_hu = (f"Munkáltató tájékoztatja Munkavállalót, hogy a 3) pontban felsorolt szabályzatok szerint "
-                  f"{' és '.join(what_hu)} jogosult.")
-    return join(en, "and") + ".", join(hu, "és") + ".", ent_en, ent_hu
+        ent_hu = (f"Munkáltató tájékoztatja Munkavállalót, hogy {' és '.join(what_hu)} jogosult "
+                  "a 3) pontban meghatározott szabályzatok szerint.")
+    return join(en, "and") + ".", policies_hu, ent_en, ent_hu
 
 
 def address(p, country):

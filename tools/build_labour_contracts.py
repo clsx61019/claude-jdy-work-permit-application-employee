@@ -194,7 +194,7 @@ def build(kind):
     sub(doc, ADDRESS_HU, "{{address_hu}}")
     sub(doc, ADDRESS_EN, "{{address_en}}")
     sub(doc, POLICIES_EN, "{{policies_en}}")
-    sub(doc, POLICIES_HU, "továbbá {{policies_hu}}")
+    sub(doc, POLICIES_HU, "továbbá a Juttatási Szabályzat, illetve a hatályos képzési szabályzat{{policies_hu}}")
 
     widget = re.compile(r"\$\{[^}]*?#(_widget_\d+)\}")
     unknown = set()
