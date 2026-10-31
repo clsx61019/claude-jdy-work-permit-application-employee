@@ -115,8 +115,18 @@ def main():
                                        "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
         triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
         url_trigger = next((t for t in triggers if t.get("Type") == "http"), None)
-    print("函数 URL 触发器：", json.dumps(url_trigger, ensure_ascii=False, indent=1))
-    print("（公网地址也可以在控制台「函数管理 → 函数 URL」里看到）")
+    desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
+    if not desc.get("NetConfig", {}).get("EnableExtranet"):  # 控制台默认只开内网
+        print("打开函数 URL 的公网访问")
+        call("UpdateTrigger", {
+            "FunctionName": NAME, "TriggerName": url_trigger["TriggerName"], "Type": "http",
+            "Qualifier": url_trigger.get("Qualifier") or "$DEFAULT", "Enable": "OPEN",
+            "TriggerDesc": json.dumps({"AuthType": desc.get("AuthType", "NONE"),
+                                       "NetConfig": {"EnableIntranet": False, "EnableExtranet": True}})})
+        triggers = call("ListTriggers", {"FunctionName": NAME}).get("Triggers", [])
+        url_trigger = next(t for t in triggers if t.get("Type") == "http")
+        desc = json.loads(url_trigger.get("TriggerDesc") or "{}")
+    print("公网地址：", desc.get("NetConfig", {}).get("ExtranetUrl") or "（没拿到，去控制台「函数 URL」看）")
 
 
 if __name__ == "__main__":
