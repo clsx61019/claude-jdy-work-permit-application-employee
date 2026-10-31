@@ -33,8 +33,9 @@ def ymd(f, nos, d):
 
 
 def fill(f, p):
-    # 页眉：申请类型。变更（换许可类型）也勾首次申请（已确认）
-    extension = p.app_type == "extension"
+    # 页眉：申请类型。变更（换许可类型）勾首次申请（已确认）；
+    # 但就业类换雇主、岗位或工作地点，法律要求提交延期申请（Btátv. 28. § (11)），所以就业类的变更按延期勾
+    extension = p.app_type == "extension" or (p.app_type == "change" and p.permit_type == "Employment")
     f.check(1, "kiadása első alkalommal", not extension)
     f.check(8, "meghosszabbítása", extension)
     if extension:  # 正在延期的那张卡：原居留卡号、原居留卡有效期（新卡另存在「居留卡号」「居留卡有效期」）
