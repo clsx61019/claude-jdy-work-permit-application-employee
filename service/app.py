@@ -14,7 +14,7 @@
                  不填时读记录里的多选框 FIELD_SELECT；它也为空时按 all。
       app_id / entry_id   可选，默认用环境变量 JDY_APP_ID / JDY_ENTRY_ID
       group      可选，按钮分组（见 config/groups.json），只生成这一组里适用的文件；优先于 forms
-      format     attach（压缩包放进附件字段；带 group 时用该组的 FIELD_<分组>，给简道云智能助手用）/ json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
+      format     attach（文件放进附件字段，超过 10 个打包；带 group 时用该组的 FIELD_<分组>，给简道云智能助手用）/ json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
 - POST /jdy-webhook                   简道云「数据推送」：多选框 FIELD_SELECT 有值时生成，生成后把它清空
 
 环境变量
@@ -170,16 +170,23 @@ def make_zip(files, skipped, folders=False):
     return buf.getvalue()
 
 
-def attach_zip(app_id, entry_id, data_id, zipname, content, group):
-    """压缩包放进附件字段，替换字段里原来的文件。
+MAX_ATTACHMENTS = 10  # 简道云附件字段最多 10 个文件
+
+
+def attach_files(app_id, entry_id, data_id, zipname, files, skipped, group):
+    """文件放进附件字段，替换字段里原来的文件。不超过 10 个直接放 Word、PDF，超过就打成一个压缩包。
     每个分组可以有自己的附件字段（环境变量 FIELD_APPLICATION、FIELD_TAJ……），没配就用 FIELD_WORD。
     简道云接口没法在保留旧附件的同时追加新文件，所以各分组要分开放才不会互相覆盖。"""
     field = (group and env(f"FIELD_{group.upper()}")) or env("FIELD_WORD")
     if not field:
         raise BadRequest("没有配置附件字段（FIELD_WORD 或 FIELD_<分组>）")
-    tid, (key,) = jdy.upload_files(app_id, entry_id, [(zipname, content)])
-    jdy.update_record(app_id, entry_id, data_id, {field: {"value": [key]}}, tid)
-    return field
+    if not files:
+        jdy.update_record(app_id, entry_id, data_id, {field: {"value": []}})
+        return []
+    upload = files if len(files) <= MAX_ATTACHMENTS else [(zipname, make_zip(files, skipped, folders=not group))]
+    tid, keys = jdy.upload_files(app_id, entry_id, upload)
+    jdy.update_record(app_id, entry_id, data_id, {field: {"value": keys}}, tid)
+    return [n for n, _ in upload]
 
 
 def handle_generate(params):
@@ -205,9 +212,9 @@ def handle_generate(params):
         return 200, "application/zip", make_zip(files, skipped, folders=not group), zipname
 
     if fmt == "attach":  # 压缩包放进附件字段（给简道云智能助手用）
-        attach_zip(app_id, entry_id, data_id, zipname, make_zip(files, skipped, folders=not group), group)
+        attached = attach_files(app_id, entry_id, data_id, zipname, files, skipped, group)
         return 200, "application/json", {
-            "zip": zipname if files else None,
+            "attached": attached,
             "generated": [n for n, _ in files], "skipped": [{"file": l, "reason": r} for l, r in skipped]}
 
     if not env("FIELD_WORD"):

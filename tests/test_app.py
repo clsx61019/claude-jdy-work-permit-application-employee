@@ -102,12 +102,13 @@ def main():
         # 智能助手：一个压缩包，按分组分文件夹，放进附件字段
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=attach")
         assert code == 200, body
-        assert json.loads(body)["zip"].startswith("申请材料")
+        assert json.loads(body)["attached"][0].startswith("申请材料"), body  # 超过 10 个：打包
         value = calls["updates"][-1]["data"]["_widget_word"]["value"]
         assert len(value) == 1, value
         # 按分组：写进该组自己的附件字段
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=attach&group=taj")
-        assert code == 200 and json.loads(body)["zip"].startswith("TAJ"), body
+        attached = json.loads(body)["attached"]
+        assert code == 200 and attached and all(n.endswith((".docx", ".pdf")) for n in attached), body
         assert list(calls["updates"][-1]["data"]) == ["_widget_taj"], calls["updates"][-1]
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=zip")
         names = zipfile.ZipFile(io.BytesIO(body)).namelist()
