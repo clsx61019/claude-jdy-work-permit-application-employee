@@ -78,10 +78,15 @@ FIELDS = {
     "_widget_1730212322932": "line_manager",         # 直线上级岗位（劳动合同）
     "_widget_1730212322964": "bonus_factor",         # 奖金系数（> 0 = 有奖金）
     "_widget_1730212322980": "cafeteria",            # Cafeteria福利：Yes 是 / No 否
+    "_widget_1770019996877": "activity_en",          # 工作活动简要说明（英语）
+    "_widget_1770019996876": "activity_hu",          # 工作活动简要说明（匈牙利语）
+    "_widget_1770019996879": "duties_en",            # 主要职责（英语）
+    "_widget_1770019996878": "duties_hu",            # 主要职责（匈牙利语）
+    "_widget_1773148604477": "rate_date",            # 汇率日期
 }
 
 DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end",
-               "prev_permit_expiry", "sign_date", "sending_start", "contract_start")
+               "prev_permit_expiry", "sign_date", "sending_start", "contract_start", "rate_date")
 
 SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(encoding="utf-8"))
 

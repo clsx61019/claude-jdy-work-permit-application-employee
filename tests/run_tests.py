@@ -46,6 +46,8 @@ CASES = [
     ("labour_contract_ordinary", "labour_ordinary"),
     ("labour_contract_ordinary", "labour_ordinary_plain"),
     ("labour_contract_executive", "labour_executive"),
+    ("ict_declaration", "ict_documents"),
+    ("employer_certificate", "ict_documents"),
 ]
 
 

@@ -1,0 +1,9 @@
+{
+ "_说明": "派出公司的完整地址和签字地点，ICT 声明、万华雇主证明用。目前只有万华集团；其他派出公司要用时再补，缺了生成会报错",
+ "Wanhua Chemical Group Co., Ltd.": {
+  "address_en": "No.59, Chongqing Rd, YEDA, Yantai, 264006, China",
+  "address_hu": "No.59, Chongqing Rd, YEDA, Yantai, 264006, Kína",
+  "city_en": "Yantai, China",
+  "city_hu": "Yantai, Kína"
+ }
+}
