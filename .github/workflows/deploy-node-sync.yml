@@ -41,6 +41,10 @@ jobs:
           FIELD_ENTERED: ${{ vars.FIELD_ENTERED || '_widget_1793485058098' }}
           FIELD_DAYS: ${{ vars.FIELD_DAYS || '_widget_1793485058099' }}
           FIELD_SYNCED: ${{ vars.FIELD_SYNCED || '_widget_1793485058100' }}
+          FIELD_SUBMITTED: ${{ vars.FIELD_SUBMITTED || '_widget_1756727041788' }}        # 递交日期
+          FIELD_APPROVED: ${{ vars.FIELD_APPROVED || '_widget_1793555372798' }}          # 获批日期
+          FIELD_SINCE_SUBMIT: ${{ vars.FIELD_SINCE_SUBMIT || '_widget_1793564408714' }}  # 递交至今天数
+          FIELD_TOTAL: ${{ vars.FIELD_TOTAL || '_widget_1793564408715' }}                # 办理总天数
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
           python deploy/deploy_sync.py

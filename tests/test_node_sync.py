@@ -14,6 +14,7 @@ os.environ.update({
     "JDY_API_KEY": "k", "JDY_APP_ID": "app1", "JDY_ENTRY_ID": "entry1", "SYNC_PUSH_SECRET": "s3",
     "FIELD_NODE": "w_node", "FIELD_ASSIGNEE": "w_who", "FIELD_ENTERED": "w_in",
     "FIELD_DAYS": "w_days", "FIELD_SYNCED": "w_sync",
+    "FIELD_SUBMITTED": "w_sub", "FIELD_APPROVED": "w_ok", "FIELD_SINCE_SUBMIT": "w_since", "FIELD_TOTAL": "w_total",
 })
 import node_sync as ns  # noqa: E402
 
@@ -28,6 +29,10 @@ RECORDS = {
     # 进行中，字段已经是对的 → 不写
     "r4": {"_id": "r4", "flowState": 0, "w_node": "01.1 HR确认", "w_who": [{"username": "jia"}],
            "w_in": "2026-10-30T08:00:00.000Z", "w_days": 3},
+    # 节点信息已经对了，只有天数要写：布达佩斯 10-16 递交、10-31 获批、10-01 发起
+    "r5": {"_id": "r5", "flowState": 0, "createTime": "2026-10-01T08:00:00.000Z",
+           "w_sub": "2026-10-15T22:00:00.000Z", "w_ok": "2026-10-30T23:00:00.000Z",
+           "w_node": "07 文件签署", "w_who": ["reka"], "w_in": "2026-10-31T08:00:00.000Z", "w_days": 2},
 }
 INSTANCES = {
     "r1": {"status": 0, "tasks": [
@@ -39,7 +44,10 @@ INSTANCES = {
     "r3": {"status": 1, "tasks": []},
     "r4": {"status": 0, "tasks": [
         {"status": 0, "flow_name": "1.1. HR确认", "assignee": {"username": "jia"}, "create_time": "2026-10-30T08:00:00Z"}]},
+    "r5": {"status": 0, "tasks": [
+        {"status": 0, "flow_name": "7. 文件签署", "assignee": {"username": "reka"}, "create_time": "2026-10-31T08:00:00Z"}]},
 }
+RECORDS["r1"].update({"createTime": "2026-10-01T08:00:00.000Z", "w_sub": "2026-10-15T22:00:00.000Z"})
 updates = []
 
 
@@ -81,14 +89,18 @@ def test_labels():
 
 def test_sync_all():
     res = ns.sync_all(NOW)
-    assert res["checked"] == 4 and not res["errors"], res
-    assert set(res["changed"]) == {"r1", "r2", "r3"}, res
+    assert res["checked"] == 5 and not res["errors"], res
+    assert set(res["changed"]) == {"r1", "r2", "r3", "r5"}, res
     d = by_id("r1")
     assert d["w_node"]["value"] == "06 确认抵达日期"
     assert d["w_who"]["value"] == ["jia", "wu"]
     assert d["w_in"]["value"] == "2026-10-28T07:13:31.000Z"
     assert d["w_days"]["value"] == 5
     assert d["w_sync"]["value"] == "2026-11-02T09:00:00.000Z"
+    assert d["w_since"]["value"] == 17 and "w_total" not in d  # 没获批：递交到今天，办理总天数仍为空
+    # 只有天数变了：写天数，不动节点信息和节点同步时间
+    d = by_id("r5")
+    assert d == {"w_since": {"value": 15}, "w_total": {"value": 30}}, d
     assert by_id("r2")["w_node"]["value"] == ns.LABEL_WAITING
     d = by_id("r3")
     assert d["w_node"]["value"] == "已完成" and d["w_who"]["value"] == [] and d["w_days"]["value"] is None
