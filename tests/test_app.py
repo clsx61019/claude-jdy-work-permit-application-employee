@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SAMPLE = json.loads((ROOT / "tests" / "samples" / "employee_documents.json").read_text(encoding="utf-8"))
 SAMPLE.update({"_id": "rec1", "appId": "app1", "entryId": "entry1"})
 
-calls = {"uploads": [], "updates": [], "lists": [], "employers": [], "auth": []}
+calls = {"uploads": [], "updates": [], "lists": [], "employers": [], "auth": [], "witness": []}
 
 
 class FakeJdy(BaseHTTPRequestHandler):
@@ -32,6 +32,10 @@ class FakeJdy(BaseHTTPRequestHandler):
             calls["auth"].append(json.loads(raw)["filter"]["cond"][0]["value"])
             out = {"data": [{"_widget_1793481372267": "Miskolc", "_widget_1793481372268": "3700 Kazincbarcika, Teszt u. 1.",
                              "_widget_1793481372269": "8000000000", "_widget_1793481372270": "000000AA"}]}
+        elif self.path.endswith("/data/list") and json.loads(raw)["entry_id"] == "6750274afaf2df823b54c2f0":
+            calls["witness"].append(json.loads(raw)["filter"]["cond"][0]["value"])
+            out = {"data": [{"_widget_1733307198856": "W-ID", "_widget_1732624873037": "Kazincbarcika",
+                             "_widget_1756728584188": "Teszt Anya"}]}
         elif self.path.endswith("/data/list"):
             cond = json.loads(raw)["filter"]["cond"][0]
             calls["lists"].append(cond)
@@ -138,6 +142,7 @@ def main():
         assert "申请表/" in names and "TAJ/" in names and any(n.startswith("授权书/IMO") for n in names), names
         assert calls["employers"] and calls["employers"][0] == [SAMPLE["_widget_1732604018708"]], calls["employers"]
         assert calls["auth"], "没有按被授权人姓名查辅助表"
+        assert [SAMPLE["_widget_1733307002943"]] in calls["witness"], calls["witness"]
         print("通过")
     finally:
         proc.terminate()
