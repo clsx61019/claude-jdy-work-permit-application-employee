@@ -120,7 +120,13 @@ def main():
         code, body = call(base, "/generate?data_id=rec1&token=secret&format=attach&group=taj")
         attached = json.loads(body)["attached"]
         assert code == 200 and attached and all(n.endswith((".docx", ".pdf")) for n in attached), body
-        assert list(calls["updates"][-1]["data"]) == ["_widget_taj"], calls["updates"][-1]
+        upd = calls["updates"][-1]["data"]
+        assert sorted(upd) == ["_widget_result", "_widget_taj"], upd
+        res = upd["_widget_result"]["value"]
+        en, zh = res.split("\n\n\n")
+        assert en.startswith("Social security card (TAJ) – ") and "Generated" in en and "跳过" not in en, res
+        assert zh.startswith("TAJ – ") and "已生成" in zh, res
+        print(res)
         # 没有数据 ID 时按字段值找记录
         code, body = call(base, "/generate?key=SN-1&key_field=_widget_sn&key_type=sn&token=secret&format=attach&group=taj")
         assert code == 200, body
