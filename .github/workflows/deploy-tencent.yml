@@ -91,7 +91,7 @@ jobs:
           FIELD_WORD: ${{ vars.FIELD_WORD || '_widget_1793474342567' }}  # 不带分组时写这里（测试表「申请材料1」）
           FIELD_PDF: ${{ vars.FIELD_PDF }}
           FIELD_SELECT: ${{ vars.FIELD_SELECT }}
-          FIELD_RESULT: ${{ vars.FIELD_RESULT }}
+          FIELD_RESULT: ${{ vars.FIELD_RESULT || '_widget_1793549252892' }}
           FIELD_KEY: ${{ vars.FIELD_KEY || '_widget_1793478163742' }}  # 测试表「流水号」，智能助手按它找记录
           FIELD_KEY_TYPE: ${{ vars.FIELD_KEY_TYPE || 'sn' }}
           FIELD_APPLICATION: ${{ vars.FIELD_APPLICATION || '_widget_1793474342567' }}  # 测试表「申请材料1」

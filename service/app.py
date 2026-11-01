@@ -46,7 +46,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, quote, urlparse
 
-from . import jdy, model
+from . import feedback, jdy, model
 from .generate import render, to_pdf_many
 
 FORMS = {k: v for k, v in json.loads(
@@ -176,20 +176,32 @@ def make_zip(files, skipped, folders=False):
 MAX_ATTACHMENTS = 10  # 简道云附件字段最多 10 个文件
 
 
-def attach_files(app_id, entry_id, data_id, zipname, files, skipped, group):
+def attach_files(app_id, entry_id, data_id, zipname, files, skipped, group, result=None):
     """文件放进附件字段，替换字段里原来的文件。不超过 10 个直接放 Word、PDF，超过就打成一个压缩包。
     每个分组可以有自己的附件字段（环境变量 FIELD_APPLICATION、FIELD_TAJ……），没配就用 FIELD_WORD。
     简道云接口没法在保留旧附件的同时追加新文件，所以各分组要分开放才不会互相覆盖。"""
     field = (group and env(f"FIELD_{group.upper()}")) or env("FIELD_WORD")
     if not field:
         raise BadRequest("没有配置附件字段（FIELD_WORD 或 FIELD_<分组>）")
+    extra = {env("FIELD_RESULT"): {"value": result}} if env("FIELD_RESULT") and result is not None else {}
     if not files:
-        jdy.update_record(app_id, entry_id, data_id, {field: {"value": []}})
+        jdy.update_record(app_id, entry_id, data_id, {field: {"value": []}, **extra})
         return []
     upload = files if len(files) <= MAX_ATTACHMENTS else [(zipname, make_zip(files, skipped, folders=not group))]
     tid, keys = jdy.upload_files(app_id, entry_id, upload)
-    jdy.update_record(app_id, entry_id, data_id, {field: {"value": keys}}, tid)
+    jdy.update_record(app_id, entry_id, data_id, {field: {"value": keys}, **extra}, tid)
     return [n for n, _ in upload]
+
+
+def report_failure(app_id, entry_id, data_id, group, error):
+    """生成出错时把失败原因写进「生成结果」，写不进去也不影响返回错误。"""
+    if not env("FIELD_RESULT"):
+        return
+    try:
+        msg = feedback.text(group, GROUPS[group]["name"] if group in GROUPS else None, [], [], error=error)
+        jdy.update_record(app_id, entry_id, data_id, {env("FIELD_RESULT"): {"value": msg}})
+    except Exception as e:  # noqa: BLE001
+        print(f"写失败原因也失败了：{e}", flush=True)
 
 
 def add_live_data(app_id, record):
@@ -226,7 +238,16 @@ def handle_generate(params):
     record = jdy.get_record(app_id, entry_id, data_id)
     add_live_data(app_id, record)
     group = params.get("group")
-    files, skipped = generate(record, resolve_forms(params.get("forms"), record, group))
+    try:
+        modules = resolve_forms(params.get("forms"), record, group)
+        files, skipped = generate(record, modules)
+    except Exception as e:
+        if fmt == "attach":
+            report_failure(app_id, entry_id, data_id, group, f"{type(e).__name__}: {e}")
+        raise
+    skipped_labels = {l for l, _ in skipped}
+    generated = [LABELS[m] for m in modules if LABELS[m] not in skipped_labels]
+    result = feedback.text(group, GROUPS[group]["name"] if group else None, generated, skipped)
 
     p = model.build(record)
     zipname = safe(f"{GROUPS[group]['name'] if group else '申请材料'} {p.surname} {p.given_name}") + ".zip"
@@ -238,7 +259,11 @@ def handle_generate(params):
         return 200, "application/zip", make_zip(files, skipped, folders=not group), zipname
 
     if fmt == "attach":  # 压缩包放进附件字段（给简道云智能助手用）
-        attached = attach_files(app_id, entry_id, data_id, zipname, files, skipped, group)
+        try:
+            attached = attach_files(app_id, entry_id, data_id, zipname, files, skipped, group, result)
+        except Exception as e:
+            report_failure(app_id, entry_id, data_id, group, f"上传或写回附件失败：{e}")
+            raise
         return 200, "application/json", {
             "attached": attached,
             "generated": [n for n, _ in files], "skipped": [{"file": l, "reason": r} for l, r in skipped]}
