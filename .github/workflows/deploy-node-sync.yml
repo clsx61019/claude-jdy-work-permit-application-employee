@@ -1,0 +1,46 @@
+# 部署「节点同步」云函数（sync/node_sync.py）：先跑单元测试，再打 zip 上传到腾讯云事件函数，最后试跑一次。
+# 手动运行：GitHub 仓库 → Actions → 「部署节点同步」→ Run workflow
+# 需要：Secrets TENCENTCLOUD_SECRET_ID / TENCENTCLOUD_SECRET_KEY / JDY_API_KEY / SYNC_PUSH_SECRET
+#       Variables FIELD_*（可选，默认是测试表里的字段 ID）
+name: 部署节点同步
+
+on:
+  pull_request:
+    paths: ["sync/**", "tests/test_node_sync.py", "deploy/deploy_sync.py", ".github/workflows/deploy-node-sync.yml"]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "测试后是否部署（不勾只跑测试）"
+        type: boolean
+        default: true
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: 单元测试
+        run: python tests/test_node_sync.py
+      - name: 部署
+        if: inputs.deploy
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+          TENCENT_REGION: ${{ vars.TENCENT_REGION || 'eu-frankfurt' }}
+          SYNC_FUNCTION: ${{ vars.SYNC_FUNCTION || 'jdy-node-sync' }}
+          SYNC_CRON: ${{ vars.SYNC_CRON }}
+          JDY_API_KEY: ${{ secrets.JDY_API_KEY }}
+          SYNC_PUSH_SECRET: ${{ secrets.SYNC_PUSH_SECRET }}
+          JDY_APP_ID: ${{ vars.JDY_APP_ID || '67501067fec27368c50bdf57' }}
+          JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID || '6ae1e985c2c60828dfc71ed4' }}  # 测试表
+          FIELD_NODE: ${{ vars.FIELD_NODE || '_widget_1793485058096' }}
+          FIELD_ASSIGNEE: ${{ vars.FIELD_ASSIGNEE || '_widget_1793485058097' }}
+          FIELD_ENTERED: ${{ vars.FIELD_ENTERED || '_widget_1793485058098' }}
+          FIELD_DAYS: ${{ vars.FIELD_DAYS || '_widget_1793485058099' }}
+          FIELD_SYNCED: ${{ vars.FIELD_SYNCED || '_widget_1793485058100' }}
+        run: |
+          pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
+          python deploy/deploy_sync.py
