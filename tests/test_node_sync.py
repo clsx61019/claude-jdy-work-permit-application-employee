@@ -73,6 +73,9 @@ def test_labels():
     assert ns.node_label("6. 确认抵达日期") == "06 确认抵达日期"
     assert ns.node_label("1.1. HR确认") == "01.1 HR确认"
     assert ns.node_label("10. 最终确认") == "10 最终确认"
+    assert ns.node_label("1A HR确认") == "01A HR确认"
+    assert ns.node_label("5B. 匈牙利递交") == "05B 匈牙利递交"
+    assert ns.node_label("第一轮通知") == "第一轮通知"
     assert ns.node_label("HR确认完成") == "HR确认完成"
 
 

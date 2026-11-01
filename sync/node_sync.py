@@ -40,7 +40,7 @@ BASE = env("JDY_API_BASE", "https://api.jiandaoyun.com/api")
 LABEL_DONE = env("LABEL_DONE", "已完成")
 LABEL_ENDED = env("LABEL_ENDED", "已手动结束")
 # V9 里只有「第二轮通知」是「子流程结束后进入下一节点」，流程进行中却没有待办时就是在等它
-LABEL_WAITING = env("LABEL_WAITING", "07.5 第二轮通知（子流程）")
+LABEL_WAITING = env("LABEL_WAITING", "第二轮通知（子流程）")
 FINAL_LABELS = {LABEL_DONE, LABEL_ENDED}
 
 
@@ -71,11 +71,12 @@ def fields():
 
 
 def node_label(flow_name):
-    """「6. 确认抵达日期」→「06 确认抵达日期」，「1.1. HR确认」→「01.1 HR确认」：补零后按文字排序就是流程顺序。"""
-    m = re.match(r"^\s*(\d+)((?:\.\d+)*)\.?\s*(.*)$", flow_name or "")
+    """「6. 确认抵达日期」→「06 确认抵达日期」，「1A HR确认」→「01A HR确认」，「5B. 匈牙利递交」→「05B 匈牙利递交」：
+    补零后按文字排序就是流程顺序。不带编号的节点（如「第一轮通知」）原样写。"""
+    m = re.match(r"^\s*(\d+)([A-Za-z]?(?:\.\d+)*)\.?\s*(.*)$", flow_name or "")
     if not m:
         return (flow_name or "").strip()
-    return f"{int(m.group(1)):02d}{m.group(2)} {m.group(3)}".strip()
+    return f"{int(m.group(1)):02d}{m.group(2).upper()} {m.group(3)}".strip()
 
 
 def parse_time(s):
