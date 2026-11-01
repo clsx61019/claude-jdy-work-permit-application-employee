@@ -34,6 +34,7 @@
 """
 import hashlib
 import hmac
+import time
 import html
 import io
 import json
@@ -205,16 +206,22 @@ def report_failure(app_id, entry_id, data_id, group, error):
 
 
 def add_live_data(app_id, record):
-    """把辅助表里的实时数据带进记录：雇主代表（J13，读不到就用 config/employers.json）、
-    被授权人出生地/住址/税号/证件号（J15，按被授权人姓名找）。"""
-    for what, fetch in (("雇主代表", lambda: jdy.employer_representatives(app_id, record.get(model.EMPLOYER_WIDGET))),
-                        ("被授权人", lambda: jdy.authorized_person(app_id, record.get(model.AUTH_NAME_WIDGET)))):
+    """把辅助表里的实时数据带进记录，主表只需要留姓名：
+    雇主代表（按雇主找，读不到就用 config/employers.json）；
+    被授权人母亲姓名/出生日期/岗位/公司/出生地/住址/税号/证件号（按被授权人姓名找）；
+    见证人1/2 证件号/地址/母亲姓名（按见证人姓名找）。辅助表有值就以辅助表为准。"""
+    def employer():
+        return {f"_{k}": v for k, v in jdy.employer_representatives(app_id, record.get(model.EMPLOYER_WIDGET)).items()}
+    for what, fetch in (("雇主代表", employer),
+                        ("被授权人", lambda: jdy.authorized_person(app_id, record.get(model.AUTH_NAME_WIDGET))),
+                        ("见证人1", lambda: jdy.witness(app_id, record.get(model.WITNESS_NAME_WIDGETS[0]), 0)),
+                        ("见证人2", lambda: jdy.witness(app_id, record.get(model.WITNESS_NAME_WIDGETS[1]), 1))):
         try:
             data = fetch()
         except jdy.JdyError as e:
             print(f"读{what}失败：{e}", flush=True)
             data = {}
-        record.update({f"_{k}": v for k, v in data.items() if v})
+        record.update({k: v for k, v in data.items() if v})
 
 
 def find_by_key(app_id, entry_id, params):
@@ -235,6 +242,7 @@ def handle_generate(params):
     entry_id = params.get("entry_id") or env("JDY_ENTRY_ID")
     data_id = params.get("data_id") or find_by_key(app_id, entry_id, params)
     fmt = params.get("format", "json")
+    started = time.monotonic()
     record = jdy.get_record(app_id, entry_id, data_id)
     add_live_data(app_id, record)
     group = params.get("group")
@@ -247,7 +255,8 @@ def handle_generate(params):
         raise
     skipped_labels = {l for l, _ in skipped}
     generated = [LABELS[m] for m in modules if LABELS[m] not in skipped_labels]
-    result = feedback.text(group, GROUPS[group]["name"] if group else None, generated, skipped)
+    result = feedback.text(group, GROUPS[group]["name"] if group else None, generated, skipped,
+                           seconds=time.monotonic() - started)
 
     p = model.build(record)
     zipname = safe(f"{GROUPS[group]['name'] if group else '申请材料'} {p.surname} {p.given_name}") + ".zip"

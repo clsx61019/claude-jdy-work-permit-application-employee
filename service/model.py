@@ -100,7 +100,7 @@ FIELDS = {
     "_auth_address": "auth_address",
     "_auth_tax_no": "auth_tax_no",
     "_auth_id_no": "auth_id_no",
-    # 授权书：见证人（来自「选择见证人1/2」联动）
+    # 授权书：见证人（主表只需姓名，证件号/地址/母亲姓名由 add_live_data 从辅助表「见证人名单」读）
     "_widget_1733307002943": "w1_name",
     "_widget_1733307002944": "w1_id",
     "_widget_1733307002945": "w1_address",
@@ -119,6 +119,7 @@ SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(enc
 
 EMPLOYER_WIDGET = "_widget_1732604018708"  # 雇主
 AUTH_NAME_WIDGET = "_widget_1732625466696"  # 被授权人姓名
+WITNESS_NAME_WIDGETS = ("_widget_1733307002943", "_widget_1733307002946")  # 见证人1/2姓名
 EMPLOYERS = json.loads((CONFIG / "employers.json").read_text(encoding="utf-8"))
 ACCOMMODATION = json.loads((CONFIG / "accommodation.json").read_text(encoding="utf-8"))
 

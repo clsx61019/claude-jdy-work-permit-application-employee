@@ -68,20 +68,44 @@ def employer_representatives(app_id, employer):
 # 辅助表「被授权人」（J15）：按姓名找出生地、住址、税号、证件号
 AUTH_ENTRY = os.environ.get("JDY_AUTH_ENTRY_ID", "67501efb28e2adbc9a9d7bda")
 AUTH_NAME = "_widget_1732624873034"
-AUTH_FIELDS = {"auth_birth_place": "_widget_1793481372267", "auth_address": "_widget_1793481372268",
-               "auth_tax_no": "_widget_1793481372269", "auth_id_no": "_widget_1793481372270"}
+# 键 = 放进主表记录的键（主表原来的字段 ID，或 _auth_* 新键），值 = 辅助表「被授权人名单」字段
+AUTH_FIELDS = {"_widget_1732625466698": "_widget_1732624873035",   # 母亲姓名
+               "_widget_1732625466760": "_widget_1732624873036",   # 出生日期
+               "_widget_1732625466780": "_widget_1732624873037",   # 岗位（英语）
+               "_widget_1732625466781": "_widget_1732624873038",   # 公司名称
+               "_auth_birth_place": "_widget_1793481372267", "_auth_address": "_widget_1793481372268",
+               "_auth_tax_no": "_widget_1793481372269", "_auth_id_no": "_widget_1793481372270"}
+
+WITNESS_ENTRY = os.environ.get("JDY_WITNESS_ENTRY_ID", "6750274afaf2df823b54c2f0")
+WITNESS_NAME = "_widget_1732624873034"
+WITNESS_ID, WITNESS_ADDRESS, WITNESS_MOTHER = "_widget_1733307198856", "_widget_1732624873037", "_widget_1756728584188"
+# 见证人1/2 在主表里的字段：证件号、地址、母亲姓名
+WITNESS_FIELDS = (
+    {"_widget_1733307002944": WITNESS_ID, "_widget_1733307002945": WITNESS_ADDRESS, "_widget_1756728816075": WITNESS_MOTHER},
+    {"_widget_1733307002947": WITNESS_ID, "_widget_1733307002948": WITNESS_ADDRESS, "_widget_1756728816076": WITNESS_MOTHER},
+)
 
 
-def authorized_person(app_id, name):
+def lookup_by_name(app_id, entry_id, name_field, name, fields):
+    """在辅助表里按姓名找唯一一行，返回 {目标键: 值}；找不到或重名返回 {}。"""
     if not name:
         return {}
     rows = _post("/v5/app/entry/data/list", {
-        "app_id": app_id, "entry_id": AUTH_ENTRY, "limit": 2, "fields": list(AUTH_FIELDS.values()),
-        "filter": {"rel": "and", "cond": [{"field": AUTH_NAME, "type": "text", "method": "eq", "value": [name]}]},
+        "app_id": app_id, "entry_id": entry_id, "limit": 2, "fields": sorted(set(fields.values())),
+        "filter": {"rel": "and", "cond": [{"field": name_field, "type": "text", "method": "eq", "value": [name]}]},
     })["data"]
     if len(rows) != 1:
         return {}
-    return {k: (rows[0].get(w) or "").strip() for k, w in AUTH_FIELDS.items()}
+    return {k: v.strip() if isinstance(v, str) else v for k, w in fields.items() if (v := rows[0].get(w))}
+
+
+def authorized_person(app_id, name):
+    return lookup_by_name(app_id, AUTH_ENTRY, AUTH_NAME, name, AUTH_FIELDS)
+
+
+def witness(app_id, name, n):
+    """n = 0 / 1：见证人1 / 见证人2。"""
+    return lookup_by_name(app_id, WITNESS_ENTRY, WITNESS_NAME, name, WITNESS_FIELDS[n])
 
 
 def _upload_one(url, token, filename, content):
