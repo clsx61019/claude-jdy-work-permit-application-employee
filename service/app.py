@@ -9,11 +9,14 @@
 - GET|POST /generate                  生成文件
     参数（查询字符串或 JSON）：
       token      必填，等于环境变量 GEN_TOKEN
-      data_id    必填，简道云记录 ID
+      data_id    简道云记录 ID。智能助手里拿不到数据 ID 时，改用 key：
+      key        按某个字段的值找记录（字段 = 参数 key_field，默认环境变量 FIELD_KEY，建议用「流水号」字段），
+                 必须正好找到一条
       forms      可选，逗号分隔的选项文字或模块名，或 all（附件只出对应居留许可类型的那份，其余逐个尝试，不适用的跳过）。
                  不填时读记录里的多选框 FIELD_SELECT；它也为空时按 all。
       app_id / entry_id   可选，默认用环境变量 JDY_APP_ID / JDY_ENTRY_ID
-      format     json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
+      group      可选，按钮分组（见 config/groups.json），只生成这一组里适用的文件；优先于 forms
+      format     attach（文件放进附件字段，超过 10 个打包；带 group 时用该组的 FIELD_<分组>，给简道云智能助手用）/ json（默认，写回简道云）/ zip（不写回，直接下载压缩包）/ html（写回，返回网页，方便浏览器测试）
 - POST /jdy-webhook                   简道云「数据推送」：多选框 FIELD_SELECT 有值时生成，生成后把它清空
 
 环境变量
@@ -21,8 +24,11 @@
   JDY_APP_ID / JDY_ENTRY_ID    默认的应用、表单 ID
   GEN_TOKEN        调用口令
   FIELD_WORD       写回 Word 的附件字段 _widget_ ID
+  FIELD_APPLICATION / FIELD_CONTRACT / FIELD_AUTHORIZATION / FIELD_DECLARATIONS / FIELD_TAJ
+                   各分组压缩包的附件字段（format=attach&group=…），没配就用 FIELD_WORD
   FIELD_PDF        写回 PDF 的附件字段 _widget_ ID（不填则 Word、PDF 都写到 FIELD_WORD）
   FIELD_SELECT     多选框「选择要生成的文件」的 _widget_ ID（可选）
+  FIELD_KEY        可选：用 key 找记录时的字段 _widget_ ID（FIELD_KEY_TYPE 为字段类型，默认 text，流水号填 sn）
   FIELD_RESULT     多行文本，写生成结果和跳过原因（可选）
   JDY_PUSH_SECRET  数据推送的签名密钥（用 /jdy-webhook 时必填）
 """
@@ -38,7 +44,7 @@ import traceback
 import zipfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 
 from . import jdy, model
 from .generate import render, to_pdf_many
@@ -47,6 +53,9 @@ FORMS = {k: v for k, v in json.loads(
     (Path(__file__).parent / "config" / "forms.json").read_text(encoding="utf-8")).items()
     if not k.startswith("_")}
 LABELS = {v: k for k, v in FORMS.items()}
+GROUPS = {k: v for k, v in json.loads(
+    (Path(__file__).parent / "config" / "groups.json").read_text(encoding="utf-8")).items()
+    if not k.startswith("_")}
 
 env = os.environ.get
 
@@ -60,18 +69,27 @@ class BadRequest(ValueError):
     pass
 
 
-def resolve_forms(spec, record):
+def applicable(modules, record):
+    """自动模式：9.x 附件只留与居留许可类型对应的那份，ICT 文件只给 ICT。其余不适用的生成时会报错跳过。"""
+    permit = model.build(record).permit_type
+    wanted = ANNEX_FOR_PERMIT.get(permit)
+    return [m for m in modules
+            if (m not in ANNEX_FOR_PERMIT.values() or m == wanted)
+            and (m not in ICT_ONLY or permit == "Intra-corporate Transfer")]
+
+
+def resolve_forms(spec, record, group=None):
     """返回模块名列表。"""
+    if group:
+        if group not in GROUPS:
+            raise BadRequest(f"不认识的分组「{group}」，可选：{'、'.join(GROUPS)}")
+        return applicable(GROUPS[group]["forms"], record)
     if not spec and env("FIELD_SELECT"):
         spec = record.get(env("FIELD_SELECT")) or []
     if isinstance(spec, str):
         spec = [s.strip() for s in spec.split(",") if s.strip()]
     if not spec or spec == ["all"]:
-        permit = model.build(record).permit_type
-        wanted = ANNEX_FOR_PERMIT.get(permit)
-        return [m for m in FORMS.values()
-                if (m not in ANNEX_FOR_PERMIT.values() or m == wanted)
-                and (m not in ICT_ONLY or permit == "Intra-corporate Transfer")]
+        return applicable(list(FORMS.values()), record)
     out = []
     for s in spec:
         mod = FORMS.get(s) or (s if s in LABELS else None)
@@ -124,8 +142,8 @@ def write_back(app_id, entry_id, data_id, files, skipped, clear_select=False):
         tid, keys = jdy.upload_files(app_id, entry_id, files)
         words = [k for (n, _), k in zip(files, keys) if n.endswith(".docx")]
         pdfs = [k for (n, _), k in zip(files, keys) if n.endswith(".pdf")]
-        if word_field == pdf_field:
-            data[word_field] = {"value": words + pdfs}
+        if word_field == pdf_field:  # 同一个字段：每份文件的 Word、PDF 挨在一起
+            data[word_field] = {"value": keys}
         else:
             data[word_field] = {"value": words}
             data[pdf_field] = {"value": pdfs}
@@ -137,25 +155,93 @@ def write_back(app_id, entry_id, data_id, files, skipped, clear_select=False):
         jdy.update_record(app_id, entry_id, data_id, data, tid)
 
 
+GROUP_OF = {m: g["name"] for g in GROUPS.values() for m in g["forms"]}  # 模块 -> 文件夹名
+
+
+def make_zip(files, skipped, folders=False):
+    """folders=True：按分组放进文件夹（申请表/、授权书/……），没有文件的文件夹留空"""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        if folders:
+            for g in GROUPS.values():
+                z.writestr(g["name"] + "/", b"")
+        for name, content in files:
+            folder = next((GROUP_OF[m] + "/" for label, m in FORMS.items() if name.startswith(label + " ")), "") \
+                if folders else ""
+            z.writestr(folder + name, content)
+        z.writestr("结果.txt", result_text(files, skipped))
+    return buf.getvalue()
+
+
+MAX_ATTACHMENTS = 10  # 简道云附件字段最多 10 个文件
+
+
+def attach_files(app_id, entry_id, data_id, zipname, files, skipped, group):
+    """文件放进附件字段，替换字段里原来的文件。不超过 10 个直接放 Word、PDF，超过就打成一个压缩包。
+    每个分组可以有自己的附件字段（环境变量 FIELD_APPLICATION、FIELD_TAJ……），没配就用 FIELD_WORD。
+    简道云接口没法在保留旧附件的同时追加新文件，所以各分组要分开放才不会互相覆盖。"""
+    field = (group and env(f"FIELD_{group.upper()}")) or env("FIELD_WORD")
+    if not field:
+        raise BadRequest("没有配置附件字段（FIELD_WORD 或 FIELD_<分组>）")
+    if not files:
+        jdy.update_record(app_id, entry_id, data_id, {field: {"value": []}})
+        return []
+    upload = files if len(files) <= MAX_ATTACHMENTS else [(zipname, make_zip(files, skipped, folders=not group))]
+    tid, keys = jdy.upload_files(app_id, entry_id, upload)
+    jdy.update_record(app_id, entry_id, data_id, {field: {"value": keys}}, tid)
+    return [n for n, _ in upload]
+
+
+def add_live_data(app_id, record):
+    """把辅助表里的实时数据带进记录：雇主代表（J13，读不到就用 config/employers.json）、
+    被授权人出生地/住址/税号/证件号（J15，按被授权人姓名找）。"""
+    for what, fetch in (("雇主代表", lambda: jdy.employer_representatives(app_id, record.get(model.EMPLOYER_WIDGET))),
+                        ("被授权人", lambda: jdy.authorized_person(app_id, record.get(model.AUTH_NAME_WIDGET)))):
+        try:
+            data = fetch()
+        except jdy.JdyError as e:
+            print(f"读{what}失败：{e}", flush=True)
+            data = {}
+        record.update({f"_{k}": v for k, v in data.items() if v})
+
+
+def find_by_key(app_id, entry_id, params):
+    value = str(params.get("key") or "").strip()
+    field = params.get("key_field") or env("FIELD_KEY")
+    if not value or not field:
+        raise BadRequest("缺少 data_id（或 key + key_field）")
+    found = jdy.find_records(app_id, entry_id, field, value, params.get("key_type") or env("FIELD_KEY_TYPE") or "text")
+    if len(found) != 1:
+        raise BadRequest(f"按 {field} = {value} 找到 {len(found)} 条记录，必须正好一条")
+    return found[0]["_id"]
+
+
 def handle_generate(params):
     if not env("GEN_TOKEN") or not hmac.compare_digest(str(params.get("token", "")), env("GEN_TOKEN")):
         return 403, "application/json", {"error": "token 不对"}
-    data_id = params.get("data_id")
-    if not data_id:
-        raise BadRequest("缺少 data_id")
     app_id = params.get("app_id") or env("JDY_APP_ID")
     entry_id = params.get("entry_id") or env("JDY_ENTRY_ID")
+    data_id = params.get("data_id") or find_by_key(app_id, entry_id, params)
     fmt = params.get("format", "json")
     record = jdy.get_record(app_id, entry_id, data_id)
-    files, skipped = generate(record, resolve_forms(params.get("forms"), record))
+    add_live_data(app_id, record)
+    group = params.get("group")
+    files, skipped = generate(record, resolve_forms(params.get("forms"), record, group))
+
+    p = model.build(record)
+    zipname = safe(f"{GROUPS[group]['name'] if group else '申请材料'} {p.surname} {p.given_name}") + ".zip"
 
     if fmt == "zip":
-        buf = io.BytesIO()
-        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
-            for name, content in files:
-                z.writestr(name, content)
-            z.writestr("结果.txt", result_text(files, skipped))
-        return 200, "application/zip", buf.getvalue()
+        if not files:  # 浏览器里点按钮时，与其下载空压缩包不如直接显示原因
+            body = "<br>".join(html.escape(x) for x in result_text(files, skipped).split("\n"))
+            return 200, "text/html; charset=utf-8", f"<meta charset=utf-8><p>没有可生成的文件。</p><p>{body}</p>"
+        return 200, "application/zip", make_zip(files, skipped, folders=not group), zipname
+
+    if fmt == "attach":  # 压缩包放进附件字段（给简道云智能助手用）
+        attached = attach_files(app_id, entry_id, data_id, zipname, files, skipped, group)
+        return 200, "application/json", {
+            "attached": attached,
+            "generated": [n for n, _ in files], "skipped": [{"file": l, "reason": r} for l, r in skipped]}
 
     if not env("FIELD_WORD"):
         raise BadRequest("没有配置 FIELD_WORD（附件字段），只能用 format=zip")
@@ -184,13 +270,14 @@ def handle_webhook(headers, raw, query):
     if body.get("op") not in ("data_create", "data_update") or not env("FIELD_SELECT") \
             or not record.get(env("FIELD_SELECT")):
         return 200, "application/json", {"ignored": True}
+    add_live_data(record["appId"], record)
     files, skipped = generate(record, resolve_forms(None, record))
     write_back(record["appId"], record["entryId"], record["_id"], files, skipped, clear_select=True)
     return 200, "application/json", {"generated": len(files), "skipped": len(skipped)}
 
 
 class Handler(BaseHTTPRequestHandler):
-    def _send(self, code, ctype, body):
+    def _send(self, code, ctype, body, filename="files.zip"):
         if isinstance(body, (dict, list)):
             body = json.dumps(body, ensure_ascii=False)
         if isinstance(body, str):
@@ -198,7 +285,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         if ctype == "application/zip":
-            self.send_header("Content-Disposition", 'attachment; filename="files.zip"')
+            self.send_header("Content-Disposition",  # 中文文件名按 RFC 5987 编码
+                             f"attachment; filename=\"files.zip\"; filename*=UTF-8''{quote(filename)}")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -211,8 +299,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, "application/json", {"ok": True})
             if url.path == "/generate":
                 params = dict(query)
-                if raw and "json" in (self.headers.get("Content-Type") or ""):
+                ctype = self.headers.get("Content-Type") or ""
+                if raw and "json" in ctype:
                     params.update(json.loads(raw))
+                elif raw and "form-urlencoded" in ctype:
+                    params.update({k: v[-1] for k, v in parse_qs(raw.decode("utf-8")).items()})
                 return self._send(*handle_generate(params))
             if url.path == "/jdy-webhook" and self.command == "POST":
                 return self._send(*handle_webhook(self.headers, raw, query))

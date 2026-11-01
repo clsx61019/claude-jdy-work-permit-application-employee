@@ -16,9 +16,41 @@ on:
         description: "部署后用这条简道云记录试生成（下载压缩包，不写回）；留空不测"
         type: string
         default: ""
+      test_group:
+        description: "试生成的分组（application/contract/authorization/declarations/taj），留空=全部"
+        type: string
+        default: ""
+      test_write_back:
+        description: "试生成时写回简道云附件字段（不勾只下载压缩包）"
+        type: boolean
+        default: false
+      probe:
+        description: "只调用一次已部署的函数看返回（不构建不部署）：查询参数，如 key=WP2026001&group=taj&format=attach（token 自动加）"
+        type: string
+        default: ""
+      test_key:
+        description: "写回时不用数据 ID，改按字段值找记录：字段ID,类型,值（如 _widget_123,text,E1234567）"
+        type: string
+        default: ""
 
 jobs:
+  probe:
+    if: inputs.probe != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: 调用函数
+        env:
+          URL: ${{ vars.FUNCTION_URL || 'https://1325784216-163j7jyac7.eu-frankfurt.tencentscf.com' }}
+          GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
+          Q: ${{ inputs.probe }}
+        run: |
+          T=$(python3 -c 'import os,urllib.parse;print(urllib.parse.quote(os.environ["GEN_TOKEN"]))')
+          echo "== GET（和浏览器一样）"; curl -sS -m 300 -D - -w '\nHTTP %{http_code}，用时 %{time_total}s\n' "$URL/generate?$Q&token=$T" | head -c 3000; echo
+          echo "== token 错时"; curl -sS -m 60 -D - "$URL/generate?$Q&token=wrong" | head -c 1500; echo
+          echo "== /health"; curl -sS -m 60 -D - "$URL/health"
+
   build-deploy:
+    if: inputs.probe == ''
     runs-on: ubuntu-latest
     env:
       IMAGE_URI: ${{ vars.TCR_REGISTRY || 'deccr.ccs.tencentyun.com' }}/${{ vars.TCR_NAMESPACE }}/jdy-print:${{ github.sha }}
@@ -56,10 +88,17 @@ jobs:
           JDY_PUSH_SECRET: ${{ secrets.JDY_PUSH_SECRET }}
           JDY_APP_ID: ${{ vars.JDY_APP_ID || '67501067fec27368c50bdf57' }}
           JDY_ENTRY_ID: ${{ vars.JDY_ENTRY_ID || '6ae1e985c2c60828dfc71ed4' }}  # 测试表
-          FIELD_WORD: ${{ vars.FIELD_WORD }}
+          FIELD_WORD: ${{ vars.FIELD_WORD || '_widget_1793474342567' }}  # 不带分组时写这里（测试表「申请材料1」）
           FIELD_PDF: ${{ vars.FIELD_PDF }}
           FIELD_SELECT: ${{ vars.FIELD_SELECT }}
           FIELD_RESULT: ${{ vars.FIELD_RESULT }}
+          FIELD_KEY: ${{ vars.FIELD_KEY || '_widget_1793478163742' }}  # 测试表「流水号」，智能助手按它找记录
+          FIELD_KEY_TYPE: ${{ vars.FIELD_KEY_TYPE || 'sn' }}
+          FIELD_APPLICATION: ${{ vars.FIELD_APPLICATION || '_widget_1793474342567' }}  # 测试表「申请材料1」
+          FIELD_CONTRACT: ${{ vars.FIELD_CONTRACT || '_widget_1793476906699' }}  # 测试表「申请材料2」
+          FIELD_AUTHORIZATION: ${{ vars.FIELD_AUTHORIZATION || '_widget_1793476906700' }}  # 测试表「申请材料3」
+          FIELD_DECLARATIONS: ${{ vars.FIELD_DECLARATIONS || '_widget_1793476906701' }}  # 测试表「申请材料4」
+          FIELD_TAJ: ${{ vars.FIELD_TAJ || '_widget_1793476906702' }}  # 测试表「申请材料5」
         run: |
           pip install -q tencentcloud-sdk-python-common tencentcloud-sdk-python-scf
           python deploy/deploy_scf.py
@@ -70,9 +109,22 @@ jobs:
           URL: ${{ vars.FUNCTION_URL || steps.deploy.outputs.url }}
           GEN_TOKEN: ${{ secrets.GEN_TOKEN }}
           DATA_ID: ${{ inputs.test_data_id }}
+          WRITE_BACK: ${{ inputs.test_write_back }}
+          GROUP: ${{ inputs.test_group }}
+          TEST_KEY: ${{ inputs.test_key }}
         run: |
           curl -sS --fail-with-body -m 120 "$URL/health"; echo
           time curl -sS --fail-with-body -m 300 -o out.zip -G "$URL/generate" \
             --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID" --data-urlencode "format=zip"
-          unzip -l out.zip
-          unzip -p out.zip 结果.txt
+          if [ -n "$TEST_KEY" ]; then
+            IFS=, read -r KF KT KV <<< "$TEST_KEY"
+            curl -sS --fail-with-body -m 300 -G "$URL/generate" \
+              --data-urlencode "token=$GEN_TOKEN" --data-urlencode "key_field=$KF" --data-urlencode "key_type=$KT" \
+              --data-urlencode "key=$KV" --data-urlencode "format=attach" --data-urlencode "group=$GROUP"; echo
+          elif [ "$WRITE_BACK" = "true" ]; then
+            curl -sS --fail-with-body -m 300 -G "$URL/generate" \
+              --data-urlencode "token=$GEN_TOKEN" --data-urlencode "data_id=$DATA_ID" --data-urlencode "format=attach" --data-urlencode "group=$GROUP"; echo
+          else
+            unzip -l out.zip
+            unzip -p out.zip 结果.txt
+          fi

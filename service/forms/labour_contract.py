@@ -7,6 +7,8 @@
 模板由 tools/build_labour_contracts.py 从简道云原模板转换而来。只给 BorsodChem 用（B5）。
 新申请用；变更、延期另有 contract modification 模板，不用这份。
 """
+import re
+
 from ..docx_text import TextDoc
 from ..model import hu_money
 from .preliminary import en_long, hu_long
@@ -61,7 +63,17 @@ def address(p, country):
     return ", ".join(x for x in parts if x)
 
 
+def is_executive(grade):
+    """BC职级是 N-1 的用高管版本，其他都用普通版本（János 2026-10-31）。"""
+    return re.match(r"\s*N-1(?!\d)", grade or "", re.I) is not None
+
+
 def check(p, executive):
+    grade = getattr(p, "bc_grade", "") or ""
+    if not grade.strip():
+        raise ValueError("缺少：BC职级（N-1 用高管版，其他用普通版）")
+    if is_executive(grade) != executive:
+        raise ValueError(f"BC职级是「{grade}」，用{'高管' if is_executive(grade) else '普通员工'}版本")
     if p.employer != BORSODCHEM:
         raise ValueError(f"劳动合同模板只给 {BORSODCHEM} 用，现在雇主是「{p.employer}」")
     if p.app_type != "new":

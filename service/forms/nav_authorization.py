@@ -16,9 +16,9 @@ def fill(doc, p):
     if p.app_type not in ("change", "extension"):
         raise ValueError("NAV 授权书（上一年收入证明）只用于变更、延期")
     require_common(p, {"税号": p.tax_no, "出生地": p.birth_place_en,
-                       "被授权人税号（简道云待办 J15）": p.auth_tax_no,
-                       "被授权人出生地（简道云待办 J15）": p.auth_birth_place,
-                       "被授权人住址（简道云待办 J15）": p.auth_address,
+                       "被授权人税号（辅助表「被授权人」里填）": p.auth_tax_no,
+                       "被授权人出生地（辅助表「被授权人」里填）": p.auth_birth_place,
+                       "被授权人住址（辅助表「被授权人」里填）": p.auth_address,
                        "见证人1母亲姓名": p.w1_mother, "见证人2母亲姓名": p.w2_mother})
     doc.fill({
         **common_values(p),

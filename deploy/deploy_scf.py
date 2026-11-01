@@ -21,7 +21,8 @@ from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentClo
 from tencentcloud.scf.v20180416 import models, scf_client
 
 FUNCTION_ENV = ["JDY_API_KEY", "GEN_TOKEN", "JDY_APP_ID", "JDY_ENTRY_ID",
-                "FIELD_WORD", "FIELD_PDF", "FIELD_SELECT", "FIELD_RESULT", "JDY_PUSH_SECRET"]
+                "FIELD_WORD", "FIELD_PDF", "FIELD_SELECT", "FIELD_RESULT", "JDY_PUSH_SECRET", "FIELD_KEY", "FIELD_KEY_TYPE",
+                "FIELD_APPLICATION", "FIELD_CONTRACT", "FIELD_AUTHORIZATION", "FIELD_DECLARATIONS", "FIELD_TAJ"]
 
 env = os.environ.get
 NAME = env("SCF_FUNCTION", "jdy-print")

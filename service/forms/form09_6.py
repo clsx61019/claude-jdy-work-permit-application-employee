@@ -88,7 +88,7 @@ def fill(f, p):
     # 10. 技能（专业经验年限留空，同 9.5 Q11）
     f.text(96, "speciális ismerete", p.special_skills)
     f.text(99, "Anyanyelve", p.native_language)
-    f.text(102, "Egyéb nyelvismerete", COMPANY["other_language"])
+    f.text(102, "Egyéb nyelvismerete", p.other_languages)
     f.check(103, "igen", False)
     f.check(104, "nem", True)
 

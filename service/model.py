@@ -86,17 +86,20 @@ FIELDS = {
     "_widget_1756727041750": "tax_no",               # 税号（adóazonosító jel）
     "_widget_1756727041745": "card_no",              # 居留卡号（雇主通知）
     "_widget_1773210557411": "actual_start",         # 劳动关系实际起始日期（雇主通知）
+    "_widget_1793474342373": "languages",            # 语言（多选，会说的语言）
+    "_widget_1787553576251": "bc_grade",             # BC职级（N-1 用高管版劳动合同）
     # 授权书：被授权人（来自「选择被授权人」联动）
     "_widget_1732625466696": "auth_name",            # 被授权人姓名
     "_widget_1732625466698": "auth_mother",          # 被授权人母亲姓名
     "_widget_1732625466760": "auth_birth_date",      # 被授权人出生日期
     "_widget_1732625466780": "auth_position",        # 被授权人岗位
     "_widget_1732625466781": "auth_company",         # 被授权人公司
-    # 简道云待办 J15：被授权人辅助表还没有这 4 列。字段建好后把键换成 _widget_ ID
-    "J15_被授权人出生地": "auth_birth_place",
-    "J15_被授权人住址": "auth_address",
-    "J15_被授权人税号": "auth_tax_no",
-    "J15_被授权人证件号": "auth_id_no",
+    # J15：被授权人出生地/住址/税号/证件号不进表单，生成时按「被授权人姓名」从辅助表「被授权人」实时读取
+    # （app.add_live_data 放进记录的 _auth_* 键）
+    "_auth_birth_place": "auth_birth_place",
+    "_auth_address": "auth_address",
+    "_auth_tax_no": "auth_tax_no",
+    "_auth_id_no": "auth_id_no",
     # 授权书：见证人（来自「选择见证人1/2」联动）
     "_widget_1733307002943": "w1_name",
     "_widget_1733307002944": "w1_id",
@@ -114,6 +117,8 @@ DATE_FIELDS = ("birth_date", "passport_issued", "passport_expiry", "contract_end
 
 SENDING_COMPANIES = json.loads((CONFIG / "sending_companies.json").read_text(encoding="utf-8"))
 
+EMPLOYER_WIDGET = "_widget_1732604018708"  # 雇主
+AUTH_NAME_WIDGET = "_widget_1732625466696"  # 被授权人姓名
 EMPLOYERS = json.loads((CONFIG / "employers.json").read_text(encoding="utf-8"))
 ACCOMMODATION = json.loads((CONFIG / "accommodation.json").read_text(encoding="utf-8"))
 
@@ -125,6 +130,11 @@ EXPAT_CATEGORIES = {"Expat", "Board Member", "Extended Stay"}
 
 # 母语：按国籍（Q12）。没有对应的留空，由人工补。
 NATIVE_LANGUAGE = {"Chinese": "kínai"}
+
+# 「语言」多选框选项 -> 匈牙利语。母语以外选中的语言写进「Egyéb nyelvismerete」
+LANGUAGES_HU = {"Chinese 中文": "kínai", "English 英语": "angol", "Hungarian 匈牙利语": "magyar",
+                "German 德语": "német", "French 法语": "francia", "Spanish 西班牙语": "spanyol",
+                "Czech 捷克语": "cseh", "Italian 意大利语": "olasz", "Swedish 瑞典语": "svéd"}
 
 
 class Model(dict):
@@ -167,8 +177,21 @@ def build(record):
     p["birth_place_en"] = en_part(p.birth_place)
     p["passport_place_en"] = en_part(p.passport_place)
     p["employer_info"] = Model(EMPLOYERS.get(p.employer, {}))
+    for k in ("representative_hu", "representative_en"):  # 服务从简道云辅助表实时读到的雇主代表（J13）
+        if record.get(f"_{k}"):
+            p.employer_info[k] = record[f"_{k}"]
     p["accommodation_info"] = Model(ACCOMMODATION.get(p.accommodation, {}))
     p["native_language"] = NATIVE_LANGUAGE.get(p.nationality, "")
+    langs = p.languages if isinstance(p.languages, list) else ([p.languages] if p.languages else [])
+    unknown = [x for x in langs if x not in LANGUAGES_HU]
+    if unknown:
+        raise ValueError(f"「语言」里有不认识的选项：{'、'.join(unknown)}（service/model.py LANGUAGES_HU）")
+    langs_hu = [LANGUAGES_HU[x] for x in langs]
+    p["speaks_hungarian"] = "magyar" in langs_hu
+    # 没填「语言」时沿用以前的默认：其他语言 angol
+    others = [x for x in langs_hu if x != p.native_language] if langs else [COMPANY["other_language"]]
+    p["other_languages"] = ", ".join(others)
+    p["other_languages_no_hu"] = ", ".join(x for x in others if x != "magyar")  # 9.5 匈牙利语单独打勾
     p["submitted_by_employer"] = p.submit_place == "Hungary 匈牙利"
     if p.application_type and p.application_type not in APPLICATION_TYPES:
         raise ValueError(f"未知的申请类型「{p.application_type}」")

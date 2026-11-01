@@ -25,7 +25,7 @@ def fill(doc, p):
     require({"雇主": p.employer, "雇主地址（config/employers.json）": emp.address,
              "雇主税号（config/employers.json）": emp.tax_no,
              "雇主公司注册号（config/employers.json）": emp.registration_no,
-             "雇主代表（config/employers.json，待办 J13）": emp.representative_hu,
+             "雇主代表（辅助表「雇主相关信息」）": emp.representative_hu,
              "出生日期": p.birth_date, "出生地": p.birth_place_en, "国籍": p.nationality_hu})
     if p.actual_start:  # B4
         require({"居留卡号": p.card_no})
