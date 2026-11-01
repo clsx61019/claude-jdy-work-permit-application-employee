@@ -25,14 +25,14 @@ RECORDS = {
     # 进行中，没有进行中的待办 → 等子流程
     "r2": {"_id": "r2", "flowState": 0},
     # 已结束，但字段还停在某个节点 → 要改成已完成
-    "r3": {"_id": "r3", "flowState": 1, "w_node": "09 信息归档"},
+    "r3": {"_id": "r3", "flowState": 1, "w_node": "10 Archiving"},
     # 进行中，字段已经是对的 → 不写
-    "r4": {"_id": "r4", "flowState": 0, "w_node": "01.1 HR确认", "w_who": [{"username": "jia"}],
+    "r4": {"_id": "r4", "flowState": 0, "w_node": "01A HR Confirmation", "w_who": [{"username": "jia"}],
            "w_in": "2026-10-30T08:00:00.000Z", "w_days": 3},
     # 节点信息已经对了，只有天数要写：布达佩斯 10-16 递交、10-31 获批、10-01 发起
     "r5": {"_id": "r5", "flowState": 0, "createTime": "2026-10-01T08:00:00.000Z",
            "w_sub": "2026-10-15T22:00:00.000Z", "w_ok": "2026-10-30T23:00:00.000Z",
-           "w_node": "07 文件签署", "w_who": ["reka"], "w_in": "2026-10-31T08:00:00.000Z", "w_days": 2},
+           "w_node": "07 Arrival Date Confirmation", "w_who": ["reka"], "w_in": "2026-10-31T08:00:00.000Z", "w_days": 2},
 }
 INSTANCES = {
     "r1": {"status": 0, "tasks": [
@@ -85,6 +85,11 @@ def test_labels():
     assert ns.node_label("5B. 匈牙利递交") == "05B 匈牙利递交"
     assert ns.node_label("第一轮通知") == "第一轮通知"
     assert ns.node_label("HR确认完成") == "HR确认完成"
+    assert ns.display_label("1A. HR确认") == "01A HR Confirmation"
+    assert ns.display_label("1.1. HR确认") == "01A HR Confirmation"  # 旧编号
+    assert ns.display_label("5B. 匈牙利递交") == "05B Submission in Hungary"
+    assert ns.display_label("11. 最终确认") == "11 Final Confirmation"
+    assert ns.display_label("12. 新节点") == "12 新节点"  # 没有英文名的原样写
 
 
 def test_sync_all():
@@ -92,7 +97,7 @@ def test_sync_all():
     assert res["checked"] == 5 and not res["errors"], res
     assert set(res["changed"]) == {"r1", "r2", "r3", "r5"}, res
     d = by_id("r1")
-    assert d["w_node"]["value"] == "06 确认抵达日期"
+    assert d["w_node"]["value"] == "06 Decision Received"
     assert d["w_who"]["value"] == ["jia", "wu"]
     assert d["w_in"]["value"] == "2026-10-28T07:13:31.000Z"
     assert d["w_days"]["value"] == 5
@@ -103,7 +108,7 @@ def test_sync_all():
     assert d == {"w_since": {"value": 15}, "w_total": {"value": 30}}, d
     assert by_id("r2")["w_node"]["value"] == ns.LABEL_WAITING
     d = by_id("r3")
-    assert d["w_node"]["value"] == "已完成" and d["w_who"]["value"] == [] and d["w_days"]["value"] is None
+    assert d["w_node"]["value"] == "Completed" and d["w_who"]["value"] == [] and d["w_days"]["value"] is None
 
 
 def test_second_run_writes_nothing():
@@ -129,7 +134,7 @@ def test_push():
                 "event": {"app_id": "app1", "form_id": "entry1", "instance_id": "r4", "flow_id": 7,
                           "flow_name": "2. 收到证书", "completed_tasks": [], "created_tasks": []}})
     assert out["statusCode"] == 200, out
-    assert RECORDS["r4"]["w_node"] == "02 收到证书" and RECORDS["r4"]["w_who"] == ["reka"]
+    assert RECORDS["r4"]["w_node"] == "02 Certificates Received" and RECORDS["r4"]["w_who"] == ["reka"]
     # 写回引起的再次推送：值没变，不写
     before = len(updates)
     push({"op": "data_update", "data": {"_id": "r4", "entryId": "entry1", "appId": "app1"}})
