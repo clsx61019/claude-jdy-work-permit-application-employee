@@ -21,6 +21,11 @@
   FIELD_ENTERED      进入当前节点时间（日期时间）
   FIELD_DAYS         当前节点停留天数（数字）
   FIELD_SYNCED       节点同步时间（日期时间，节点信息最后一次变化的时间）
+  以下四个可选，都配置了才算天数（按布达佩斯日期算，不看几点）：
+  FIELD_SUBMITTED    递交日期（读）
+  FIELD_APPROVED     获批日期（读）
+  FIELD_SINCE_SUBMIT 递交至今天数（数字，写）：今天 − 递交日期；有获批日期后固定为获批日期 − 递交日期
+  FIELD_TOTAL        办理总天数（数字，写）：获批日期 − 发起日期（记录创建时间）；没获批时为空
   LABEL_DONE / LABEL_ENDED / LABEL_WAITING   流程结束、手动结束、等子流程时写的文字（有默认值）
 """
 import base64
@@ -32,7 +37,13 @@ import re
 import sys
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+
+try:
+    from zoneinfo import ZoneInfo
+    LOCAL_TZ = ZoneInfo("Europe/Budapest")
+except Exception:  # 没有时区库时按冬令时近似
+    LOCAL_TZ = timezone(timedelta(hours=1))
 
 env = os.environ.get
 BASE = env("JDY_API_BASE", "https://api.jiandaoyun.com/api")
@@ -68,6 +79,31 @@ def fields():
     if missing:
         raise JdyError("没有配置字段：" + "、".join(missing))
     return {n[6:].lower(): env(n) for n in names}
+
+
+DAY_FIELDS = ["FIELD_SUBMITTED", "FIELD_APPROVED", "FIELD_SINCE_SUBMIT", "FIELD_TOTAL"]
+DAY_KEYS = ("since_submit", "total")
+
+
+def day_fields():
+    """四个天数相关字段都配置了才返回，否则返回 {}（不算天数）。"""
+    if not all(env(n) for n in DAY_FIELDS):
+        return {}
+    return {n[6:].lower(): env(n) for n in DAY_FIELDS}
+
+
+def local_date(dt):
+    return dt.astimezone(LOCAL_TZ).date()
+
+
+def desired_days(record, now, d):
+    """递交至今天数、办理总天数。"""
+    submitted = parse_time(record.get(d["submitted"]))
+    approved = parse_time(record.get(d["approved"]))
+    created = parse_time(record.get("createTime"))
+    since = max(0, (local_date(approved or now) - local_date(submitted)).days) if submitted else None
+    total = max(0, (local_date(approved) - local_date(created)).days) if approved and created else None
+    return {"since_submit": since, "total": total}
 
 
 def node_label(flow_name):
@@ -134,28 +170,38 @@ def diff(want, have):
     return out
 
 
-def sync_record(app_id, entry_id, record, now, f):
+def sync_record(app_id, entry_id, record, now, f, d=None):
     """同步一条记录，返回写了哪些键（没变就是空）。"""
+    d = day_fields() if d is None else d
     inst = post("/v6/workflow/instance/get", {"instance_id": record["_id"], "tasks_type": 1})
     want = desired_state(inst, now)
     changes = diff(want, current_state(record, f))
-    if not changes:
+    day_changes = {}
+    if d:
+        for k, v in desired_days(record, now, d).items():
+            have = record.get(d[k])
+            if (v if v is not None else "") != (have if have is not None else ""):
+                day_changes[k] = v
+    if not changes and not day_changes:
         return []
     data = {}
-    for k in ("node", "assignee", "entered", "days"):
-        v = want[k]
-        if k == "entered":
-            v = iso(v)
-        data[f[k]] = {"value": v if v not in (None, []) else ([] if k == "assignee" else None)}
-    data[f["synced"]] = {"value": iso(now)}
+    if changes:
+        for k in ("node", "assignee", "entered", "days"):
+            v = want[k]
+            if k == "entered":
+                v = iso(v)
+            data[f[k]] = {"value": v if v not in (None, []) else ([] if k == "assignee" else None)}
+        data[f["synced"]] = {"value": iso(now)}  # 只记节点信息的变化，天数变化不算
+    for k, v in day_changes.items():
+        data[d[k]] = {"value": v}
     post("/v5/app/entry/data/update",
          {"app_id": app_id, "entry_id": entry_id, "data_id": record["_id"], "data": data})
-    return sorted(changes)
+    return sorted([*changes, *day_changes])
 
 
-def list_records(app_id, entry_id, f):
+def list_records(app_id, entry_id, f, d=None):
     """要同步的记录：流程进行中的，加上「当前节点」还停在某个节点但流程已结束的。"""
-    wanted = ["_id", "flowState", *f.values()]
+    wanted = ["_id", "flowState", "createTime", *f.values(), *(d or {}).values()]
     seen, out = set(), []
     for flt in (
         {"rel": "and", "cond": [{"field": "flowState", "type": "flowstate", "method": "eq", "value": [0]}]},
@@ -182,12 +228,12 @@ def list_records(app_id, entry_id, f):
 
 def sync_all(now=None):
     now = now or datetime.now(timezone.utc)
-    app_id, entry_id, f = env("JDY_APP_ID"), env("JDY_ENTRY_ID"), fields()
-    records = list_records(app_id, entry_id, f)
+    app_id, entry_id, f, d = env("JDY_APP_ID"), env("JDY_ENTRY_ID"), fields(), day_fields()
+    records = list_records(app_id, entry_id, f, d)
     changed, errors = {}, {}
     for r in records:
         try:
-            keys = sync_record(app_id, entry_id, r, now, f)
+            keys = sync_record(app_id, entry_id, r, now, f, d)
             if keys:
                 changed[r["_id"]] = keys
         except Exception as e:  # 一条出错不影响其他

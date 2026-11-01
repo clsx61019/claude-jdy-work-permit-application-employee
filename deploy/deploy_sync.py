@@ -26,7 +26,8 @@ from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentClo
 from tencentcloud.scf.v20180416 import models, scf_client
 
 FUNCTION_ENV = ["JDY_API_KEY", "JDY_APP_ID", "JDY_ENTRY_ID", "SYNC_PUSH_SECRET",
-                "FIELD_NODE", "FIELD_ASSIGNEE", "FIELD_ENTERED", "FIELD_DAYS", "FIELD_SYNCED"]
+                "FIELD_NODE", "FIELD_ASSIGNEE", "FIELD_ENTERED", "FIELD_DAYS", "FIELD_SYNCED",
+                "FIELD_SUBMITTED", "FIELD_APPROVED", "FIELD_SINCE_SUBMIT", "FIELD_TOTAL"]
 env = os.environ.get
 NAME = env("SYNC_FUNCTION") or "jdy-node-sync"
 HANDLER = "node_sync.main_handler"
