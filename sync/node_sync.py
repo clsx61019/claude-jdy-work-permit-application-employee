@@ -48,11 +48,32 @@ except Exception:  # 没有时区库时按冬令时近似
 env = os.environ.get
 BASE = env("JDY_API_BASE", "https://api.jiandaoyun.com/api")
 
-LABEL_DONE = env("LABEL_DONE", "已完成")
-LABEL_ENDED = env("LABEL_ENDED", "已手动结束")
-# V9 里只有「第二轮通知」是「子流程结束后进入下一节点」，流程进行中却没有待办时就是在等它
-LABEL_WAITING = env("LABEL_WAITING", "第二轮通知（子流程）")
-FINAL_LABELS = {LABEL_DONE, LABEL_ENDED}
+LABEL_DONE = env("LABEL_DONE", "Completed 已完成")
+LABEL_ENDED = env("LABEL_ENDED", "Terminated 已手动结束")
+# 第一轮、第二轮通知都是「子流程结束后进入下一节点」；流程进行中却没有待办时就是在等其中一个
+LABEL_WAITING = env("LABEL_WAITING", "Waiting for Notification Subflow 等待通知子流程")
+# 旧版写过的中文结束标签也算结束，免得每次定时同步都把它们列出来
+FINAL_LABELS = {LABEL_DONE, LABEL_ENDED, "已完成", "已手动结束", "Completed", "Terminated"}
+
+# 写进「当前节点」的名称（先英后中），按节点编号对应（流程里节点的中文名怎么改都不影响）。
+# 「当前节点」下拉框的选项要和这里拼出来的「编号 + 空格 + 名称」完全一致。
+NODE_NAMES = {
+    "00": "Submission 信息提交",
+    "01": "Information Check 信息确认",
+    "01A": "HR Confirmation HR确认",
+    "02": "Certificates Received 收到证书",
+    "03": "Official Translation & FEOR 翻译与FEOR",
+    "04": "Document Preparation 文件处理",
+    "05A": "Submission in China 中国递交",
+    "05B": "Submission in Hungary 匈牙利递交",
+    "06": "Decision Received 收到审批结果",
+    "07": "Arrival Date Confirmation 确认抵达日期",
+    "08": "Document Signing 文件签署",
+    "09": "Immigration & TAJ Reporting 上报移民局和医保卡",
+    "10": "Archiving 信息归档",
+    "11": "Final Confirmation 最终确认",
+}
+NODE_ALIASES = {"01.1": "01A"}  # 旧编号「1.1. HR确认」
 
 
 class JdyError(RuntimeError):
@@ -115,6 +136,14 @@ def node_label(flow_name):
     return f"{int(m.group(1)):02d}{m.group(2).upper()} {m.group(3)}".strip()
 
 
+def display_label(flow_name):
+    """节点在表单里显示的文字：有对照用「01A HR Confirmation HR确认」，没有就用 node_label 的结果。"""
+    label = node_label(flow_name)
+    code, _, _ = label.partition(" ")
+    code = NODE_ALIASES.get(code, code)
+    return f"{code} {NODE_NAMES[code]}" if code in NODE_NAMES else label
+
+
 def parse_time(s):
     return datetime.fromisoformat(s.replace("Z", "+00:00")) if s else None
 
@@ -135,7 +164,7 @@ def desired_state(instance, now):
         return {"node": LABEL_WAITING, "assignee": [], "entered": None, "days": None}
     names = []
     for t in active:
-        n = node_label(t.get("flow_name"))
+        n = display_label(t.get("flow_name"))
         if n not in names:
             names.append(n)
     people = []
